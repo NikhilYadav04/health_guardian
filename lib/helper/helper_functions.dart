@@ -9,27 +9,39 @@ class HelperFunctions {
   }
 
   //* to store user phone number
-  static Future<void> setPhoneNumber(String PhoneNumber) async {
+  static Future<void> setPhoneNumber(String PhoneNumber, String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(dotenv.get('NUMBER_TOKEN'), PhoneNumber);
+    prefs.setString(key, PhoneNumber);
+  }
+
+  //* to store name of user
+  static Future<void> setName(String Name, String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(key, Name);
   }
 
   //* to store profile complete status
-  static Future<void> setProfileStatus(bool status) async{
+  static Future<void> setProfileStatus(bool status) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(dotenv.get('PROFILE_TOKEN'), true);
   }
 
+  //* get name of user
+  static Future<String> getName(String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(key) ?? "User";
+  }
+
   //* get profile complete status
-  static Future<bool> getProfileStatus() async{
+  static Future<bool> getProfileStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool(dotenv.get('PROFILE_TOKEN')) ?? false;
   }
 
   //* get user phone number
-  static Future<String> getPhoneNumber() async {
+  static Future<String> getPhoneNumber(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(dotenv.get('NUMBER_TOKEN')) ?? "";
+    return prefs.getString(key) ?? "915250XXXX";
   }
 
   //* get auth status

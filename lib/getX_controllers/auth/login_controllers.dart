@@ -41,7 +41,8 @@ class CreateAccountController extends GetxController {
           email: emailController.text.toString(),
           password: passwordController.text.toString());
       await HelperFunctions.setPhoneNumber(
-          PhoneNumberController.text.toString());
+          PhoneNumberController.text.toString(),
+          emailController.text.toString());
       await HelperFunctions.setProfileStatus(false);
 
       toastSuccessSlide(context, "Account Created Successfully");
@@ -96,7 +97,7 @@ class CreateAccountController extends GetxController {
 
       clear();
 
-      Get.to(() => ProfileCompletionScreen(status: "create",),
+      Get.to(() => ProfileCompletionScreen(status: "create"),
           transition: Transition.rightToLeft);
 
       isLoadingPin.value = false;
@@ -222,7 +223,6 @@ class LoginAccountController extends GetxController {
     try {
       await HelperFunctions.setAuthStatus(false);
       await FirebaseAuth.instance.signOut();
-      await HelperFunctions.setPhoneNumber("");
       Get.offAll(() => LoginScreen(), transition: Transition.downToUp);
     } catch (e) {
       var logger = Logger();

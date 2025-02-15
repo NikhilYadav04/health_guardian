@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:health_guardian/getX_controllers/profile/profile_controller.dart';
 import 'package:health_guardian/screens/welcome/welcome_screen_user.dart';
 import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/images.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
+import 'package:health_guardian/styling/toast_message.dart';
 import 'package:health_guardian/widgets/buttons/double_buttons.dart';
 import 'package:health_guardian/widgets/profile/profile_screens.dart';
 import 'package:health_guardian/widgets/profile/profile_screens_1.dart';
 import 'package:health_guardian/widgets/profile/profile_screens_2.dart';
+import 'package:logger/logger.dart';
 import 'package:lottie/lottie.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -22,8 +25,44 @@ class ProfileCompletionScreen extends StatefulWidget {
 
 class _ProfileCompletionScreenState extends State<ProfileCompletionScreen> {
   PageController _pageController = PageController();
+  final ProfileCompletionController controller =
+      Get.put(ProfileCompletionController());
   int _currentIndex = 0;
   bool _animateProgress = false;
+
+  void completeProfile() async {
+    //* Loader
+    showDialog(
+        context: context,
+        barrierColor: Colors.black.withOpacity(0.7),
+        builder: (context) {
+          return Dialog(
+              backgroundColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                      3.16 * SizeConfig.heightMultiplier)),
+              child: loaderWidget(
+                  Images.loadingAnimation, "Creating your account..."));
+        });
+    //* api call
+    var logger = Logger();
+    logger.d("Status : ${widget.status}");
+    String response = await controller.completeProfile(context);
+    if (response == "Success") {
+      toastSuccessSlide(context, "Profile Completed Successfully!");
+
+      Navigator.of(context).pop();
+
+      //   //* navigate
+      if (widget.status == "create") {
+        Get.to(() => WelcomeScreenUser(), transition: Transition.rightToLeft);
+      } else {
+        Get.back();
+      }
+    } else {
+      Navigator.of(context).pop();
+    }
+  }
 
   @override
   void initState() {
@@ -47,25 +86,8 @@ class _ProfileCompletionScreenState extends State<ProfileCompletionScreen> {
           curve: Curves.easeInOut,
         );
       } else {
-        //* show loading widget and navigate to home page
-        await showDialog(
-            context: context,
-            barrierColor: Colors.black.withOpacity(0.7),
-            builder: (context) {
-              Future.delayed(Duration(seconds: 5), () {
-                Navigator.of(context)
-                    .pop(); //* Close the dialog after 5 seconds
-              });
-
-              return Dialog(
-                  backgroundColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          3.16 * SizeConfig.heightMultiplier)),
-                  child: loaderWidget(Images.loadingAnimation,"Creating your account..."));
-            });
-
-        Get.to(() => WelcomeScreenUser(), transition: Transition.downToUp);
+        //* complete the profile
+        completeProfile();
       }
     });
   }
@@ -195,7 +217,7 @@ class _ProfileCompletionScreenState extends State<ProfileCompletionScreen> {
   }
 }
 
-Widget loaderWidget(String animation,String title) {
+Widget loaderWidget(String animation, String title) {
   return Container(
     width: 40.17 * SizeConfig.widthMultiplier,
     height: 18.96 * SizeConfig.heightMultiplier,

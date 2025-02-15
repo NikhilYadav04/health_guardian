@@ -30,7 +30,7 @@ class DashboardScreen extends StatelessWidget {
       //* AppBar for my screen
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: currentTimeWidget(),
+        title: currentTimeWidget(controllers.currentDate.value,controllers.currentDay.value),
         toolbarHeight: 10.01 * SizeConfig.heightMultiplier,
         actions: [
           IconButton(

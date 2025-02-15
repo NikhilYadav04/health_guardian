@@ -4,6 +4,7 @@ import 'package:health_guardian/screens/profile/profile_completion_screen.dart';
 import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/images.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
+import 'package:logger/logger.dart';
 
 List<IconData> iconDataList = [
   Icons.alarm,
@@ -19,7 +20,7 @@ List<String> title = [
   "Logout"
 ];
 
-Widget profileWidgetAcc() {
+Widget profileWidgetAcc(String name,String phone) {
   return Container(
     padding: EdgeInsets.symmetric(
         horizontal: 3.348 * SizeConfig.widthMultiplier,
@@ -46,7 +47,7 @@ Widget profileWidgetAcc() {
                   height: 1.5 * SizeConfig.heightMultiplier,
                 ),
                 Text(
-                  "Rohit Patel",
+                  "${name}",
                   style: TextStyle(
                       fontFamily: "Poppins-Med",
                       fontWeight: FontWeight.bold,
@@ -56,16 +57,14 @@ Widget profileWidgetAcc() {
                 SizedBox(
                   height: 1.053 * SizeConfig.heightMultiplier,
                 ),
-                FittedBox(
-                  child: Text(
-                    "rohit.2023ug2019@iiitranchi.ac.in",
+                Text(
+                    "Phone Number : ${phone}           ",
                     style: TextStyle(
                         fontFamily: "Poppins-Med",
                         fontWeight: FontWeight.bold,
-                        fontSize: 1.790 * SizeConfig.heightMultiplier,
+                        fontSize: 2 * SizeConfig.heightMultiplier,
                         color: Colors.grey.shade700),
                   ),
-                )
               ],
             )),
       ],
@@ -73,7 +72,8 @@ Widget profileWidgetAcc() {
   );
 }
 
-Widget profileOptions(BuildContext context, List<void Function()> functions,bool status) {
+Widget profileOptions(
+    BuildContext context, List<void Function()> functions, bool status) {
   return Container(
     decoration: BoxDecoration(
       color: Colors.white,
@@ -85,8 +85,14 @@ Widget profileOptions(BuildContext context, List<void Function()> functions,bool
     child: Column(
       children: [
         GestureDetector(
-          onTap: (){
-            Get.to(()=>ProfileCompletionScreen(status: "complete",),transition: Transition.rightToLeft);
+          onTap: () {
+            status
+                ? SizedBox()
+                : Get.to(
+                    () => ProfileCompletionScreen(
+                          status: "complete",
+                        ),
+                    transition: Transition.rightToLeft);
           },
           child: Container(
             height: 6.847 * SizeConfig.heightMultiplier,
@@ -97,7 +103,7 @@ Widget profileOptions(BuildContext context, List<void Function()> functions,bool
                 size: 3.160 * SizeConfig.heightMultiplier,
               ),
               title: Text(
-               status ?  "Edit Profile"  : "Incomplete Profile",
+                status ? "Edit Profile" : "Incomplete Profile",
                 style: TextStyle(
                     fontFamily: "Poppins-Med",
                     fontWeight: FontWeight.bold,

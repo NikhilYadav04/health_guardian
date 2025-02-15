@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:health_guardian/getX_controllers/auth/login_controllers.dart';
 import 'package:health_guardian/getX_controllers/dashboard/dashboard_controllers.dart';
+import 'package:health_guardian/getX_controllers/profile/profile_controller.dart';
 import 'package:health_guardian/styling/images.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/dashboard/dashboard_widgets_3.dart';
@@ -12,6 +13,7 @@ class AccountScreen extends StatelessWidget {
   AccountScreen({super.key});
   final LoginAccountController controller = Get.put(LoginAccountController());
   final DashboardControllers controllers = Get.put(DashboardControllers());
+  final ProfileCompletionController profileCompletionController = Get.put(ProfileCompletionController());
   List<void Function()> get functions => [
         () {},
         () {},
@@ -23,6 +25,7 @@ class AccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controller.onInit();
     return SafeArea(
         child: Scaffold(
       backgroundColor: Color.fromARGB(255, 247, 241, 241),
@@ -68,7 +71,7 @@ class AccountScreen extends StatelessWidget {
             child: Column(
               children: [
                 //* Profile Logo Widget
-                profileWidgetAcc(),
+                profileWidgetAcc(profileCompletionController.Name.value,profileCompletionController.Phone.value),
 
                 SizedBox(
                   height: 1.053 * SizeConfig.heightMultiplier,

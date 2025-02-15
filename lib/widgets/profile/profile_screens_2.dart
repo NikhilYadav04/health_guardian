@@ -5,7 +5,7 @@ import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/profile/profile_screens.dart';
 
-final ProfileController profileController = Get.put(ProfileController());
+final ProfileCompletionController profileController = Get.put(ProfileCompletionController());
 
 Widget screen4() {
   return Container(
@@ -20,7 +20,9 @@ Widget screen4() {
             maxLines: 2,
             'Are You Currently Diagnosed\nwith Any of These Diseases?',
             style: TextStyle(
-                color: Colors.black, fontFamily: "CoreSansBold", fontSize: 29.5),
+                color: Colors.black,
+                fontFamily: "CoreSansBold",
+                fontSize: 29.5),
           ),
         ),
         SizedBox(
@@ -32,151 +34,72 @@ Widget screen4() {
         Obx(() => Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    profileController.heart_disease.value =
-                        !profileController.heart_disease.value;
-                  },
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 13.69 * SizeConfig.heightMultiplier,
-                        width: 29.01 * SizeConfig.widthMultiplier,
-                        decoration: BoxDecoration(
-                            color: profileController.heart_disease.value
-                                ? Colours.buttonColorRed
-                                : Colors.white,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                                color:
-                                    const Color.fromARGB(255, 120, 118, 118))),
-                        child: Icon(
-                          Icons.favorite,
-                          color: profileController.heart_disease.value
-                              ? Colors.white
-                              : Colors.black,
-                          size: 8.42 * SizeConfig.heightMultiplier,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 2.10 * SizeConfig.heightMultiplier,
-                      ),
-                      profileScreenText("Heart")
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    profileController.blood_sugar.value =
-                        !profileController.blood_sugar.value;
-                  },
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 13.69 * SizeConfig.heightMultiplier,
-                        width: 29.01 * SizeConfig.widthMultiplier,
-                        decoration: BoxDecoration(
-                            color: profileController.blood_sugar.value
-                                ? Colours.buttonColorRed
-                                : Colors.white,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                                color:
-                                    const Color.fromARGB(255, 120, 118, 118))),
-                        child: Icon(
-                          Icons.bloodtype,
-                          color: profileController.blood_sugar.value
-                              ? Colors.white
-                              : Colors.black,
-                          size: 8.42 * SizeConfig.heightMultiplier,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 2.10 * SizeConfig.heightMultiplier,
-                      ),
-                      profileScreenText("Sugar")
-                    ],
-                  ),
-                ),
+                diseaseCard(
+                    "Heart",
+                    profileController.heart_disease.value == true,
+                    Icons.favorite, () {
+                  profileController.heart_disease.value =
+                      !profileController.heart_disease.value;
+                }),
+                diseaseCard(
+                    "Sugar",
+                    profileController.blood_sugar.value == true,
+                    Icons.bloodtype, () {
+                  profileController.blood_sugar.value =
+                      !profileController.blood_sugar.value;
+                }),
               ],
             )),
 
-        SizedBox(
-          height: 2.107 * SizeConfig.heightMultiplier
-        ),
+        SizedBox(height: 2.107 * SizeConfig.heightMultiplier),
 
         //* pressure and weight
         Obx(() => Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    profileController.blood_pressure.value =
-                        !profileController.blood_pressure.value;
-                  },
-                  child: Column(
-                    children: [
-                      Container(
-                            height: 13.69 * SizeConfig.heightMultiplier,
-                        width: 29.01 * SizeConfig.widthMultiplier,
-                        decoration: BoxDecoration(
-                            color: profileController.blood_pressure.value
-                                ? Colours.buttonColorRed
-                                : Colors.white,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                                color:
-                                    const Color.fromARGB(255, 120, 118, 118))),
-                        child: Icon(
-                          Icons.health_and_safety,
-                          color: profileController.blood_pressure.value
-                              ? Colors.white
-                              : Colors.black,
-                          size: 8.42 * SizeConfig.heightMultiplier,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 2.10 * SizeConfig.heightMultiplier,
-                      ),
-                      profileScreenText("B.P")
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    profileController.weight_bmi.value =
-                        !profileController.weight_bmi.value;
-                  },
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 13.69 * SizeConfig.heightMultiplier,
-                        width: 29.01 * SizeConfig.widthMultiplier,
-                        decoration: BoxDecoration(
-                            color: profileController.weight_bmi.value
-                                ? Colours.buttonColorRed
-                                : Colors.white,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                                color:
-                                    const Color.fromARGB(255, 120, 118, 118))),
-                        child: Icon(
-                          Icons.monitor_weight_outlined,
-                          color: profileController.weight_bmi.value
-                              ? Colors.white
-                              : Colors.black,
-                          size: 8.42 * SizeConfig.heightMultiplier,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 2.10 * SizeConfig.heightMultiplier,
-                      ),
-                      profileScreenText("Weight")
-                    ],
-                  ),
-                ),
+                diseaseCard(
+                    "B.P",
+                    profileController.blood_pressure.value == true,
+                    Icons.health_and_safety, () {
+                  profileController.blood_pressure.value =
+                      !profileController.blood_pressure.value;
+                }),
+                diseaseCard("Weight", profileController.weight_bmi.value,
+                    Icons.monitor_weight_outlined, () {
+                  profileController.weight_bmi.value =
+                      !profileController.weight_bmi.value;
+                })
               ],
             ))
+      ],
+    ),
+  );
+}
+
+Widget diseaseCard(
+    String text, bool value, IconData icon, void Function() onTap) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Column(
+      children: [
+        Container(
+          height: 13.69 * SizeConfig.heightMultiplier,
+          width: 29.01 * SizeConfig.widthMultiplier,
+          decoration: BoxDecoration(
+              color: value ? Colours.buttonColorRed : Colors.white,
+              shape: BoxShape.circle,
+              border:
+                  Border.all(color: const Color.fromARGB(255, 120, 118, 118))),
+          child: Icon(
+            icon,
+            color: value ? Colors.white : Colors.black,
+            size: 8.42 * SizeConfig.heightMultiplier,
+          ),
+        ),
+        SizedBox(
+          height: 2.10 * SizeConfig.heightMultiplier,
+        ),
+        profileScreenText(text)
       ],
     ),
   );

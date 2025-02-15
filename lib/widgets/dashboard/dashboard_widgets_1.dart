@@ -9,19 +9,19 @@ import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/buttons/dashboard_buttons.dart';
 import 'package:health_guardian/widgets/onboard/onboard_widgets.dart';
 
-Widget currentTimeWidget() {
+Widget currentTimeWidget(String date,String day) {
   return Text.rich(
     TextSpan(
       children: [
         TextSpan(
-          text: "Nov 02",
+          text: "${date}",
           style: style.copyWith(fontSize: 40, fontWeight: FontWeight.bold),
         ),
         WidgetSpan(
           child: Transform.translate(
             offset: const Offset(6, -20),
             child: Text(
-              'Sat',
+              '${day}',
               style: style.copyWith(fontSize: 24, fontWeight: FontWeight.w400),
             ),
           ),
