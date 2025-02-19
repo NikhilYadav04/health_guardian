@@ -25,7 +25,8 @@ class AccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.onInit();
+    // controller.onInit();
+    // profileCompletionController.onInit();
     return SafeArea(
         child: Scaffold(
       backgroundColor: Color.fromARGB(255, 247, 241, 241),
@@ -71,7 +72,7 @@ class AccountScreen extends StatelessWidget {
             child: Column(
               children: [
                 //* Profile Logo Widget
-                profileWidgetAcc(profileCompletionController.Name.value,profileCompletionController.Phone.value),
+                Obx(()=> profileWidgetAcc(profileCompletionController.Name.value,profileCompletionController.Phone.value)),
 
                 SizedBox(
                   height: 1.053 * SizeConfig.heightMultiplier,

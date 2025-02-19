@@ -7,7 +7,7 @@ import 'package:health_guardian/widgets/profile/profile_screens.dart';
 
 final ProfileCompletionController profileController = Get.put(ProfileCompletionController());
 
-Widget screen4() {
+Widget screen4(ProfileCompletionController controller) {
   return Container(
     padding:
         EdgeInsets.symmetric(horizontal: 2.67 * SizeConfig.widthMultiplier),

@@ -31,6 +31,9 @@ class DashboardControllers extends GetxController {
     //* get current date and day
     currentDate.value = await CurrentDate.getDate();
     currentDay.value = await CurrentDate.getDay();
+    
+    logger.d("CUrrent date is ${currentDate.value}");
+    logger.d("CUrrent day is ${currentDay.value}");
   }
 
   //* bool

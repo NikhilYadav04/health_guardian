@@ -24,13 +24,14 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // controllers.onInit();
     return SafeArea(
         child: Scaffold(
       resizeToAvoidBottomInset: true,
       //* AppBar for my screen
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: currentTimeWidget(controllers.currentDate.value,controllers.currentDay.value),
+        title: Obx(()=>currentTimeWidget(controllers.currentDate.value,controllers.currentDay.value)),
         toolbarHeight: 10.01 * SizeConfig.heightMultiplier,
         actions: [
           IconButton(

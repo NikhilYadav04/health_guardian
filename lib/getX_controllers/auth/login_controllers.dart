@@ -40,9 +40,10 @@ class CreateAccountController extends GetxController {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.toString(),
           password: passwordController.text.toString());
+      final userID = FirebaseAuth.instance.currentUser!.uid;
       await HelperFunctions.setPhoneNumber(
-          PhoneNumberController.text.toString(),
-          emailController.text.toString());
+          PhoneNumberController.text.toString(), userID);
+      await HelperFunctions.setName("User",PhoneNumberController.text.toString() );
       await HelperFunctions.setProfileStatus(false);
 
       toastSuccessSlide(context, "Account Created Successfully");

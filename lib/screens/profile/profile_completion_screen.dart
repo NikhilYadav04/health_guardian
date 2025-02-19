@@ -64,9 +64,42 @@ class _ProfileCompletionScreenState extends State<ProfileCompletionScreen> {
     }
   }
 
+  void editProfile() async {
+    //* Loader
+    showDialog(
+        context: context,
+        barrierColor: Colors.black.withOpacity(0.7),
+        builder: (context) {
+          return Dialog(
+              backgroundColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                      3.16 * SizeConfig.heightMultiplier)),
+              child: loaderWidget(
+                  Images.loadingAnimation, "Editing your account..."));
+        });
+    //* api call
+    var logger = Logger();
+    logger.d("Status : ${widget.status}");
+    String response = await controller.updateProfile(context);
+    if (response == "Success") {
+      toastSuccessSlide(context, "Profile Edited Successfully!");
+
+      Navigator.of(context).pop();
+
+      //* navigate
+      Get.back();
+    } else {
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    if (widget.status == "edit") {
+      controller.getProfileData(context);
+    }
   }
 
   @override
@@ -87,7 +120,7 @@ class _ProfileCompletionScreenState extends State<ProfileCompletionScreen> {
         );
       } else {
         //* complete the profile
-        completeProfile();
+        widget.status == "edit" ? editProfile() : completeProfile();
       }
     });
   }
@@ -134,7 +167,7 @@ class _ProfileCompletionScreenState extends State<ProfileCompletionScreen> {
                   children: [
                     //* icon for navigating back
                     InkWell(
-                      onTap: () => Get.back(),
+                      onTap: (){Navigator.of(context).pop();},
                       child: Icon(
                         Icons.arrow_back,
                         color: Colors.black,
@@ -180,10 +213,10 @@ class _ProfileCompletionScreenState extends State<ProfileCompletionScreen> {
                 controller: _pageController,
                 onPageChanged: _onPageChanged,
                 children: [
-                  screen1(),
-                  screen2(),
-                  screen3(context),
-                  screen4(),
+                  screen1(controller),
+                  screen2(controller),
+                  screen3(context,controller),
+                  screen4(controller),
                 ],
               ),
             ),

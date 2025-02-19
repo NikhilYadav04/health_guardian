@@ -14,14 +14,14 @@ Widget currentTimeWidget(String date,String day) {
     TextSpan(
       children: [
         TextSpan(
-          text: "${date}",
+          text: date,
           style: style.copyWith(fontSize: 40, fontWeight: FontWeight.bold),
         ),
         WidgetSpan(
           child: Transform.translate(
             offset: const Offset(6, -20),
             child: Text(
-              '${day}',
+              day,
               style: style.copyWith(fontSize: 24, fontWeight: FontWeight.w400),
             ),
           ),

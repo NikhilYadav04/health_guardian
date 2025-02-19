@@ -92,3 +92,7 @@ class BloodSugarControllers extends GetxController {
     State.value = "After Workout";
   }
 }
+
+class BloodSugarControllersAPI extends GetxController {
+  
+}

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:health_guardian/getX_controllers/profile/profile_controller.dart';
+import 'package:health_guardian/screens/profile/profile_completion_screen.dart';
 import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/onboard/onboard_widgets.dart';
 
-final ProfileCompletionController controller =
-    Get.put(ProfileCompletionController());
 
 Widget profileScreenText(String title) {
   return Text(
@@ -21,7 +19,7 @@ Widget profileScreenText(String title) {
   );
 }
 
-Widget screen1() {
+Widget screen1(ProfileCompletionController controller) {
   return Container(
     padding:
         EdgeInsets.symmetric(horizontal: 2.67 * SizeConfig.widthMultiplier),
@@ -77,7 +75,7 @@ Widget screen1() {
   );
 }
 
-Widget screen2() {
+Widget screen2(ProfileCompletionController controller) {
   return Container(
     padding:
         EdgeInsets.symmetric(horizontal: 2.67 * SizeConfig.widthMultiplier),
@@ -97,7 +95,8 @@ Widget screen2() {
             children: [
               GestureDetector(
                 onTap: () {
-                 controller.gender.value = "Male";
+                  controller.gender.value = "Male";
+                  print(controller.gender.value);
                 },
                 child: Column(
                   children: [
@@ -165,7 +164,7 @@ Widget screen2() {
         ),
         Center(
           child: buttonsSample("Prefer not to say", () {
-            controller.gender .value= "";
+            controller.gender.value = "";
           }, Color.fromARGB(255, 243, 219, 222), Colors.black, 60, 280),
         )
       ],

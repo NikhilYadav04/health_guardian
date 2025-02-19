@@ -47,7 +47,7 @@ Widget profileWidgetAcc(String name,String phone) {
                   height: 1.5 * SizeConfig.heightMultiplier,
                 ),
                 Text(
-                  "${name}",
+                  name,
                   style: TextStyle(
                       fontFamily: "Poppins-Med",
                       fontWeight: FontWeight.bold,
@@ -87,8 +87,12 @@ Widget profileOptions(
         GestureDetector(
           onTap: () {
             status
-                ? SizedBox()
-                : Get.to(
+                ?  Get.to(
+                    () => ProfileCompletionScreen(
+                          status: "edit",
+                        ),
+                    transition: Transition.rightToLeft)
+                :  Get.to(
                     () => ProfileCompletionScreen(
                           status: "complete",
                         ),
