@@ -169,7 +169,8 @@ class BloodPressureControllers extends GetxController {
               "diastolic": pressureLevelDiastolic,
               "color": color,
               "state": State.value,
-              "status": status
+              "status": status,
+              "note": noteController.text.toString()
             }
           ]
         });
@@ -180,7 +181,8 @@ class BloodPressureControllers extends GetxController {
           "diastolic": pressureLevelDiastolic,
           "color": color,
           "state": State.value,
-          "status": status
+          "status": status,
+          "note": noteController.text.toString()
         };
         await docs.reference.update({
           "bp_data": FieldValue.arrayUnion([list])
@@ -369,8 +371,14 @@ class EditBloodPressureDataControllers extends GetxController {
         });
 
         //* after report is stored clear the data
-        await docs.reference.update({
-          'bp_report': FieldValue.delete(),
+        CollectionReference collectionReference =
+            FirebaseFirestore.instance.collection("bp_data");
+        QuerySnapshot querySnapshot =
+            await collectionReference.where('email', isEqualTo: email).get();
+        DocumentSnapshot docs1 = querySnapshot.docs.first;
+
+        await docs1.reference.update({
+          'bp_data': FieldValue.delete(),
         });
 
         toastSuccessSlide(context, "Report Stored Successfully!");

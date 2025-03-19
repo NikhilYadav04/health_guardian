@@ -23,7 +23,7 @@ class ReportScreen extends StatelessWidget {
         SizedBox(
           height: 1.9*SizeConfig.heightMultiplier,
         ),
-        descTextAnalyze("Check your BP report history and track all your\nstored data effortlessly.",2.2 * SizeConfig.heightMultiplier),
+        descTextAnalyze("Check your health report history and track all\nyour stored data effortlessly.",2.2 * SizeConfig.heightMultiplier),
 
          SizedBox(
           height: 3.68*SizeConfig.heightMultiplier,

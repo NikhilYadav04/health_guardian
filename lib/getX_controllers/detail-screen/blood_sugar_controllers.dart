@@ -4,6 +4,36 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:health_guardian/styling/toast_message.dart';
+import 'package:intl/intl.dart';
+
+bool isBetween(num value, num min, num max) {
+  return value >= min && value <= max;
+}
+
+List<String> getSugarColorSatus(double sugarLevel) {
+  String color;
+  String status;
+
+  if (sugarLevel < 72) {
+    color = "Colors.blue";
+    status = "Low";
+  } else if (isBetween(sugarLevel, 72, 99)) {
+    color = "Colors.green";
+    status = "Normal";
+  } else if (isBetween(sugarLevel, 99, 126)) {
+    color = "Colors.orange";
+    status = "Pre-Diabetes";
+  } else if (sugarLevel >= 126) {
+    color = "Colors.red";
+    status = "Diabetes";
+  } else {
+    color = "Colors.grey";
+    status = "Mot Known";
+  }
+
+  return [color, status];
+}
 
 class BloodSugarControllers extends GetxController {
   //* initialize the controller
@@ -15,6 +45,8 @@ class BloodSugarControllers extends GetxController {
   void noteClear() {
     noteController.clear();
   }
+
+  RxBool isLoadingAdd = false.obs;
 
   //* declare index
   RxInt pageIndex = 0.obs;
@@ -93,6 +125,61 @@ class BloodSugarControllers extends GetxController {
   void AfterWorkoutSelect() {
     State.value = "After Workout";
   }
+
+  //* store sugar data in database
+  Future<void> addSugarData(BuildContext context) async {
+    try {
+      isLoadingAdd.value = true;
+      final email = FirebaseAuth.instance.currentUser!.email!;
+      String date = DateFormat("dd MMM yyyy").format(DateTime.now());
+      String time = DateFormat("hh:mm a").format(DateTime.now());
+
+      List<String> colorStatusList = getSugarColorSatus(sugarLevel.value);
+      String color = colorStatusList[0];
+      String status = colorStatusList[1];
+
+      CollectionReference collectionReference =
+          FirebaseFirestore.instance.collection("sugar_data");
+      QuerySnapshot querySnapshot =
+          await collectionReference.where("email", isEqualTo: email).get();
+      DocumentSnapshot docs = await querySnapshot.docs.first;
+
+      if (!docs.exists) {
+        await collectionReference.add({
+          "email": email,
+          "sugar_data": [
+            {
+              "date": "${date.toString()} : ${time.toString()}",
+              "sugar_level": sugarLevel.value,
+              "color": color,
+              "status": status,
+              "state": State.value,
+              "note": noteController.text.toString()
+            }
+          ]
+        });
+      } else {
+        final list = {
+          "date": "${date.toString()} : ${time.toString()}",
+          "sugar_level": sugarLevel.value,
+          "color": color,
+          "status": status,
+          "state": State.value,
+          "note": noteController.text.toString()
+        };
+
+        await docs.reference.update({
+          "sugar_data": FieldValue.arrayUnion([list])
+        });
+      }
+      toastSuccessSlide(context, "Data added successfully");
+
+      isLoadingAdd.value = false;
+    } catch (e) {
+      toastErrorSlide(context, "Error adding data");
+      isLoadingAdd.value = false;
+    }
+  }
 }
 
 class EditBloodSugarDataControllers extends GetxController {
@@ -104,8 +191,37 @@ class EditBloodSugarDataControllers extends GetxController {
   RxList sugar_data_list = [].obs;
   RxList sugar_graph_list = [].obs;
 
+  RxBool isLoadingReport = false.obs;
+
+  //* format sugar data for graph
+  Future<void> formatSugarData() async {
+    try {
+      sugar_graph_list.clear();
+
+      final int listCount = (sugar_data_list.length / 6).ceil();
+
+      for (int i = 0; i < listCount; i++) {
+        int startIdx = i * 6;
+        int endIdx = (startIdx + 6 < sugar_data_list.length)
+            ? startIdx + 6
+            : sugar_data_list.length;
+
+        List<dynamic> sublist = sugar_data_list.sublist(startIdx, endIdx);
+
+        if (sublist.isNotEmpty) {
+          sugar_graph_list.add({
+            "date": "${sublist.first['date']} - ${sublist.last['date']}",
+            "sugar_level": sublist.map((e) => e['sugar_level']).toList()
+          });
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   //* fetch sugar data from database
-  Future<List<dynamic>> fetchSugarData() async {
+  Future<List<dynamic>> fetchSugarData(BuildContext context) async {
     try {
       final email = FirebaseAuth.instance.currentUser!.email!;
 
@@ -122,13 +238,117 @@ class EditBloodSugarDataControllers extends GetxController {
           (list.fold(0, (sum, entry) => sum + entry['sugar_level']));
       AvgSugarLevel.value = sugar_sum / list.length;
 
-      MaxSugarLevel.value = list.reduce((a, b) => a['sugar_level'] > b['sugar_level'] ? a : b)['sugar_level'];
-      MinSugarLevel.value = list.reduce((a, b) => a['sugar_level'] < b['sugar_level'] ? a : b)['sugar_level'];
+      MaxSugarLevel.value = list.reduce(
+          (a, b) => a['sugar_level'] > b['sugar_level'] ? a : b)['sugar_level'];
+      MinSugarLevel.value = list.reduce(
+          (a, b) => a['sugar_level'] < b['sugar_level'] ? a : b)['sugar_level'];
 
       return sugar_data_list;
-
     } catch (e) {
+      toastErrorSlide(context, "Error fetching data");
       print(e.toString());
+      return [];
+    }
+  }
+
+  //* generate report of sugar data
+  Future<void> generateSugarDataReport(BuildContext context) async {
+    try {
+      if (sugar_data_list.isEmpty) {
+        toastErrorSlide(context, "No Data To Store");
+        return;
+      }
+      isLoadingReport.value = true;
+
+      Map<String, List<double>> sugarLevelData = {};
+
+      final email = FirebaseAuth.instance.currentUser!.email!;
+      final date = DateFormat('dd MMM yyyy').format(DateTime.now());
+
+      for (var data in sugar_data_list) {
+        String date = data["date"];
+        double sugarLevel = data["sugar_level"];
+
+        //* Add sygar values
+        if (!sugarLevelData.containsKey(date)) {
+          sugarLevelData[date] = [];
+        }
+        sugarLevelData[date]!.add(sugarLevel);
+      }
+
+      //* Calculating average for each date
+      Map<String, double> avgSugarLevel = {};
+
+      sugarLevelData.forEach((date, values) {
+        avgSugarLevel[date] = values.reduce((a, b) => a + b) / values.length;
+      });
+
+      final List<dynamic> sugar_report = [];
+
+      for (var key in avgSugarLevel.keys) {
+        final colorStatusList = getSugarColorSatus(avgSugarLevel[key]!);
+        sugar_report.add({
+          "sugar_level": avgSugarLevel[key],
+          "color": colorStatusList[0],
+          "status": colorStatusList[1]
+        });
+      }
+
+      //* submit report data to database
+      CollectionReference collectionReference =
+          FirebaseFirestore.instance.collection("sugar_report");
+      QuerySnapshot querySnapshot =
+          await collectionReference.where('email', isEqualTo: email).get();
+      DocumentSnapshot docs = querySnapshot.docs.first;
+
+      if (!docs.exists) {
+        await collectionReference.add({
+          "email": email,
+          "sugar_report": [
+            {"submitted_on": date, "sugar_report": sugar_report}
+          ]
+        });
+      } else {
+        final list = {"submitted_on": date, "sugar_report": sugar_report};
+
+        await docs.reference.update({
+          "sugar_report": FieldValue.arrayUnion([list])
+        });
+
+        //* after report is stored clear the data
+        CollectionReference collectionReference =
+            FirebaseFirestore.instance.collection("sugar_data");
+        QuerySnapshot querySnapshot =
+            await collectionReference.where('email', isEqualTo: email).get();
+        DocumentSnapshot docs1 = querySnapshot.docs.first;
+        await docs1.reference.update({
+          'sugar_data': FieldValue.delete(),
+        });
+
+        toastSuccessSlide(context, "Report Stored Successfully!");
+      }
+
+      isLoadingReport.value = false;
+    } catch (e) {
+      toastErrorSlide(context, "Cannot Store Report : ${e.toString()}");
+      isLoadingReport.value = false;
+    }
+  }
+
+  //* get report of sugar data
+  Future<List<dynamic>> getReportData() async {
+    try {
+      final email = FirebaseAuth.instance.currentUser!.email!;
+
+      CollectionReference collectionReference =
+          FirebaseFirestore.instance.collection("sugar_report");
+      QuerySnapshot querySnapshot =
+          await collectionReference.where('email', isEqualTo: email).get();
+      DocumentSnapshot docs = querySnapshot.docs.first;
+
+      final List<dynamic> list = docs['sugar_report'];
+      return list;
+    } catch (e) {
       return [];
     }
   }
