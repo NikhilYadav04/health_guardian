@@ -4,6 +4,7 @@ import 'package:health_guardian/getX_controllers/button/button_controllers.dart'
 import 'package:health_guardian/getX_controllers/profile/profile_controller.dart';
 import 'package:health_guardian/screens/detail-screens/blood-pressure/blood_pressure_detail.dart';
 import 'package:health_guardian/screens/detail-screens/blood-sugar/blood_sugar_detail.dart';
+import 'package:health_guardian/screens/detail-screens/heart-rate/opening_screen_heart.dart';
 import 'package:health_guardian/screens/detail-screens/weight_measure/weight_measure_detail.dart';
 import 'package:health_guardian/styling/images.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
@@ -26,7 +27,7 @@ class Home_D_Screen extends StatelessWidget {
       ),
 
       //* Disease Cards
-      heartMeasureCard(() {}),
+      heartMeasureCard(() {Get.to(() => OpeningScreenHeart());}),
       SizedBox(
         height: 3.16 * SizeConfig.heightMultiplier,
       ),
