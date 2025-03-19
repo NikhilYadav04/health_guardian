@@ -2,11 +2,17 @@ class Images {
   Images._();
 
   static const heartIconRed = "assets/splash/heart_vector_2.svg";
+  static const reportIcon = "assets/dashboard/report.svg";
   static const loadingAnimation = "assets/animations/loading.json";
   static const emailAnimation = "assets/animations/email.json";
   static const welcomeIcon = "assets/auth/welcome.svg";
   static const otpIcon = "assets/auth/otp.svg";
   static const lockIcon = "assets/auth/forgot-password.svg";
+
+  static const BSugarPNG = "assets/dashboard/blood_sugar.png";
+  static const bloodPressurePNG = "assets/dashboard/blood-pressure.png";
+  static const heartPNG = "assets/dashboard/heart-attack.png";
+  static const weightPNG =  "assets/dashboard/weight-loss.png";
 
   //*d Dashboard icons
   static const heartMeasureIcon = "assets/dashboard/heart-attack.svg";

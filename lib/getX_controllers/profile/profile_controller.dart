@@ -16,6 +16,7 @@ class ProfileCompletionController extends GetxController {
     Name.value = await HelperFunctions.getName(Phone.value);
 
     var logger = Logger();
+    logger.d(userID);
     logger.d("Name is ${Name.value}");
     logger.d("Phone is ${Phone.value}");
   }

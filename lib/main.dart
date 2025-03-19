@@ -34,6 +34,9 @@ class MyApp extends StatelessWidget {
       builder: (context, constraints) {
         SizeConfig().init(constraints);
         return GetMaterialApp(
+          theme: ThemeData(
+            fontFamily: "CoreSansMed"
+          ),
             debugShowCheckedModeBanner: false,
             title: "Health Guardian",
             home: FutureBuilder(

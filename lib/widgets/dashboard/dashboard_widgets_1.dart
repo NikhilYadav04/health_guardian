@@ -31,13 +31,13 @@ Widget currentTimeWidget(String date,String day) {
   );
 }
 
-Widget titleWidget() {
+Widget titleWidget(String name) {
   return Row(
     children: [
       Text(
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
-        "Hello, Nikhil !",
+        "Hello, ${name} !",
         style: TextStyle(
             color: Colors.black,
             fontFamily: "Poppins-Med",

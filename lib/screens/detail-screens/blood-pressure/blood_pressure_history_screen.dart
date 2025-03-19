@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
+import 'package:health_guardian/widgets/dashboard/dashboard_widgets_2.dart';
 import 'package:health_guardian/widgets/detail-screen/blood-pressure/bp_widgets_2.dart';
 
 class BloodPressureHistoryScreen extends StatelessWidget {
@@ -9,26 +11,31 @@ class BloodPressureHistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Scaffold(
+    return SafeArea(
+        child: Scaffold(
       backgroundColor: Color.fromARGB(255, 247, 241, 241),
-      
-       //* AppBar
+
+      //* AppBar
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 247, 241, 241),
-        toolbarHeight: 8.42*SizeConfig.heightMultiplier,
+        toolbarHeight: 8.42 * SizeConfig.heightMultiplier,
         centerTitle: true,
-        leading:  IconButton(
-        onPressed: (){Get.back();},
-        icon: Icon(
-          Icons.arrow_back,
-          color: Colors.black,
-          size: 3.58*SizeConfig.heightMultiplier,
-        )),
+        leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+              size: 3.58 * SizeConfig.heightMultiplier,
+            )),
         title: FittedBox(
           child: Text(
             "Blood Pressure History",
             style: TextStyle(
-                fontFamily: "CoreSansBold", color: Colors.black, fontSize: 3.16*SizeConfig.heightMultiplier),
+                fontFamily: "CoreSansBold",
+                color: Colors.black,
+                fontSize: 3.16 * SizeConfig.heightMultiplier),
           ),
         ),
       ),
@@ -37,9 +44,13 @@ class BloodPressureHistoryScreen extends StatelessWidget {
           itemCount: 10,
           itemBuilder: (context, index) {
             return Container(
-              padding: EdgeInsets.symmetric(vertical: 1.58*SizeConfig.heightMultiplier, horizontal: 2.67*SizeConfig.widthMultiplier),
-              margin: EdgeInsets.symmetric(vertical: 1.26*SizeConfig.heightMultiplier, horizontal: 2.67*SizeConfig.widthMultiplier),
-              height: 11.06*SizeConfig.heightMultiplier,
+              padding: EdgeInsets.symmetric(
+                  vertical: 1.58 * SizeConfig.heightMultiplier,
+                  horizontal: 2.67 * SizeConfig.widthMultiplier),
+              margin: EdgeInsets.symmetric(
+                  vertical: 1.26 * SizeConfig.heightMultiplier,
+                  horizontal: 2.67 * SizeConfig.widthMultiplier),
+              height: 11.06 * SizeConfig.heightMultiplier,
               decoration: BoxDecoration(
                   // boxShadow: [
                   //   BoxShadow(
@@ -47,7 +58,8 @@ class BloodPressureHistoryScreen extends StatelessWidget {
                   //       spreadRadius: 2.5,
                   //       blurRadius: 2)
                   // ],
-                  borderRadius: BorderRadius.circular(1.05 * SizeConfig.heightMultiplier),
+                  borderRadius:
+                      BorderRadius.circular(1.05 * SizeConfig.heightMultiplier),
                   color: Color.fromARGB(255, 240, 237, 237)),
               child: Row(children: [
                 Flexible(
@@ -73,10 +85,10 @@ class BloodPressureHistoryScreen extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
-                        width: 4.46*SizeConfig.widthMultiplier,
+                        width: 4.46 * SizeConfig.widthMultiplier,
                       ),
                       Container(
-                          height: 77.37*SizeConfig.heightMultiplier,
+                          height: 77.37 * SizeConfig.heightMultiplier,
                           child: VerticalDivider(
                             color: Color.fromARGB(255, 229, 222, 222),
                             thickness: 3,
@@ -95,7 +107,7 @@ class BloodPressureHistoryScreen extends StatelessWidget {
                           child: Icon(
                             Icons.arrow_forward_ios,
                             color: Colors.black,
-                            size: 2.94*SizeConfig.heightMultiplier,
+                            size: 2.94 * SizeConfig.heightMultiplier,
                           )),
                     ],
                   ),
@@ -103,6 +115,20 @@ class BloodPressureHistoryScreen extends StatelessWidget {
               ]),
             );
           }),
+
+      //*Button For Submitting Report
+      floatingActionButton: SizedBox(
+        height: 70, width: 175,
+        child: InkWell(
+          onTap: () {},
+          borderRadius: BorderRadius.circular(25),
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          child: ReportButton(
+            "Store Report",() {}, Colours.buttonColorRed, Colors.white,0,0,25,23,
+          ),
+        ),
+      ),
     ));
   }
 }

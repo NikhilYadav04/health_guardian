@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -93,6 +95,41 @@ class BloodSugarControllers extends GetxController {
   }
 }
 
-class BloodSugarControllersAPI extends GetxController {
-  
+class EditBloodSugarDataControllers extends GetxController {
+  //* variables and bools
+  RxDouble AvgSugarLevel = 0.0.obs;
+  RxDouble MaxSugarLevel = 0.0.obs;
+  RxDouble MinSugarLevel = 0.0.obs;
+
+  RxList sugar_data_list = [].obs;
+  RxList sugar_graph_list = [].obs;
+
+  //* fetch sugar data from database
+  Future<List<dynamic>> fetchSugarData() async {
+    try {
+      final email = FirebaseAuth.instance.currentUser!.email!;
+
+      CollectionReference collectionReference =
+          FirebaseFirestore.instance.collection("sugar_data");
+      QuerySnapshot querySnapshot =
+          await collectionReference.where('email', isEqualTo: email).get();
+      DocumentSnapshot docs = querySnapshot.docs.first;
+
+      List<dynamic> list = docs['sugar_data'].toList();
+      sugar_data_list.value = list;
+
+      double sugar_sum =
+          (list.fold(0, (sum, entry) => sum + entry['sugar_level']));
+      AvgSugarLevel.value = sugar_sum / list.length;
+
+      MaxSugarLevel.value = list.reduce((a, b) => a['sugar_level'] > b['sugar_level'] ? a : b)['sugar_level'];
+      MinSugarLevel.value = list.reduce((a, b) => a['sugar_level'] < b['sugar_level'] ? a : b)['sugar_level'];
+
+      return sugar_data_list;
+
+    } catch (e) {
+      print(e.toString());
+      return [];
+    }
+  }
 }

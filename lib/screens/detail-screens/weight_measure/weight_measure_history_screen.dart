@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
+import 'package:health_guardian/widgets/dashboard/dashboard_widgets_2.dart';
 import 'package:health_guardian/widgets/detail-screen/weight-measure/wm_widgets_2.dart';
 
 class WeightMeasureHistoryScreen extends StatelessWidget {
@@ -103,6 +105,19 @@ class WeightMeasureHistoryScreen extends StatelessWidget {
               ]),
             );
           }),
+     //*Button For Submitting Report
+      floatingActionButton: SizedBox(
+        height: 70, width: 175,
+        child: InkWell(
+          onTap: () {},
+          borderRadius: BorderRadius.circular(25),
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          child: ReportButton(
+            "Store Report",() {}, Colours.buttonColorRed, Colors.white,0,0,25,23,
+          ),
+        ),
+      ),
     ));
   }
 }

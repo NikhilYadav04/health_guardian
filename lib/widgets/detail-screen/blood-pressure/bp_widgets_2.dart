@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_guardian/getX_controllers/detail-screen/blood_pressure_controllers.dart';
-import 'package:health_guardian/screens/detail-screens/blood-pressure/blood_sugar_history_screen.dart';
+import 'package:health_guardian/screens/detail-screens/blood-pressure/blood_pressure_history_screen.dart';
 import 'package:health_guardian/screens/detail-screens/blood-pressure/pressure_graph_report.dart';
 // ignore: unused_import
 import 'package:health_guardian/screens/detail-screens/blood-sugar/sugar_graph_report.dart';

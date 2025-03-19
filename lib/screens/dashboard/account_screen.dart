@@ -13,7 +13,9 @@ class AccountScreen extends StatelessWidget {
   AccountScreen({super.key});
   final LoginAccountController controller = Get.put(LoginAccountController());
   final DashboardControllers controllers = Get.put(DashboardControllers());
-  final ProfileCompletionController profileCompletionController = Get.put(ProfileCompletionController());
+  final ProfileCompletionController profileCompletionController =
+      Get.find<ProfileCompletionController>();
+
   List<void Function()> get functions => [
         () {},
         () {},
@@ -72,7 +74,9 @@ class AccountScreen extends StatelessWidget {
             child: Column(
               children: [
                 //* Profile Logo Widget
-                Obx(()=> profileWidgetAcc(profileCompletionController.Name.value,profileCompletionController.Phone.value)),
+                Obx(() => profileWidgetAcc(
+                    profileCompletionController.Name.value,
+                    profileCompletionController.Phone.value)),
 
                 SizedBox(
                   height: 1.053 * SizeConfig.heightMultiplier,
@@ -85,7 +89,8 @@ class AccountScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                   horizontal: 2.232 * SizeConfig.widthMultiplier,
                   vertical: 1.264 * SizeConfig.heightMultiplier),
-              child: profileOptions(context,functions,controllers.ProfileStatus.value))
+              child: profileOptions(
+                  context, functions, controllers.ProfileStatus.value))
         ],
       ),
     ));
