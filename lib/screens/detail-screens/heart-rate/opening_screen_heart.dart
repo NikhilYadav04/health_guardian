@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:health_guardian/getX_controllers/detail-screen/heart_rate_controllers.dart';
+import 'package:health_guardian/screens/detail-screens/heart-rate/heart_rate_history_screen.dart';
 import 'package:health_guardian/screens/detail-screens/heart-rate/measure_screen_heart.dart';
 import 'package:health_guardian/styling/images.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
@@ -8,7 +10,9 @@ import 'package:health_guardian/widgets/detail-screen/heart-attack/heart_widgets
 import 'package:lottie/lottie.dart';
 
 class OpeningScreenHeart extends StatelessWidget {
-  const OpeningScreenHeart({super.key});
+  OpeningScreenHeart({super.key});
+
+  final HeartRateControllers heartRateControllers = Get.put(HeartRateControllers());
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +44,14 @@ class OpeningScreenHeart extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: authButton("Measure", (){
-                    Get.to(()=>MeasureScreenHeart(),transition: Transition.rightToLeft);
+                    Get.to(()=>MeasureScreenHeart(),transition: Transition.downToUp);
                   }),
                 ),
                 SizedBox(width: 2.6785*SizeConfig.widthMultiplier,),
                  Expanded(
                   flex: 1,
                    child: authButton("History", (){
-                    Get.to(()=>MeasureScreenHeart(),transition: Transition.rightToLeft);
+                    Get.to(()=>HeartRateHistoryScreen(),transition: Transition.downToUp);
                                    }),
                  ),
               ],
