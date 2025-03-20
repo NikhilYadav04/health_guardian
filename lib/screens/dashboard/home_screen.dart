@@ -12,10 +12,13 @@ import 'package:health_guardian/widgets/dashboard/dashboard_widgets_1.dart';
 import 'package:health_guardian/widgets/dashboard/dashboard_widgets_2.dart';
 
 class Home_D_Screen extends StatelessWidget {
-  Home_D_Screen({super.key, });
+  Home_D_Screen({
+    super.key,
+  });
 
   final ButtonControllers controller = Get.put(ButtonControllers());
-  final ProfileCompletionController profileCompletionController = Get.find<ProfileCompletionController>();
+  final ProfileCompletionController profileCompletionController =
+      Get.find<ProfileCompletionController>();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,9 @@ class Home_D_Screen extends StatelessWidget {
       ),
 
       //* Disease Cards
-      heartMeasureCard(() {Get.to(() => OpeningScreenHeart());}),
+      heartMeasureCard(() {
+        Get.to(() => OpeningScreenHeart());
+      }),
       SizedBox(
         height: 3.16 * SizeConfig.heightMultiplier,
       ),
@@ -53,18 +58,14 @@ class Home_D_Screen extends StatelessWidget {
         Get.to(() => WeightMeasureDetail());
       }, controller.weightDetail, controller.setWeightDetail),
 
-      //* history records
       SizedBox(
-        height: 4.21 * SizeConfig.heightMultiplier,
+        height: 2.8 * SizeConfig.heightMultiplier,
       ),
-      historyText(),
-      SizedBox(
-        height: 2.106 * SizeConfig.heightMultiplier,
-      ),
-      historyRecordWidget(),
 
-      SizedBox(
-        height: 3.16 * SizeConfig.heightMultiplier,
+      historyText(),
+
+       SizedBox(
+        height: 2.1 * SizeConfig.heightMultiplier,
       ),
 
       //* AI Doctor

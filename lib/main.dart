@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:health_guardian/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,11 @@ void main() async {
 
   //* Initialize env
   await dotenv.load();
+
+  //* Initialize Gemini API
+  Gemini.init(
+    apiKey: dotenv.get('GEMINI_KEY'),
+  );
 
   //* Initialize Firebase
   await Firebase.initializeApp(
@@ -34,9 +40,7 @@ class MyApp extends StatelessWidget {
       builder: (context, constraints) {
         SizeConfig().init(constraints);
         return GetMaterialApp(
-          theme: ThemeData(
-            fontFamily: "CoreSansMed"
-          ),
+            theme: ThemeData(fontFamily: "CoreSansMed"),
             debugShowCheckedModeBanner: false,
             title: "Health Guardian",
             home: FutureBuilder(
@@ -54,7 +58,9 @@ class MyApp extends StatelessWidget {
                     var logger = Logger();
                     logger.d("Status : ${status}");
                     if (status) {
-                      return VerifyPinScreen(status: "Direct",);
+                      return VerifyPinScreen(
+                        status: "Direct",
+                      );
                     } else {
                       return SplashScreen();
                     }

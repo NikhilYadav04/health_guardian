@@ -19,7 +19,7 @@ class MeasureScreenHeart extends StatefulWidget {
 }
 
 class _MeasureScreenHeartState extends State<MeasureScreenHeart> {
-  bool check = true;
+  bool check = false;
 
   final HeartRateControllers heartRateControllers =
       Get.find<HeartRateControllers>();

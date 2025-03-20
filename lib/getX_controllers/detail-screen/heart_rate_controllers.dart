@@ -46,7 +46,7 @@ class HeartRateControllers extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    heartRate.value = 70.0 + random.nextInt(71);
+    heartBPMRate.value = 0;
   }
 
   void getHeartRate() {
