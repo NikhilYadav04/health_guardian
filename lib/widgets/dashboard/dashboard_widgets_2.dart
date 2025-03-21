@@ -161,48 +161,51 @@ Widget analyzeDiseaseCard(
 }
 
 Widget reportCard(
-    String image, String disease, Color bgColor, Color buttonColor) {
-  return Container(
-      margin: EdgeInsets.symmetric(horizontal: 2),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(6),
-          color: bgColor,
-          boxShadow: [
-            BoxShadow(color: buttonColor, blurRadius: 7, spreadRadius: 3)
-          ]),
-      height: 140,
-      padding: EdgeInsets.symmetric(
-          vertical: 1.5 * SizeConfig.heightMultiplier,
-          horizontal: 1.4 * SizeConfig.widthMultiplier),
-      child: Row(
-        children: [
-          Expanded(
-              flex: 2,
-              child: Image.asset(
-                image,
-                scale: 6,
-              )),
-          Expanded(
-              flex: 5,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    disease,
-                    style: TextStyle(
-                        fontFamily: "Poppins-Bold",
-                        fontSize: 3.6 * SizeConfig.heightMultiplier,
-                        color: Colors.grey.shade900),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  ReportButton("Check Report", () {}, buttonColor, Colors.white,
-                      50, 180, 18, 20)
-                ],
-              )),
-        ],
-      ));
+    String image, String disease, Color bgColor, Color buttonColor,void Function() onTap) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 2),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            color: bgColor,
+            boxShadow: [
+              BoxShadow(color: buttonColor, blurRadius: 7, spreadRadius: 3)
+            ]),
+        height: 140,
+        padding: EdgeInsets.symmetric(
+            vertical: 1.5 * SizeConfig.heightMultiplier,
+            horizontal: 1.4 * SizeConfig.widthMultiplier),
+        child: Row(
+          children: [
+            Expanded(
+                flex: 2,
+                child: Image.asset(
+                  image,
+                  scale: 6,
+                )),
+            Expanded(
+                flex: 5,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      disease,
+                      style: TextStyle(
+                          fontFamily: "Poppins-Bold",
+                          fontSize: 3.6 * SizeConfig.heightMultiplier,
+                          color: Colors.grey.shade900),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    ReportButton("Check Report", () {}, buttonColor, Colors.white,
+                        50, 180, 18, 20)
+                  ],
+                )),
+          ],
+        )),
+  );
 }
 
 Widget ReportButton(

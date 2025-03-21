@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:health_guardian/getX_controllers/button/button_controllers.dart';
+import 'package:health_guardian/screens/report/blood_pressure/blood_pressure_report.dart';
+import 'package:health_guardian/screens/report/blood_sugar/blood_sugar_report.dart';
+import 'package:health_guardian/screens/report/heart_rate/heart_rate_screen.dart';
+import 'package:health_guardian/screens/report/weight/weight_report.dart';
 import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/images.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
@@ -30,11 +34,13 @@ class ReportScreen extends StatelessWidget {
         ),
 
         //* report card widgets
-        reportCard(Images.bloodPressurePNG, "Blood Pressure", Color.fromARGB(255, 164, 238, 183), Colors.green),
+        reportCard(Images.heartPNG, "Heart Rate", Color.fromARGB(255, 245, 208, 204), Colours.buttonColorRed,()=>Get.to(()=>HeartRateScreen())),
         SizedBox(height: 35,),
-        reportCard(Images.BSugarPNG, "Blood Sugar", Color.fromARGB(255, 245, 208, 204), Colours.buttonColorRed),
+        reportCard(Images.bloodPressurePNG, "Blood Pressure", Color.fromARGB(255, 164, 238, 183), Colors.green,()=>Get.to(()=>BloodPressureReport())),
         SizedBox(height: 35,),
-        reportCard(Images.weightPNG, "Weight & BMI", Color.fromARGB(255, 223, 237, 131),Color.fromARGB(255, 162, 150, 39)),
+        reportCard(Images.BSugarPNG, "Blood Sugar", Color.fromARGB(255, 245, 208, 204), Colours.buttonColorRed,()=>Get.to(()=>BloodSugarReport())),
+        SizedBox(height: 35,),
+        reportCard(Images.weightPNG, "Weight & BMI", Color.fromARGB(255, 223, 237, 131),Color.fromARGB(255, 162, 150, 39),()=>Get.to(()=>WeightReport())),
       ],
     );
   }

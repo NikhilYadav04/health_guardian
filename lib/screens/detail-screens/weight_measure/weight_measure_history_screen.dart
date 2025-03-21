@@ -14,6 +14,21 @@ class WeightMeasureHistoryScreen extends StatelessWidget {
         child: Scaffold(
       backgroundColor: Color.fromARGB(255, 247, 241, 241),
 
+      persistentFooterAlignment: AlignmentDirectional.bottomCenter,
+        persistentFooterButtons: [
+          Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 1.5625*SizeConfig.widthMultiplier,
+                  vertical: 0.84269 * SizeConfig.heightMultiplier),
+              child: Text(
+                "Your weight data can be stored in a report up to the current day.",
+                style: TextStyle(
+                    fontSize: 2 * SizeConfig.heightMultiplier,
+                    fontFamily: "Poppins-Med"),
+              ))
+        ],
+
+
       //* AppBar
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 247, 241, 241),
