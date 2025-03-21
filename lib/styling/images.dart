@@ -14,6 +14,7 @@ class Images {
   static const heartPNG = "assets/dashboard/heart-attack.png";
   static const weightPNG =  "assets/dashboard/weight-loss.png";
   static const botPNG = "assets/chatbot/bot.png";
+  static const notificationPNG = "assets/dashboard/noti.png";
 
   //*d Dashboard icons
   static const heartMeasureIcon = "assets/dashboard/heart-attack.svg";

@@ -5,7 +5,6 @@ import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/buttons/detail_buttons.dart';
 import 'package:health_guardian/widgets/dashboard/dashboard_widgets_2.dart';
-import 'package:health_guardian/widgets/detail-screen/blood-pressure/bp_widgets_2.dart';
 import 'package:health_guardian/widgets/report/report_widgets.dart';
 
 class BloodPressureHistoryScreen extends StatelessWidget {
@@ -124,7 +123,7 @@ class BloodPressureHistoryScreen extends StatelessWidget {
                       ],
                     )),
                 SizedBox(
-                  height: 1.5800 * SizeConfig.heightMultiplier,
+                  height: 1.9* SizeConfig.heightMultiplier,
                 ),
                 Flexible(
                   flex: 4,
@@ -137,7 +136,7 @@ class BloodPressureHistoryScreen extends StatelessWidget {
                           style: TextStyle(
                               color: Colors.grey.shade900,
                               fontFamily: "CoreSansMed",
-                              fontSize: 2 * SizeConfig.heightMultiplier),
+                              fontSize: 2.1 * SizeConfig.heightMultiplier),
                         ),
                       ),
                       Expanded(

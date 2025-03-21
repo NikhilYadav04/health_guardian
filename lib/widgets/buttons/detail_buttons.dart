@@ -15,13 +15,15 @@ Widget buttonsDetail(String title, void Function() onTap, Color color,
       height: height,
       width: width,
       child: Center(
-        child: Text(
-          title,
-          style: TextStyle(
-            color: textColor,
-            fontFamily: "CoreSansMed",
-            fontWeight: FontWeight.bold,
-          ).copyWith(fontSize: 2.4 * SizeConfig.heightMultiplier),
+        child: FittedBox(
+          child: Text(
+            title,
+            style: TextStyle(
+              color: textColor,
+              fontFamily: "CoreSansMed",
+              fontWeight: FontWeight.bold,
+            ).copyWith(fontSize: 2.4 * SizeConfig.heightMultiplier),
+          ),
         ),
       ),
     ),

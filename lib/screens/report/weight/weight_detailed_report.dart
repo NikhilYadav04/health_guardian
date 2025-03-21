@@ -36,6 +36,6 @@ class WeightDetailedReport extends StatelessWidget {
           ),
         ),
       ),
-    ));;
+    ));
   }
 }

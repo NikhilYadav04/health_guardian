@@ -10,7 +10,7 @@ import 'package:health_guardian/screens/auth/verify_pin_screen.dart';
 import 'package:health_guardian/screens/auth/login_screen.dart';
 import 'package:health_guardian/screens/auth/set_pin_screen.dart';
 import 'package:health_guardian/screens/dashboard/dashboard_screen.dart';
-import 'package:health_guardian/screens/profile/profile_completion_screen.dart';
+import 'package:health_guardian/screens/accounts/profile/profile_completion_screen.dart';
 import 'package:health_guardian/styling/toast_message.dart';
 import 'package:logger/logger.dart';
 
