@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:health_guardian/getX_controllers/auth/login_controllers.dart';
 import 'package:health_guardian/getX_controllers/dashboard/dashboard_controllers.dart';
 import 'package:health_guardian/getX_controllers/profile/profile_controller.dart';
+import 'package:health_guardian/screens/accounts/reminder/set_reminder_screen.dart';
 import 'package:health_guardian/styling/images.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/dashboard/dashboard_widgets_3.dart';
@@ -17,7 +18,9 @@ class AccountScreen extends StatelessWidget {
       Get.find<ProfileCompletionController>();
 
   List<void Function()> get functions => [
-        () {},
+        () {
+          Get.to(()=>SetReminderScreen(),transition: Transition.rightToLeft);
+        },
         () {},
         () {},
         () {
