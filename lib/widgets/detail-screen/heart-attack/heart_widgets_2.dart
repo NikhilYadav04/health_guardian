@@ -246,9 +246,9 @@ Widget heartCard1(String title, IconData icon, String value) {
   );
 }
 
-Widget heartScaleWidget() {
+Widget heartScaleWidget(HeartRateControllers controller) {
   return Container(
-      height: 24 * SizeConfig.heightMultiplier,
+      height: 26.8 * SizeConfig.heightMultiplier,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -280,7 +280,21 @@ Widget heartScaleWidget() {
             ],
           ),
           SizedBox(
-            height: 2.63 * SizeConfig.heightMultiplier,
+            height: 0.52668 * SizeConfig.heightMultiplier,
+          ),
+          Obx(
+            ()=> AnimatedContainer(
+              duration: Duration(milliseconds: 500),
+              margin: EdgeInsets.only(left: controller.arrowPosition.value),
+              child: Icon(
+                Icons.arrow_drop_up,
+                color: controller.arrowColor.value,
+                size: 4.4241728 * SizeConfig.heightMultiplier,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 0.5 * SizeConfig.heightMultiplier,
           ),
           scaleText(Colors.blue, "Slow", "< 60 BPM"),
           SizedBox(
@@ -300,10 +314,10 @@ Widget heartScaleWidget() {
 
 Widget colorBarHeart(Color color) {
   return Container(
-    width: 28*SizeConfig.widthMultiplier, 
-    height: 1.26*SizeConfig.heightMultiplier, // Adjust height as needed
+    width: 28 * SizeConfig.widthMultiplier,
+    height: 1.26 * SizeConfig.heightMultiplier, // Adjust height as needed
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(1.58*SizeConfig.heightMultiplier),
+      borderRadius: BorderRadius.circular(1.58 * SizeConfig.heightMultiplier),
       color: color,
     ),
   );

@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/styling/toast_message.dart';
 import 'package:intl/intl.dart';
 
@@ -31,6 +33,27 @@ List<String> getHeartColorStatus(num heartBPMRate) {
   }
 
   return [color, status];
+}
+
+List<dynamic> getHeartColorPosition(num heartBPMRate) {
+  Color color;
+  double position;
+
+  if (heartBPMRate < 60) {
+    color = Colors.blue;
+    position = 7.8125*SizeConfig.widthMultiplier;
+  } else if (isBetween(heartBPMRate, 60, 100)) {
+    color = Colors.green;
+    position = 40.178571*SizeConfig.widthMultiplier;
+  } else if (heartBPMRate > 100) {
+    color = Colors.red;
+    position = 69.19642*SizeConfig.widthMultiplier;
+  } else {
+    color = Colors.grey;
+    position = 7.8125*SizeConfig.widthMultiplier;
+  }
+
+  return [color, position];
 }
 
 class HeartRateControllers extends GetxController {
@@ -64,11 +87,19 @@ class HeartRateControllers extends GetxController {
     update();
   }
 
+  //* color and position for arrow animation\
+  Rx<Color> arrowColor = Colors.black.obs;
+  RxDouble arrowPosition = 35.0.obs;
+
   //* Heart Rate Value entered by the user
   RxInt heartBPMRate = 0.obs;
 
   void changeLevel(int value) {
     heartBPMRate.value = value;
+    List<dynamic> list = getHeartColorPosition(heartBPMRate.value);
+    arrowColor.value = list[0];
+    arrowPosition.value = list[1];
+    update();
   }
 
   //* for selecting state

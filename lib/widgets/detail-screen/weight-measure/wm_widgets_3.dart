@@ -46,18 +46,27 @@ AppBar appBAddRecordWeight() {
 
 Widget userInputWeightWidget(WeightMeasureControllers controller) {
   return Container(
-    height: 18.3*SizeConfig.heightMultiplier,
+    height: 18.3 * SizeConfig.heightMultiplier,
     width: double.infinity,
     decoration: BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(0.63*SizeConfig.heightMultiplier),
+      borderRadius: BorderRadius.circular(0.63 * SizeConfig.heightMultiplier),
     ),
-    padding: EdgeInsets.symmetric(horizontal: 3.34*SizeConfig.widthMultiplier, vertical: 2.10*SizeConfig.heightMultiplier),
+    padding: EdgeInsets.symmetric(
+        horizontal: 3.34 * SizeConfig.widthMultiplier,
+        vertical: 2.10 * SizeConfig.heightMultiplier),
     child: Column(
       children: [
         Center(
-          child: buttonsDetail1("Enter your Weight in kg", () {},
-              Colours.buttonColorRed, Colors.white, 5.26*SizeConfig.heightMultiplier,87.05*SizeConfig.widthMultiplier, 0.63*SizeConfig.heightMultiplier, 2.31*SizeConfig.heightMultiplier),
+          child: buttonsDetail1(
+              "Enter your Weight in kg",
+              () {},
+              Colours.buttonColorRed,
+              Colors.white,
+              5.26 * SizeConfig.heightMultiplier,
+              87.05 * SizeConfig.widthMultiplier,
+              0.63 * SizeConfig.heightMultiplier,
+              2.31 * SizeConfig.heightMultiplier),
         ),
         SizedBox(
           height: 20,
@@ -78,7 +87,7 @@ Widget userInputWeightWidget(WeightMeasureControllers controller) {
                     double selectedWeight = (index + 1) * 0.5;
                     controller.changeLevel(selectedWeight);
                   },
-                  children: List<Widget>.generate(200, (int index) {
+                  children: List<Widget>.generate(360, (int index) {
                     double weight = (index + 1) * 0.5;
                     return Center(
                       child: Text(
@@ -110,21 +119,30 @@ Widget userInputWeightWidget(WeightMeasureControllers controller) {
 
 Widget userInputHeightWidget(WeightMeasureControllers controller) {
   return Container(
-    height: 18.3*SizeConfig.heightMultiplier,
+    height: 18.3 * SizeConfig.heightMultiplier,
     width: double.infinity,
     decoration: BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(0.63*SizeConfig.heightMultiplier),
+      borderRadius: BorderRadius.circular(0.63 * SizeConfig.heightMultiplier),
     ),
-    padding: EdgeInsets.symmetric(horizontal: 3.34*SizeConfig.widthMultiplier, vertical: 2.10*SizeConfig.heightMultiplier),
+    padding: EdgeInsets.symmetric(
+        horizontal: 3.34 * SizeConfig.widthMultiplier,
+        vertical: 2.10 * SizeConfig.heightMultiplier),
     child: Column(
       children: [
         Center(
-          child: buttonsDetail1("Enter your Height in cms", () {},
-              Colours.buttonColorRed, Colors.white, 5.26*SizeConfig.heightMultiplier,87.05*SizeConfig.widthMultiplier, 0.63*SizeConfig.heightMultiplier, 2.31*SizeConfig.heightMultiplier),
+          child: buttonsDetail1(
+              "Enter your Height in cms",
+              () {},
+              Colours.buttonColorRed,
+              Colors.white,
+              5.26 * SizeConfig.heightMultiplier,
+              87.05 * SizeConfig.widthMultiplier,
+              0.63 * SizeConfig.heightMultiplier,
+              2.31 * SizeConfig.heightMultiplier),
         ),
         SizedBox(
-          height: 2.10*SizeConfig.heightMultiplier,
+          height: 2.10 * SizeConfig.heightMultiplier,
         ),
         //* value display
         GestureDetector(
@@ -184,11 +202,11 @@ Widget stateSelectWeightWIdget(WeightMeasureControllers controller) {
 
 Widget card1Weight(String title, IconData icon, String value) {
   return Container(
-    height: 10.53*SizeConfig.heightMultiplier,
-    width: 45.75*SizeConfig.widthMultiplier,
+    height: 10.53 * SizeConfig.heightMultiplier,
+    width: 45.75 * SizeConfig.widthMultiplier,
     decoration: BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(0.632*SizeConfig.heightMultiplier),
+      borderRadius: BorderRadius.circular(0.632 * SizeConfig.heightMultiplier),
       // boxShadow: [
       //   BoxShadow(
       //       color: Color.fromARGB(255, 161, 153, 153),
@@ -196,18 +214,22 @@ Widget card1Weight(String title, IconData icon, String value) {
       //       blurRadius: 2)
       // ],
     ),
-    padding: EdgeInsets.symmetric(horizontal: 2.67*SizeConfig.widthMultiplier, vertical: 1.05*SizeConfig.heightMultiplier),
+    padding: EdgeInsets.symmetric(
+        horizontal: 2.67 * SizeConfig.widthMultiplier,
+        vertical: 1.05 * SizeConfig.heightMultiplier),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         headerWeight(title, icon),
         SizedBox(
-          height: 1.05*SizeConfig.heightMultiplier,
+          height: 1.05 * SizeConfig.heightMultiplier,
         ),
         Text(
           value,
           style: TextStyle(
-              fontFamily: "CoreSansBold", fontSize: 2.63*SizeConfig.heightMultiplier, color: Colors.black),
+              fontFamily: "CoreSansBold",
+              fontSize: 2.63 * SizeConfig.heightMultiplier,
+              color: Colors.black),
         )
       ],
     ),
@@ -221,16 +243,16 @@ Widget headerWeight(String title, IconData icon) {
       Icon(
         icon,
         color: Colours.buttonColorRed,
-        size:  2.73*SizeConfig.heightMultiplier,
+        size: 2.73 * SizeConfig.heightMultiplier,
       ),
       SizedBox(
-        width: 1.11*SizeConfig.widthMultiplier,
+        width: 1.11 * SizeConfig.widthMultiplier,
       ),
       Text(
         title,
         style: TextStyle(
             fontFamily: "CoreSansMed",
-            fontSize: 2.10*SizeConfig.heightMultiplier,
+            fontSize: 2.10 * SizeConfig.heightMultiplier,
             color: const Color.fromARGB(255, 94, 92, 92)),
       )
     ],

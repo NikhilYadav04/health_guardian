@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:health_guardian/getX_controllers/detail-screen/blood_pressure_controllers.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 
-Widget PressureScaleWidget() {
+Widget PressureScaleWidget(BloodPressureControllers controller) {
   return Container(
-      height: 35.81*SizeConfig.heightMultiplier,
+      height: 38 * SizeConfig.heightMultiplier,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(.63*SizeConfig.heightMultiplier),
+        borderRadius: BorderRadius.circular(.63 * SizeConfig.heightMultiplier),
         // boxShadow: [
         //   BoxShadow(
         //       color: Color.fromARGB(255, 161, 153, 153),
@@ -15,7 +17,9 @@ Widget PressureScaleWidget() {
         //       blurRadius: 2)
         // ],
       ),
-      padding: EdgeInsets.symmetric(horizontal: 2.67*SizeConfig.widthMultiplier, vertical: 1.05*SizeConfig.heightMultiplier),
+      padding: EdgeInsets.symmetric(
+          horizontal: 2.67 * SizeConfig.widthMultiplier,
+          vertical: 1.05 * SizeConfig.heightMultiplier),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -28,7 +32,7 @@ Widget PressureScaleWidget() {
                 fontSize: 3.2 * SizeConfig.heightMultiplier),
           ),
           SizedBox(
-            height: 2.10*SizeConfig.heightMultiplier,
+            height: 2.10 * SizeConfig.heightMultiplier,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,31 +46,46 @@ Widget PressureScaleWidget() {
             ],
           ),
           SizedBox(
-            height:2.63*SizeConfig.heightMultiplier,
+            height: 0.6 * SizeConfig.heightMultiplier,
+          ),
+          Obx(
+            ()=> AnimatedContainer(
+                duration: Duration(milliseconds: 700),
+                margin: EdgeInsets.only(left: controller.arrowPosition.value),
+                child: Icon(
+                  Icons.arrow_drop_up,
+                  color: controller.arrowColor.value,
+                  size: 4.4241728*SizeConfig.heightMultiplier,
+                )),
+          ),
+          SizedBox(
+            height: 0.8 * SizeConfig.heightMultiplier,
           ),
           scaleTextBP(Colors.blue, "Hypotension", "SYS<90 & DIA<60"),
           SizedBox(
-            height: 0.52*SizeConfig.heightMultiplier,
+            height: 0.52 * SizeConfig.heightMultiplier,
           ),
           scaleTextBP(Colors.green, "Normal", "SYS 90-119 & DIA 60-79"),
           SizedBox(
-            height: 0.52*SizeConfig.heightMultiplier,
+            height: 0.52 * SizeConfig.heightMultiplier,
           ),
-          scaleTextBP(Colors.yellow.shade400, "Elevated", "SYS 120-129 & DIA 60-79"),
+          scaleTextBP(
+              Colors.yellow.shade400, "Elevated", "SYS 120-129 & DIA 60-79"),
           SizedBox(
-            height: 0.52*SizeConfig.heightMultiplier,
+            height: 0.52 * SizeConfig.heightMultiplier,
           ),
           scaleTextBP(Colors.orange, "HP - Stage 1", "SYS 130-139 & DIA 80-89"),
           SizedBox(
-            height: 0.52*SizeConfig.heightMultiplier,
+            height: 0.52 * SizeConfig.heightMultiplier,
           ),
-          scaleTextBP(Colors.orange.shade800, "HP - Stage 2", "SYS 140-180 & DIA 90-120"),
+          scaleTextBP(Colors.orange.shade800, "HP - Stage 2",
+              "SYS 140-180 & DIA 90-120"),
           SizedBox(
-            height: 0.52*SizeConfig.heightMultiplier,
+            height: 0.52 * SizeConfig.heightMultiplier,
           ),
           scaleTextBP(Colors.red, "Hypertensive", "SYS>180 & DIA<120"),
           SizedBox(
-            height: 0.52*SizeConfig.heightMultiplier,
+            height: 0.52 * SizeConfig.heightMultiplier,
           ),
         ],
       ));
@@ -74,10 +93,10 @@ Widget PressureScaleWidget() {
 
 Widget colorBarBP(Color color) {
   return Container(
-    width: 6.32*SizeConfig.heightMultiplier, // Adjust width as needed
-    height: 2.67*SizeConfig.widthMultiplier, // Adjust height as needed
+    width: 6.32 * SizeConfig.heightMultiplier, // Adjust width as needed
+    height: 2.67 * SizeConfig.widthMultiplier, // Adjust height as needed
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(1.58*SizeConfig.heightMultiplier),
+      borderRadius: BorderRadius.circular(1.58 * SizeConfig.heightMultiplier),
       color: color,
     ),
   );
@@ -92,15 +111,19 @@ Widget scaleTextBP(Color color, String text, String range) {
         FittedBox(
           child: Text(
             text,
-            style:
-                TextStyle(color: color, fontFamily: "CoreSansMed", fontSize: 2.10*SizeConfig.heightMultiplier),
+            style: TextStyle(
+                color: color,
+                fontFamily: "CoreSansMed",
+                fontSize: 2.10 * SizeConfig.heightMultiplier),
           ),
         ),
         FittedBox(
           child: Text(
             range,
             style: TextStyle(
-                color: Colors.black, fontFamily: "CoreSansMed", fontSize: 1.89*SizeConfig.heightMultiplier),
+                color: Colors.black,
+                fontFamily: "CoreSansMed",
+                fontSize: 1.89 * SizeConfig.heightMultiplier),
           ),
         ),
       ],

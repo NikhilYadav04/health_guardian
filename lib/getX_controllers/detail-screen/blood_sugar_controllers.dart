@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/styling/toast_message.dart';
 import 'package:intl/intl.dart';
 
@@ -35,6 +36,30 @@ List<String> getSugarColorSatus(double sugarLevel) {
   return [color, status];
 }
 
+List<dynamic> getSugarColorPosition(double sugarLevel) {
+  Color color;
+  double position;
+
+  if (sugarLevel < 72) {
+    color = Colors.blue;
+   position = 5.580357*SizeConfig.widthMultiplier;
+  } else if (isBetween(sugarLevel, 72, 99)) {
+    color = Colors.green;
+    position = 27.90178*SizeConfig.widthMultiplier;
+  } else if (isBetween(sugarLevel, 99, 126)) {
+    color = Colors.orange;
+    position = 51.3392*SizeConfig.widthMultiplier;
+  } else if (sugarLevel >= 126) {
+    color = Colors.red;
+    position = 74.55357*SizeConfig.widthMultiplier;
+  } else {
+    color = Colors.black;
+    position = 5.580357*SizeConfig.widthMultiplier;
+  }
+
+  return [color, position];
+}
+
 class BloodSugarControllers extends GetxController {
   //* initialize the controller
   PageController pageController = PageController();
@@ -45,6 +70,10 @@ class BloodSugarControllers extends GetxController {
   void noteClear() {
     noteController.clear();
   }
+
+  //* color and position for arrow animation
+  Rx<Color> arrowColor = Colors.blue.obs;
+  RxDouble arrowPosition = 10.0.obs;
 
   RxBool isLoadingAdd = false.obs;
 
@@ -89,6 +118,10 @@ class BloodSugarControllers extends GetxController {
 
   void changeLevel(double value) {
     sugarLevel.value = value;
+    List<dynamic> list = getSugarColorPosition(sugarLevel.value);
+    arrowColor.value = list[0];
+    arrowPosition.value = list[1];
+    update();
   }
 
   //* for selecting state

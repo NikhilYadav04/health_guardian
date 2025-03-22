@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/styling/toast_message.dart';
 import 'package:intl/intl.dart';
 
@@ -14,14 +15,8 @@ List<String> getWeightColorStatus(double weightLevel) {
   String color;
   String status;
 
-  if (weightLevel < 40) {
+  if (weightLevel < 55) {
     color = "Colors.blue";
-    status = "Very Severely Underweight";
-  } else if (isBetween(weightLevel, 40, 45)) {
-    color = "Colors.blue.shade300";
-    status = "Severely Underweight";
-  } else if (isBetween(weightLevel, 46, 54)) {
-    color = "Colors.blue.shade200";
     status = "Underweight";
   } else if (isBetween(weightLevel, 55, 70)) {
     color = "Colors.green";
@@ -46,6 +41,36 @@ List<String> getWeightColorStatus(double weightLevel) {
   return [color, status];
 }
 
+List<dynamic> getWeightColorPosition(double weightLevel) {
+  Color color;
+  double position;
+
+  if (weightLevel < 55) {
+    color = Colors.blue;
+    position = 2.23214*SizeConfig.widthMultiplier;
+  } else if (isBetween(weightLevel, 55, 70)) {
+    color = Colors.green;
+    position = 16.741071*SizeConfig.widthMultiplier;
+  } else if (isBetween(weightLevel, 71, 85)) {
+    color = Colors.yellow;
+    position = 32.366071*SizeConfig.widthMultiplier;
+  } else if (isBetween(weightLevel, 86, 100)) {
+    color = Colors.orange;
+    position = 46.875*SizeConfig.widthMultiplier;
+  } else if (isBetween(weightLevel, 101, 120)) {
+    color = Colors.deepOrange;
+    position = 62.05357*SizeConfig.widthMultiplier;
+  } else if (weightLevel > 120) {
+    color = Colors.red;
+    position = 77.0089*SizeConfig.widthMultiplier;
+  } else {
+    color = Colors.black;
+    position =  2.23214*SizeConfig.widthMultiplier;
+  }
+
+  return [color, position];
+}
+
 class WeightMeasureControllers extends GetxController {
   //*initialize the controllers
   PageController pageController = PageController();
@@ -61,6 +86,10 @@ class WeightMeasureControllers extends GetxController {
   //* declare index
   RxInt pageIndex = 0.obs;
   RxInt pageIndexDate = 0.obs;
+
+  //* color and position for arrow animation
+  Rx<Color> arrowColor = Colors.blue.obs;
+  RxDouble arrowPosition = 10.0.obs;
 
   //* Navigate to next page
   void navigatePage() {
@@ -93,6 +122,9 @@ class WeightMeasureControllers extends GetxController {
 
   void changeLevel(double value) {
     weightValue.value = value;
+    List<dynamic> list = getWeightColorPosition(weightValue.value);
+    arrowColor.value = list[0];
+    arrowPosition.value = list[1];
   }
 
   RxDouble heightValue = 0.0.obs;

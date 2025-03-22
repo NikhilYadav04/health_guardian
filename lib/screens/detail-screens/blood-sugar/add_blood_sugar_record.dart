@@ -36,7 +36,7 @@ class AddBloodSugarRecord extends StatelessWidget {
                SizedBox(height: 3.68*SizeConfig.heightMultiplier,),
 
                //* Sugar level Scale Widget
-               sugarScaleWidget(),
+               sugarScaleWidget(controllers),
 
               SizedBox(height: 3.68*SizeConfig.heightMultiplier),
 

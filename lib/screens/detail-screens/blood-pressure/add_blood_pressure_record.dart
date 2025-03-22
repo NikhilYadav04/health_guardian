@@ -45,7 +45,7 @@ class AddBloodPressureRecord extends StatelessWidget {
               , SizedBox(height:  3.68*SizeConfig.heightMultiplier,),
 
               //* Pressure level Scale Widget
-               PressureScaleWidget(),
+               PressureScaleWidget(controller),
 
               SizedBox(height:  3.68*SizeConfig.heightMultiplier,),
 

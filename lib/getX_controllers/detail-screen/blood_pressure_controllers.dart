@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/state_manager.dart';
+import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/styling/toast_message.dart';
 import 'package:intl/intl.dart';
 
@@ -42,6 +43,36 @@ List<String> getColorStatus(num systolic, num diastolic) {
   return [color, status];
 }
 
+List<dynamic> getColorPosition(num systolic, num diastolic) {
+  Color color;
+  double position;
+
+  if (systolic < 90 && diastolic < 60) {
+    color = Colors.blue;
+    position = 2.23214*SizeConfig.widthMultiplier;
+  } else if (isBetween(systolic, 90, 119) && isBetween(diastolic, 60, 79)) {
+    color = Colors.green;
+    position = 16.741071*SizeConfig.widthMultiplier;
+  } else if (isBetween(systolic, 120, 129) && isBetween(diastolic, 60, 79)) {
+    color = Colors.yellow;
+    position = 32.36607*SizeConfig.widthMultiplier;
+  } else if (isBetween(systolic, 130, 139) && isBetween(diastolic, 80, 89)) {
+    color = Colors.orange;
+    position = 46.875*SizeConfig.widthMultiplier;
+  } else if (isBetween(systolic, 140, 180) && isBetween(diastolic, 90, 120)) {
+    color = Colors.deepOrange;
+    position = 62.5*SizeConfig.widthMultiplier;
+  } else if (systolic > 180 && diastolic < 120) {
+    color = Colors.red;
+    position = 78.125*SizeConfig.widthMultiplier;
+  } else {
+    color = Colors.black;
+    position =2.23214*SizeConfig.widthMultiplier;
+  }
+
+  return [color, position];
+}
+
 class BloodPressureControllers extends GetxController {
   PageController pageControllerDate = PageController();
   TextEditingController noteController = TextEditingController();
@@ -56,6 +87,10 @@ class BloodPressureControllers extends GetxController {
   //* declare index
   RxInt pageIndex = 0.obs;
   RxInt pageIndexDate = 0.obs;
+
+  //* color and position for arrow animation
+  Rx<Color> arrowColor = Colors.blue.obs;
+  RxDouble arrowPosition = 10.0.obs;
 
   //* Navigate to next page
   void navigatePage() {
@@ -88,12 +123,20 @@ class BloodPressureControllers extends GetxController {
 
   void changeLevelSystolic(double value) {
     pressureLevelSystolic.value = value;
+    List<dynamic> list = getColorPosition(pressureLevelSystolic.value, pressureLevelDiastolic.value);
+    arrowColor.value = list[0];
+    arrowPosition.value = list[1];
+    update();
   }
 
   RxDouble pressureLevelDiastolic = 60.0.obs;
 
   void changeLevelDiastolic(double value) {
     pressureLevelDiastolic.value = value;
+    List<dynamic> list = getColorPosition(pressureLevelSystolic.value, pressureLevelDiastolic.value);
+    arrowColor.value = list[0];
+    arrowPosition.value = list[1];
+    update();
   }
 
   RxInt pulseLevel = 50.obs;

@@ -38,7 +38,7 @@ class AddHeartRateScreen extends StatelessWidget {
               SizedBox(height: 3.68*SizeConfig.heightMultiplier,),
   
               //* Heart Rate Scale Widget
-              heartScaleWidget(),
+              heartScaleWidget(heartRateControllers),
 
               SizedBox(height: 3.68*SizeConfig.heightMultiplier),
 
