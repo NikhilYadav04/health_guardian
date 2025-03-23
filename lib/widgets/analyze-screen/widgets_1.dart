@@ -7,22 +7,23 @@ import 'package:health_guardian/getX_controllers/analyze-screen/analyze_sugar_co
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/detail-screen/blood-sugar/bs_widgets_3.dart';
 
-AppBar appBAnalyze(void Function() onTap1, void Function() onTap2,String Image) {
+AppBar appBAnalyze(
+    void Function() onTap1, void Function() onTap2, String Image) {
   return AppBar(
     backgroundColor: Color.fromARGB(255, 245, 242, 242),
-    toolbarHeight: 9.48*SizeConfig.heightMultiplier,
+    toolbarHeight: 9.48 * SizeConfig.heightMultiplier,
     leading: IconButton(
         onPressed: onTap1,
         icon: Icon(
           Icons.arrow_back,
           color: Colors.black,
-          size: 4.63*SizeConfig.heightMultiplier,
+          size: 4.63 * SizeConfig.heightMultiplier,
         )),
     centerTitle: true,
     title: SvgPicture.asset(
       Image,
-      height: 6.84*SizeConfig.heightMultiplier,
-      width: 14.50*SizeConfig.widthMultiplier,
+      height: 6.84 * SizeConfig.heightMultiplier,
+      width: 14.50 * SizeConfig.widthMultiplier,
     ),
     actions: [
       IconButton(
@@ -30,7 +31,7 @@ AppBar appBAnalyze(void Function() onTap1, void Function() onTap2,String Image) 
           icon: Icon(
             Icons.more_vert_outlined,
             color: Colors.black,
-            size: 4.63*SizeConfig.heightMultiplier,
+            size: 4.63 * SizeConfig.heightMultiplier,
           ))
     ],
   );
@@ -38,30 +39,28 @@ AppBar appBAnalyze(void Function() onTap1, void Function() onTap2,String Image) 
 
 Widget AnalyzeCard(String title, IconData icon, String value, double width) {
   return Container(
-    height: 10.53*SizeConfig.heightMultiplier,
+    height: 10.53 * SizeConfig.heightMultiplier,
     width: width,
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(0.63),
-      // boxShadow: [
-      //   BoxShadow(
-      //       color: Color.fromARGB(255, 161, 153, 153),
-      //       spreadRadius: 2.5,
-      //       blurRadius: 2)
-      // ],
     ),
-    padding: EdgeInsets.symmetric(horizontal: 2.67*SizeConfig.widthMultiplier, vertical: 1.05*SizeConfig.heightMultiplier),
+    padding: EdgeInsets.symmetric(
+        horizontal: 2.67 * SizeConfig.widthMultiplier,
+        vertical: 1.05 * SizeConfig.heightMultiplier),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         header(title, icon),
         SizedBox(
-          height: 1.05*SizeConfig.heightMultiplier,
+          height: 1.05 * SizeConfig.heightMultiplier,
         ),
         Text(
           value,
           style: TextStyle(
-              fontFamily: "CoreSansBold", fontSize: 2.63*SizeConfig.heightMultiplier, color: Colors.black),
+              fontFamily: "CoreSansBold",
+              fontSize: 2.63 * SizeConfig.heightMultiplier,
+              color: Colors.black),
         )
       ],
     ),
@@ -71,19 +70,21 @@ Widget AnalyzeCard(String title, IconData icon, String value, double width) {
 Widget SleepCard(String title, IconData icon, String value, double width,
     AnalyzeSugarControllers controller) {
   return Container(
-    height: 10.53*SizeConfig.heightMultiplier,
+    height: 10.53 * SizeConfig.heightMultiplier,
     width: width,
     decoration: BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(0.632*SizeConfig.heightMultiplier),
+      borderRadius: BorderRadius.circular(0.632 * SizeConfig.heightMultiplier),
     ),
-    padding: EdgeInsets.symmetric(horizontal: 2.678*SizeConfig.widthMultiplier, vertical: 1.053*SizeConfig.heightMultiplier),
+    padding: EdgeInsets.symmetric(
+        horizontal: 2.678 * SizeConfig.widthMultiplier,
+        vertical: 1.053 * SizeConfig.heightMultiplier),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         header(title, icon),
         SizedBox(
-          height: 1.053*SizeConfig.heightMultiplier,
+          height: 1.053 * SizeConfig.heightMultiplier,
         ),
         GestureDetector(
           onTap: () {
@@ -122,7 +123,7 @@ Widget SleepCard(String title, IconData icon, String value, double width,
               "${controller.Sleep_Hours.value} Hours",
               style: TextStyle(
                   fontFamily: "CoreSansBold",
-                  fontSize: 2.633*SizeConfig.heightMultiplier,
+                  fontSize: 2.633 * SizeConfig.heightMultiplier,
                   color: Colors.black),
             ),
           ),
@@ -168,19 +169,21 @@ Widget buttonsACard(
 Widget PregnancyCard(String title, IconData icon, String value, double width,
     AnalyzeSugarControllers controller) {
   return Container(
-    height: 10.53*SizeConfig.heightMultiplier,
+    height: 10.53 * SizeConfig.heightMultiplier,
     width: width,
     decoration: BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(0.632*SizeConfig.heightMultiplier),
+      borderRadius: BorderRadius.circular(0.632 * SizeConfig.heightMultiplier),
     ),
-    padding: EdgeInsets.symmetric(horizontal: 2.678*SizeConfig.widthMultiplier, vertical: 1.053*SizeConfig.heightMultiplier),
+    padding: EdgeInsets.symmetric(
+        horizontal: 2.678 * SizeConfig.widthMultiplier,
+        vertical: 1.053 * SizeConfig.heightMultiplier),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         header(title, icon),
         SizedBox(
-          height: 1.053*SizeConfig.heightMultiplier,
+          height: 1.053 * SizeConfig.heightMultiplier,
         ),
         GestureDetector(
           onTap: () {
@@ -194,13 +197,12 @@ Widget PregnancyCard(String title, IconData icon, String value, double width,
                     initialItem: controller.P_Count.value.toInt(),
                   ),
                   onSelectedItemChanged: (int index) {
-                    int selectedNum= index + 1; // Calculate the selected hour
+                    int selectedNum = index + 1; // Calculate the selected hour
                     controller.P_Count_SetState(
-                        selectedNum
-                        ); // Update the value
+                        selectedNum); // Update the value
                   },
                   children: List<Widget>.generate(6, (int index) {
-                    int value = index ; // Generate values from 1 to 12
+                    int value = index; // Generate values from 1 to 12
                     return Center(
                       child: Text(
                         "$value",
@@ -215,15 +217,84 @@ Widget PregnancyCard(String title, IconData icon, String value, double width,
               ),
             );
           },
-          child: Obx( ()=> Text(
-                "${controller.P_Count.value}",
-                style: TextStyle(
-                    fontFamily: "CoreSansBold",
-                    fontSize: 2.633*SizeConfig.heightMultiplier,
-                    color: Colors.black),
-              ),
+          child: Obx(
+            () => Text(
+              "${controller.P_Count.value}",
+              style: TextStyle(
+                  fontFamily: "CoreSansBold",
+                  fontSize: 2.633 * SizeConfig.heightMultiplier,
+                  color: Colors.black),
+            ),
           ),
-          
+        ),
+      ],
+    ),
+  );
+}
+
+Widget BMICardDiabetesReport(String title, IconData icon, String value,
+    double width, AnalyzeSugarControllers controller) {
+  return Container(
+    height: 10.53 * SizeConfig.heightMultiplier,
+    width: width,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(0.63 * SizeConfig.heightMultiplier),
+    ),
+    padding: EdgeInsets.symmetric(
+        horizontal: 2.67 * SizeConfig.widthMultiplier,
+        vertical: 1.05 * SizeConfig.heightMultiplier),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        header(title, icon),
+        SizedBox(
+          height: 1.05 * SizeConfig.heightMultiplier,
+        ),
+        GestureDetector(
+          onTap: () {
+            Get.bottomSheet(
+              Container(
+                height: 26.34 * SizeConfig.heightMultiplier,
+                color: Colors.white,
+                child: CupertinoPicker(
+                  itemExtent: 40,
+                  scrollController: FixedExtentScrollController(
+                    initialItem:
+                        ((controller.BMI_Count.value - 10.0) * 10).round(),
+                  ),
+                  onSelectedItemChanged: (int index) {
+                    double selectedBMI =
+                        double.parse((10.0 + (index * 0.1)).toStringAsFixed(1));
+                    // Calculate the selected BMI
+                    controller.change_BMI(selectedBMI); // Update the BMI value
+                  },
+                  children: List<Widget>.generate(901, (int index) {
+                    double value = 10.0 +
+                        (index * 0.1); // Generate BMI values from 10.0 to 100.0
+                    return Center(
+                      child: Text(
+                        value.toStringAsFixed(1),
+                        style: TextStyle(
+                          fontFamily: "CoreSansBold",
+                          fontSize: 2.73 * SizeConfig.heightMultiplier,
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+              ),
+            );
+          },
+          child: Obx(
+            () => Text(
+              "${controller.BMI_Count.value} BMI",
+              style: TextStyle(
+                  fontFamily: "CoreSansBold",
+                  fontSize: 2.63 * SizeConfig.heightMultiplier,
+                  color: Colors.black),
+            ),
+          ),
         ),
       ],
     ),

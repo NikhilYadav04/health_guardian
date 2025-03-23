@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:health_guardian/helper/helper_functions.dart';
 import 'package:health_guardian/styling/toast_message.dart';
 import 'package:logger/logger.dart';
+import 'package:intl/intl.dart';
 
 class ProfileCompletionController extends GetxController {
   @override
@@ -120,6 +120,7 @@ class ProfileCompletionController extends GetxController {
       await HelperFunctions.setName(
           nameController.text.toString(), Phone.value);
       Name.value = await HelperFunctions.getName(Phone.value);
+      final age = selectedDate.value.year - DateTime.now().year;
 
       //* add profile details in database
       CollectionReference collectionReference =
@@ -128,7 +129,8 @@ class ProfileCompletionController extends GetxController {
         "name": nameController.text.toString(),
         "email": email,
         "gender": gender.value,
-        "dob": selectedDate.value.toString(),
+        "dob": DateFormat('dd MMM yyyy').format(selectedDate.value).toString(),
+        "age": age,
         "height": selectedHeight.value.toString(),
         "weight": selectedWeight.value.toString(),
         "disease_list": disease_list.toString()
@@ -245,12 +247,14 @@ class ProfileCompletionController extends GetxController {
       QuerySnapshot querySnapshot =
           await collectionReference.where('email', isEqualTo: email).get();
       DocumentReference docs = querySnapshot.docs.first.reference;
+      final age = selectedDate.value.year - DateTime.now().year;
 
       await docs.update({
         "name": nameController.text.toString(),
         "email": email,
         "gender": gender.value,
-        "dob": selectedDate.value.toString(),
+        "dob": DateFormat('dd MMM yyyy').format(selectedDate.value).toString(),
+        "age": age,
         "height": selectedHeight.value.toString(),
         "weight": selectedWeight.value.toString(),
         "disease_list": disease_list.toString()

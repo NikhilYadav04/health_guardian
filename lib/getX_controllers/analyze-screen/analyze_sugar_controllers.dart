@@ -1,8 +1,89 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/state_manager.dart';
+import 'package:health_guardian/getX_controllers/detail-screen/blood_pressure_controllers.dart';
+import 'package:health_guardian/styling/toast_message.dart';
+import 'package:http/http.dart' as http;
 
 class AnalyzeSugarControllers extends GetxController {
+  //* variables and bools
+  RxString age = "28".obs;
+  RxString gender = "Male".obs;
+  RxBool isLoadingPrediction = false.obs;
+
+  //* functions to process data for model
+  num processAge(num age) {
+    if (age < 40) {
+      return 0;
+    } else if (isBetween(age, 40, 49)) {
+      return 1;
+    } else if (isBetween(age, 50, 59)) {
+      return 2;
+    } else {
+      return 3;
+    }
+  }
+
+  num processPhysicallyActive(String status) {
+    if (status == "one hr or more") {
+      return 0;
+    } else if (status == "more than half an hr") {
+      return 1;
+    } else if (status == "less than half an hr") {
+      return 2;
+    } else {
+      return 3;
+    }
+  }
+
+  num processJunkFood(String status) {
+    if (status == "occasionally") {
+      return 0;
+    } else if (status == "often") {
+      return 1;
+    } else if (status == "very often") {
+      return 2;
+    } else {
+      return 3;
+    }
+  }
+
+  num processBPLevel(String status) {
+    if (status == "low") {
+      return 0;
+    } else if (status == "normal") {
+      return 1;
+    } else {
+      return 2;
+    }
+  }
+
+  num processUrinationFreq(String status) {
+    if (status == "not much") {
+      return 0;
+    } else {
+      return 1;
+    }
+  }
+
+  num processStress(String status) {
+    if (status == "not at all") {
+      return 0;
+    } else if (status == "sometimes") {
+      return 1;
+    } else if (status == "very often") {
+      return 2;
+    } else {
+      return 3;
+    }
+  }
+
   //* Family Diabetes
   RxString FD_State = "No".obs;
 
@@ -29,6 +110,13 @@ class AnalyzeSugarControllers extends GetxController {
 
   void BMI_SetState(String value) {
     BMI_State.value = value;
+  }
+
+  //* BMI Value
+  RxDouble BMI_Count = 0.0.obs;
+
+  void change_BMI(double value) {
+    BMI_Count.value = value;
   }
 
   //* Smoking
@@ -106,5 +194,68 @@ class AnalyzeSugarControllers extends GetxController {
 
   void UF_SetState(String value) {
     UF_State.value = value;
+  }
+
+  //* fetch pressure and heart rate data
+  Future<void> fetchData() async {
+    //* profile details
+    final email = await FirebaseAuth.instance.currentUser!.email!;
+    CollectionReference collectionReference =
+        FirebaseFirestore.instance.collection("profile_details");
+    QuerySnapshot querySnapshot =
+        await collectionReference.where('email', isEqualTo: email).get();
+    DocumentSnapshot docs = await querySnapshot.docs.first;
+
+    age.value = docs["age"];
+    gender.value = docs["gender"];
+  }
+
+  // //* get prediction from model api
+  Future<bool> getPrediction(BuildContext context) async {
+    try {
+      isLoadingPrediction.value = true;
+
+      final req_body = {
+        "Age": processAge(
+          int.parse(age.value),
+        ),
+        "Gender": gender.value == "Male" ? 1 : 0,
+        "Family_Diabetes": FD_State.value == "Yes" ? 1 : 0,
+        "highBP": HB_State.value == "Yes" ? 1 : 0,
+        "PhysicallyActive": processPhysicallyActive(PA_State.value),
+        "BMI": BMI_Count.value,
+        "Smoking": Smoking_State.value == "Yes" ? 1 : 0,
+        "Alcohol": Alchohol_State.value == "Yes" ? 1 : 0,
+        "Sleep": Sleep_Hours.value,
+        "SoundSleep": SoundSleep_State.value == "Yes" ? 1 : 0,
+        "RegularMedicine": RM_State.value == "Yes" ? 1 : 0,
+        "JunkFood": processJunkFood(JF_State.value),
+        "Stress": processStress(Stress_State.value),
+        "BPLevel": processBPLevel(BP_level_State.value),
+        "Pregancies": P_Count.value,
+        "Pdiabetes": P_D_State.value == "Yes" ? 1 : 0,
+        "UriationFreq": processUrinationFreq(UF_State.value)
+      };
+
+      final url =
+          Uri.parse("https://diabetes-model-api-3wmk.onrender.com/predict");
+      final response = await http.post(url,
+          body: jsonEncode(req_body),
+          headers: {"Content-Type": "application/json"});
+
+      final responseBody = jsonDecode(response.body);
+      isLoadingPrediction.value = false;
+
+      bool prediction = responseBody["prediction"] == 1 ? true : false;
+      toastSuccessSlide(context, "Prediction is ${prediction}");
+
+      isLoadingPrediction.value = false;
+
+      return prediction;
+    } catch (e) {
+      isLoadingPrediction.value = false;
+      toastErrorSlide(context, "Error getting prediction");
+      return false;
+    }
   }
 }

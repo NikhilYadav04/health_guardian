@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:health_guardian/getX_controllers/analyze-screen/analyze_sugar_controllers.dart';
-import 'package:health_guardian/getX_controllers/detail-screen/blood_sugar_controllers.dart';
 import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/images.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
@@ -13,7 +13,6 @@ import 'package:health_guardian/widgets/dashboard/dashboard_widgets_2.dart';
 
 class AnalyzeSugarScreen extends StatelessWidget {
   final AnalyzeSugarControllers controller = Get.put(AnalyzeSugarControllers());
-  final BloodSugarControllers controllers = Get.put(BloodSugarControllers());
 
   Color getBackgroundColor(bool condition) =>
       condition ? Colours.buttonColorRed : Color.fromARGB(255, 246, 240, 241);
@@ -27,15 +26,17 @@ class AnalyzeSugarScreen extends StatelessWidget {
         backgroundColor: Color.fromARGB(255, 247, 241, 241),
         appBar: appBAnalyze(() {
           Get.back();
-        }, () {},Images.DiabetesIcon),
+        }, () {}, Images.DiabetesIcon),
         body: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 2.67*SizeConfig.widthMultiplier, vertical: 1.05*SizeConfig.heightMultiplier),
+            padding: EdgeInsets.symmetric(
+                horizontal: 2.67 * SizeConfig.widthMultiplier,
+                vertical: 1.05 * SizeConfig.heightMultiplier),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
-                  height: 1.58*SizeConfig.heightMultiplier,
+                  height: 1.58 * SizeConfig.heightMultiplier,
                 ),
 
                 //* title text
@@ -44,19 +45,23 @@ class AnalyzeSugarScreen extends StatelessWidget {
                     2.50 * SizeConfig.heightMultiplier),
 
                 SizedBox(
-                  height: 3.16*SizeConfig.heightMultiplier,
+                  height: 3.16 * SizeConfig.heightMultiplier,
                 ),
 
                 //* form fields
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AnalyzeCard("Age", Icons.person, "28", 45.75*SizeConfig.widthMultiplier),
-                    AnalyzeCard("Gender", Icons.male, "Male",45.75*SizeConfig.widthMultiplier),
-                  ],
+                Obx(
+                  () => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AnalyzeCard("Age", Icons.person, controller.age.value,
+                          45.75 * SizeConfig.widthMultiplier),
+                      AnalyzeCard("Gender", Icons.male, controller.gender.value,
+                          45.75 * SizeConfig.widthMultiplier),
+                    ],
+                  ),
                 ),
                 SizedBox(
-                  height: 1.58*SizeConfig.heightMultiplier,
+                  height: 1.58 * SizeConfig.heightMultiplier,
                 ),
 
                 //* family diabetes and high BP cards
@@ -65,31 +70,33 @@ class AnalyzeSugarScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Double_Parameter_Card(
-                        "Family Diabetes",
-                        controller.FD_State.value,
-                        () => controller.FD_SetState("Yes"),
-                        () => controller.FD_SetState("No"),
-                        "Yes",
-                        "No",
-                        controller.FD_State.value == "Yes",
-                        controller.FD_State.value == "No",
-                        49.10*SizeConfig.widthMultiplier,Icons.bloodtype
-                      ),
+                          "Family Diabetes",
+                          controller.FD_State.value,
+                          () => controller.FD_SetState("Yes"),
+                          () => controller.FD_SetState("No"),
+                          "Yes",
+                          "No",
+                          controller.FD_State.value == "Yes",
+                          controller.FD_State.value == "No",
+                          47.10 * SizeConfig.widthMultiplier,
+                          Icons.bloodtype),
                       Double_Parameter_Card(
-                        "High BP",
-                        controller.HB_State.value,
-                        () => controller.HB_SetState("Yes"),
-                        () => controller.HB_SetState("No"),
-                        "Yes",
-                        "No",
-                        controller.HB_State.value == "Yes",
-                        controller.HB_State.value == "No",
-                       30.3*SizeConfig.heightMultiplier,Icons.bloodtype
-                      ),
+                          "High BP",
+                          controller.HB_State.value,
+                          () => controller.HB_SetState("Yes"),
+                          () => controller.HB_SetState("No"),
+                          "Yes",
+                          "No",
+                          controller.HB_State.value == "Yes",
+                          controller.HB_State.value == "No",
+                          21.3 * SizeConfig.heightMultiplier,
+                          Icons.bloodtype),
                     ],
                   );
                 }),
-                SizedBox(height: 1.58*SizeConfig.heightMultiplier,),
+                SizedBox(
+                  height: 1.58 * SizeConfig.heightMultiplier,
+                ),
 
                 //* personal diabetes and physical activity cards
                 Obx(() {
@@ -97,33 +104,35 @@ class AnalyzeSugarScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Double_Parameter_Card(
-                        "P Diabetes",
-                        controller.P_D_State.value,
-                        () => controller.P_D_State_SetState("Yes"),
-                        () => controller.P_D_State_SetState("No"),
-                        "Yes",
-                        "No",
-                        controller.P_D_State.value == "Yes",
-                        controller.P_D_State.value == "No",
-                        42.75*SizeConfig.widthMultiplier,Icons.bloodtype
-                      ),
+                          "P Diabetes",
+                          controller.P_D_State.value,
+                          () => controller.P_D_State_SetState("Yes"),
+                          () => controller.P_D_State_SetState("No"),
+                          "Yes",
+                          "No",
+                          controller.P_D_State.value == "Yes",
+                          controller.P_D_State.value == "No",
+                          42.75 * SizeConfig.widthMultiplier,
+                          Icons.bloodtype),
                       Four_Parameter_Card(
-                        "Physically Active",
-                        controller.PA_State.value,
-                        () => controller.PA_SetState('One Hr or more'),
-                        () => controller.PA_SetState('More than half an hr'),
-                        () => controller.PA_SetState('Less than half an hr'),
-                        () => controller.PA_SetState('None'),
-                        'One Hr or more',
-                        'More than half an hr',
-                        'Less than half an hr',
-                        'None',
-                        48.7*SizeConfig.widthMultiplier,Icons.star_border_outlined
-                      ),
+                          "Physically Active",
+                          controller.PA_State.value,
+                          () => controller.PA_SetState('One Hr or more'),
+                          () => controller.PA_SetState('More than half an hr'),
+                          () => controller.PA_SetState('Less than half an hr'),
+                          () => controller.PA_SetState('None'),
+                          'One Hr or more',
+                          'More than half an hr',
+                          'Less than half an hr',
+                          'None',
+                          48.7 * SizeConfig.widthMultiplier,
+                          Icons.star_border_outlined),
                     ],
                   );
                 }),
-                SizedBox(height: 1.58*SizeConfig.heightMultiplier,),
+                SizedBox(
+                  height: 1.58 * SizeConfig.heightMultiplier,
+                ),
 
                 //* smoking and alcohol cards
                 Obx(() {
@@ -131,42 +140,47 @@ class AnalyzeSugarScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Double_Parameter_Card(
-                        "Smoking",
-                        controller.Smoking_State.value,
-                        () => controller.Smoking_SetState("Yes"),
-                        () => controller.Smoking_SetState("No"),
-                        "Yes",
-                        "No",
-                        controller.Smoking_State.value == "Yes",
-                        controller.Smoking_State.value == "No",
-                        45.75*SizeConfig.widthMultiplier,Icons.smoke_free_outlined
-                      ),
+                          "Smoking",
+                          controller.Smoking_State.value,
+                          () => controller.Smoking_SetState("Yes"),
+                          () => controller.Smoking_SetState("No"),
+                          "Yes",
+                          "No",
+                          controller.Smoking_State.value == "Yes",
+                          controller.Smoking_State.value == "No",
+                          45.75 * SizeConfig.widthMultiplier,
+                          Icons.smoke_free_outlined),
                       Double_Parameter_Card(
-                        "Alcohol",
-                        controller.Alchohol_State.value,
-                        () => controller.Alchohol_SetState("Yes"),
-                        () => controller.Alchohol_SetState("No"),
-                        "Yes",
-                        "No",
-                        controller.Alchohol_State.value == "Yes",
-                        controller.Alchohol_State.value == "No",
-                        45.75*SizeConfig.widthMultiplier,Icons.no_drinks_outlined
-                      ),
+                          "Alcohol",
+                          controller.Alchohol_State.value,
+                          () => controller.Alchohol_SetState("Yes"),
+                          () => controller.Alchohol_SetState("No"),
+                          "Yes",
+                          "No",
+                          controller.Alchohol_State.value == "Yes",
+                          controller.Alchohol_State.value == "No",
+                          45.75 * SizeConfig.widthMultiplier,
+                          Icons.no_drinks_outlined),
                     ],
                   );
                 }),
-                SizedBox(height: 1.58*SizeConfig.heightMultiplier,),
+                SizedBox(
+                  height: 1.58 * SizeConfig.heightMultiplier,
+                ),
 
                 //* BMI and Sleep cards
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    AnalyzeCard("BMI", Icons.person, "28.3", 45.75*SizeConfig.widthMultiplier),
+                    BMICardDiabetesReport("BMI", Icons.person, "28.3",
+                        45.75 * SizeConfig.widthMultiplier, controller),
                     SleepCard("Sleep", Icons.night_shelter_outlined, "10 Hours",
-                        45.75*SizeConfig.widthMultiplier, controller),
+                        45.75 * SizeConfig.widthMultiplier, controller),
                   ],
                 ),
-                SizedBox(height: 1.58*SizeConfig.heightMultiplier,),
+                SizedBox(
+                  height: 1.58 * SizeConfig.heightMultiplier,
+                ),
 
                 //* Sound sleep and pregnancies cards
                 Row(
@@ -174,22 +188,24 @@ class AnalyzeSugarScreen extends StatelessWidget {
                   children: [
                     Obx(
                       () => Double_Parameter_Card(
-                        "Sound Sleep",
-                        controller.SoundSleep_State.value,
-                        () => controller.SoundSleep_SetState("Yes"),
-                        () => controller.SoundSleep_SetState("No"),
-                        "Yes",
-                        "No",
-                        controller.SoundSleep_State.value == "Yes",
-                        controller.SoundSleep_State.value == "No",
-                        45.75*SizeConfig.widthMultiplier,Icons.night_shelter_rounded
-                      ),
+                          "Sound Sleep",
+                          controller.SoundSleep_State.value,
+                          () => controller.SoundSleep_SetState("Yes"),
+                          () => controller.SoundSleep_SetState("No"),
+                          "Yes",
+                          "No",
+                          controller.SoundSleep_State.value == "Yes",
+                          controller.SoundSleep_State.value == "No",
+                          45.75 * SizeConfig.widthMultiplier,
+                          Icons.night_shelter_rounded),
                     ),
-                    PregnancyCard("Pregnancies", Icons.pregnant_woman, "2", 45.75*SizeConfig.widthMultiplier,
-                        controller),
+                    PregnancyCard("Pregnancies", Icons.pregnant_woman, "2",
+                        45.75 * SizeConfig.widthMultiplier, controller),
                   ],
                 ),
-                SizedBox(height: 1.58*SizeConfig.heightMultiplier,),
+                SizedBox(
+                  height: 1.58 * SizeConfig.heightMultiplier,
+                ),
 
                 //* Junk food and stress cards
                 Obx(
@@ -197,36 +213,36 @@ class AnalyzeSugarScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Four_Parameter_Card(
-                        "Junk Food",
-                        controller.JF_State.value,
-                        () => controller.JF_SetState("Occasionally"),
-                        () => controller.JF_SetState("Often"),
-                        () => controller.JF_SetState("Very Often"),
-                        () => controller.JF_SetState("Always"),
-                        "Occasionally",
-                        "Often",
-                        "Very Often",
-                        "Always",
-                        45.75*SizeConfig.widthMultiplier,Icons.fastfood
-                      ),
+                          "Junk Food",
+                          controller.JF_State.value,
+                          () => controller.JF_SetState("Occasionally"),
+                          () => controller.JF_SetState("Often"),
+                          () => controller.JF_SetState("Very Often"),
+                          () => controller.JF_SetState("Always"),
+                          "Occasionally",
+                          "Often",
+                          "Very Often",
+                          "Always",
+                          45.75 * SizeConfig.widthMultiplier,
+                          Icons.fastfood),
                       Four_Parameter_Card(
-                        "Stress",
-                        controller.Stress_State.value,
-                        () => controller.Stress_SetState('Not at all'),
-                        () => controller.Stress_SetState('Sometimes'),
-                        () => controller.Stress_SetState('Very Often'),
-                        () => controller.Stress_SetState('Always'),
-                        'Not at all',
-                        'Sometimes',
-                        'Very Often',
-                        'Always',
-                        45.75*SizeConfig.widthMultiplier,Icons.self_improvement
-                      ),
+                          "Stress",
+                          controller.Stress_State.value,
+                          () => controller.Stress_SetState('Not at all'),
+                          () => controller.Stress_SetState('Sometimes'),
+                          () => controller.Stress_SetState('Very Often'),
+                          () => controller.Stress_SetState('Always'),
+                          'Not at all',
+                          'Sometimes',
+                          'Very Often',
+                          'Always',
+                          45.75 * SizeConfig.widthMultiplier,
+                          Icons.self_improvement),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 1.58*SizeConfig.heightMultiplier,
+                  height: 1.58 * SizeConfig.heightMultiplier,
                 ),
 
                 //* BP Level And Urination freq
@@ -243,7 +259,8 @@ class AnalyzeSugarScreen extends StatelessWidget {
                           "Low",
                           "Normal",
                           "High",
-                          45.75*SizeConfig.widthMultiplier,Icons.bloodtype_outlined),
+                          45.75 * SizeConfig.widthMultiplier,
+                          Icons.bloodtype_outlined),
                       Double_Parameter_Card(
                           "Urination Freq",
                           controller.UF_State.value,
@@ -253,14 +270,15 @@ class AnalyzeSugarScreen extends StatelessWidget {
                           'Quite Often',
                           controller.UF_State.value == 'Not Much',
                           controller.UF_State.value == 'Quite Often',
-                          45.75*SizeConfig.widthMultiplier,Icons.star_border_outlined),
+                          45.75 * SizeConfig.widthMultiplier,
+                          Icons.star_border_outlined),
                     ],
                   ),
                 ),
 
                 //* Regular Medicine
                 SizedBox(
-                  height: 1.58*SizeConfig.heightMultiplier,
+                  height: 1.58 * SizeConfig.heightMultiplier,
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
@@ -274,17 +292,25 @@ class AnalyzeSugarScreen extends StatelessWidget {
                         "No",
                         controller.RM_State.value == "Yes",
                         controller.RM_State.value == "No",
-                        52*SizeConfig.widthMultiplier,Icons.medication),
+                        52 * SizeConfig.widthMultiplier,
+                        Icons.medication),
                   ),
                 ),
 
                 //*Analyze button
                 SizedBox(
-                  height: 5.79*SizeConfig.heightMultiplier,
+                  height: 5.79 * SizeConfig.heightMultiplier,
                 ),
-                authButton("Analyze", () {}),
+                Obx(() => controller.isLoadingPrediction.value
+                    ? SpinKitCircle(
+                        color: Colours.buttonColorRed,
+                        size: 35,
+                      )
+                    : authButton("Analyze", () {
+                        controller.getPrediction(context);
+                      })),
                 SizedBox(
-                  height: 1.58*SizeConfig.heightMultiplier,
+                  height: 1.58 * SizeConfig.heightMultiplier,
                 ),
               ],
             ),
