@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_guardian/getX_controllers/button/button_controllers.dart';
+import 'package:health_guardian/getX_controllers/notification/notification-controllers.dart';
 import 'package:health_guardian/getX_controllers/profile/profile_controller.dart';
 import 'package:health_guardian/screens/detail-screens/blood-pressure/blood_pressure_detail.dart';
 import 'package:health_guardian/screens/detail-screens/blood-sugar/blood_sugar_detail.dart';
@@ -19,6 +20,7 @@ class Home_D_Screen extends StatelessWidget {
   final ButtonControllers controller = Get.put(ButtonControllers());
   final ProfileCompletionController profileCompletionController =
       Get.find<ProfileCompletionController>();
+  final NotificationController notificationController = Get.put(NotificationController());
 
   @override
   Widget build(BuildContext context) {
