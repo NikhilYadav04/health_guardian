@@ -22,7 +22,7 @@ class AnalyzeScreen extends StatelessWidget {
         SizedBox(
           height: 1.58*SizeConfig.heightMultiplier,
         ),
-        descTextAnalyze("Analyze your disease risk probability by\nfilling required health parameters and\nreceive your health report instantly.",2.35 * SizeConfig.heightMultiplier),
+        descTextAnalyze("Analyze your disease risk probability by\nfilling required health parameters and\nreceive your health risk prediction instantly.",2.35 * SizeConfig.heightMultiplier),
 
         SizedBox(
           height: 3.68*SizeConfig.heightMultiplier,
@@ -32,7 +32,8 @@ class AnalyzeScreen extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-           analyzeDiseaseCard("Heart Attack", Color.fromARGB(255, 245, 208, 204),Colours.buttonColorRed,Images.heartMeasureIcon,controllers.heartAttack,controllers.setPressedHeartAttack,(){}),
+            analyzeDiseaseCard("Diabetes", Color.fromARGB(255, 245, 208, 204),Colours.buttonColorRed,Images.DiabetesIcon,controllers.bloodSugar,controllers.setPressedBloodSugar,(){Get.to( () => AnalyzeSugarScreen(),transition: Transition.fadeIn);}),
+           
           analyzeDiseaseCard("Hypertension", Color.fromARGB(255, 164, 238, 183),Colors.green,Images.BloodPressureMeasureIcon2,controllers.hyperTension,controllers.setPressedHyperTension,(){Get.to( () => AnalyzeHypertension(),transition: Transition.fadeIn);}),
           ],
         ),
@@ -40,7 +41,7 @@ class AnalyzeScreen extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            analyzeDiseaseCard("Diabetes", Color.fromARGB(255, 245, 208, 204),Colours.buttonColorRed,Images.DiabetesIcon,controllers.bloodSugar,controllers.setPressedBloodSugar,(){Get.to( () => AnalyzeSugarScreen(),transition: Transition.fadeIn);}),
+        analyzeDiseaseCard("Heart Attack", Color.fromARGB(255, 245, 208, 204),Colours.buttonColorRed,Images.heartMeasureIcon,controllers.heartAttack,controllers.setPressedHeartAttack,(){}),
           ],
         ),
       ],

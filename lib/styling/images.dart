@@ -16,6 +16,9 @@ class Images {
   static const botPNG = "assets/chatbot/bot.png";
   static const notificationPNG = "assets/dashboard/noti.png";
 
+  static const riskImage = "assets/analyze/risk.png";
+  static const healthyImage = "assets/analyze/healthy.png";
+
   //*d Dashboard icons
   static const heartMeasureIcon = "assets/dashboard/heart-attack.svg";
   static const BloodPressureMeasureIcon = "assets/dashboard/blood-pressure.svg";

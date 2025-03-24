@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:health_guardian/getX_controllers/analyze-screen/hypertension_controllers.dart';
-import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/images.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/analyze-hypertension/widgets_1.dart';
 import 'package:health_guardian/widgets/analyze-screen/widgets_1.dart';
 import 'package:health_guardian/widgets/auth/login_widgets.dart';
 import 'package:health_guardian/widgets/dashboard/dashboard_widgets_2.dart';
+import 'package:lottie/lottie.dart';
 
 class AnalyzeHypertension extends StatelessWidget {
   final HypertensionControllers controller = Get.put(HypertensionControllers());
@@ -22,7 +21,8 @@ class AnalyzeHypertension extends StatelessWidget {
       persistentFooterButtons: [
         Padding(
             padding: EdgeInsets.symmetric(
-                vertical: 0.84269 * SizeConfig.heightMultiplier,horizontal: 1.5*SizeConfig.widthMultiplier),
+                vertical: 0.84269 * SizeConfig.heightMultiplier,
+                horizontal: 1.5 * SizeConfig.widthMultiplier),
             child: Text(
               "If any pressure or heart data is zero that means your stored data is empty, you have to input your health data.",
               style: TextStyle(
@@ -144,15 +144,22 @@ class AnalyzeHypertension extends StatelessWidget {
               ),
 
               //* Analyze Button
-              Obx(() => controller.isLoadingPrediction.value
-                  ? Center(
-                      child: SpinKitCircle(
-                      color: Colours.buttonColorRed,
-                      size: 3.581473*SizeConfig.heightMultiplier,
-                    ))
-                  : authButton("Analyze", () async {
-                      controller.getPrediction(context);
-                    })),
+              authButton("Predict", () async {
+                Get.dialog(AlertDialog(
+                  backgroundColor: Colors.transparent,
+                  actions: [
+                    Center(
+                      child: Lottie.asset("assets/animations/ai_loader.json"),
+                    )
+                  ],
+                ));
+
+                await controller.getPrediction(context);
+
+                if (Get.isDialogOpen == true) {
+                  Navigator.of(context).pop();
+                }
+              }),
               SizedBox(
                 height: 1.58 * SizeConfig.heightMultiplier,
               ),

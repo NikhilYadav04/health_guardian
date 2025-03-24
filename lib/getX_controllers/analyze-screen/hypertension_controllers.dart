@@ -8,7 +8,10 @@ import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/state_manager.dart';
+import 'package:health_guardian/styling/colors.dart';
+import 'package:health_guardian/styling/images.dart';
 import 'package:health_guardian/styling/toast_message.dart';
+import 'package:health_guardian/widgets/analyze-screen/widgets_4.dart';
 import 'package:http/http.dart' as http;
 
 class HypertensionControllers extends GetxController {
@@ -123,7 +126,7 @@ class HypertensionControllers extends GetxController {
   }
 
   //* call to model api for risk prediction
-  Future<bool> getPrediction(BuildContext context) async {
+  Future<void> getPrediction(BuildContext context) async {
     try {
       isLoadingPrediction.value = true;
 
@@ -150,13 +153,39 @@ class HypertensionControllers extends GetxController {
       isLoadingPrediction.value = false;
 
       bool prediction = responseBody["prediction"] == 1 ? true : false;
-      toastSuccessSlide(context, "Prediction is ${prediction}");
 
-      return prediction;
+      prediction
+          ? Future.delayed(
+              Duration(seconds: 1),
+              () => Get.dialog(AlertDialog(
+                    content: Container(
+                      height: 200,
+                      child: showPrediction(
+                          Colours.buttonColorRed,
+                          const Color.fromARGB(255, 240, 202, 199),
+                          "Your risk for hypertension is high. Please consult a doctor as soon as possible for proper guidance.",
+                          Images.riskImage,
+                          200),
+                    ),
+                    backgroundColor: Colors.transparent,
+                  )))
+          : Future.delayed(
+              Duration(seconds: 1),
+              () => Get.dialog(AlertDialog(
+                    content: Container(
+                      height: 200,
+                      child: showPrediction(
+                          Colors.green,
+                          const Color.fromARGB(255, 184, 242, 186),
+                          "Your risk for hypertension is low. Keep tracking your data regularly for proper health.",
+                          Images.healthyImage,
+                          250),
+                    ),
+                    backgroundColor: Colors.transparent,
+                  )));
     } catch (e) {
       toastErrorSlide(context, "Error getting prediction");
       isLoadingPrediction.value = false;
-      return false;
     }
   }
 }

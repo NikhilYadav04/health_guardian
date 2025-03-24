@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:health_guardian/getX_controllers/analyze-screen/analyze_sugar_controllers.dart';
 import 'package:health_guardian/styling/colors.dart';
@@ -10,6 +9,7 @@ import 'package:health_guardian/widgets/analyze-screen/widgets_2.dart';
 import 'package:health_guardian/widgets/analyze-screen/widgets_3.dart';
 import 'package:health_guardian/widgets/auth/login_widgets.dart';
 import 'package:health_guardian/widgets/dashboard/dashboard_widgets_2.dart';
+import 'package:lottie/lottie.dart';
 
 class AnalyzeSugarScreen extends StatelessWidget {
   final AnalyzeSugarControllers controller = Get.put(AnalyzeSugarControllers());
@@ -41,7 +41,7 @@ class AnalyzeSugarScreen extends StatelessWidget {
 
                 //* title text
                 descTextAnalyze(
-                    "Complete the Health Form Below,Get\nYour Diabetes Stage Report Instantly!",
+                    "Complete the Health Form Below,Get\nYour Diabetes Stage Risk Instantly!",
                     2.50 * SizeConfig.heightMultiplier),
 
                 SizedBox(
@@ -297,18 +297,26 @@ class AnalyzeSugarScreen extends StatelessWidget {
                   ),
                 ),
 
-                //*Analyze button
+                //* Analyze button
                 SizedBox(
                   height: 5.79 * SizeConfig.heightMultiplier,
                 ),
-                Obx(() => controller.isLoadingPrediction.value
-                    ? SpinKitCircle(
-                        color: Colours.buttonColorRed,
-                        size: 35,
+                authButton("Predict", () async {
+                  Get.dialog(AlertDialog(
+                    backgroundColor: Colors.transparent,
+                    actions: [
+                      Center(
+                        child: Lottie.asset("assets/animations/ai_loader.json"),
                       )
-                    : authButton("Analyze", () {
-                        controller.getPrediction(context);
-                      })),
+                    ],
+                  ));
+
+                  await controller.getPrediction(context);
+
+                  if (Get.isDialogOpen == true) {
+                    Navigator.of(context).pop();
+                  }
+                }),
                 SizedBox(
                   height: 1.58 * SizeConfig.heightMultiplier,
                 ),

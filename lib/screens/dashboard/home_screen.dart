@@ -64,7 +64,7 @@ class Home_D_Screen extends StatelessWidget {
 
       historyText(),
 
-       SizedBox(
+      SizedBox(
         height: 2.1 * SizeConfig.heightMultiplier,
       ),
 
@@ -72,7 +72,7 @@ class Home_D_Screen extends StatelessWidget {
       aiDoctorWidget(),
       SizedBox(
         height: 3.16 * SizeConfig.heightMultiplier,
-      )
+      ),
     ]);
   }
 }
