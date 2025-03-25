@@ -11,6 +11,7 @@ import 'package:health_guardian/screens/auth/login_screen.dart';
 import 'package:health_guardian/screens/auth/set_pin_screen.dart';
 import 'package:health_guardian/screens/dashboard/dashboard_screen.dart';
 import 'package:health_guardian/screens/accounts/profile/profile_completion_screen.dart';
+import 'package:health_guardian/services/workManager.dart';
 import 'package:health_guardian/styling/toast_message.dart';
 import 'package:logger/logger.dart';
 
@@ -224,6 +225,7 @@ class LoginAccountController extends GetxController {
     try {
       await HelperFunctions.setAuthStatus(false);
       await FirebaseAuth.instance.signOut();
+      await WorkManager.cancelTask;
       Get.offAll(() => LoginScreen(), transition: Transition.downToUp);
     } catch (e) {
       var logger = Logger();

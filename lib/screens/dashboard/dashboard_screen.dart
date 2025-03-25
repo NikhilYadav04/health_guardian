@@ -8,6 +8,7 @@ import 'package:health_guardian/screens/dashboard/home_screen.dart';
 import 'package:health_guardian/screens/dashboard/analyze_screen.dart';
 import 'package:health_guardian/screens/dashboard/report_screen.dart';
 import 'package:health_guardian/screens/notification/notification_screen.dart';
+import 'package:health_guardian/services/workManager.dart';
 import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/dashboard/dashboard_widgets_1.dart';
@@ -50,7 +51,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         toolbarHeight: 10.01 * SizeConfig.heightMultiplier,
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                WorkManager.scheduleReminder(0, "Heart Data Enter BEfore Eating");
+              },
               icon: Icon(
                 Icons.favorite,
                 color: Colours.buttonColorRed,

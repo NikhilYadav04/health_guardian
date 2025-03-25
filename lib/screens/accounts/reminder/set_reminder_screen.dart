@@ -70,7 +70,9 @@ class SetReminderScreen extends StatelessWidget {
                   SizedBox(height: 2.949448*SizeConfig.heightMultiplier,),
 
                   //* button
-                  buttonsDetail("Set Reminder", ()=>{}, Colours.buttonColorRed, Colors.white, 5.793559*SizeConfig.heightMultiplier, 40.178571*SizeConfig.widthMultiplier, 3.160123*SizeConfig.heightMultiplier)
+                  buttonsDetail("Set Reminder", (){
+                    reminderController.setReminder(context);
+                  }, Colours.buttonColorRed, Colors.white, 5.793559*SizeConfig.heightMultiplier, 40.178571*SizeConfig.widthMultiplier, 3.160123*SizeConfig.heightMultiplier)
                 ],
               ),
             )

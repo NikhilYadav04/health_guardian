@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -39,6 +37,7 @@ class Notificationservice {
   }
 
   //* to display notification popup
+
   //* handles push notification ( usually from fcm )
   static void createanddisplaynotification(RemoteMessage message) async {
     try {
@@ -46,7 +45,7 @@ class Notificationservice {
       const NotificationDetails notificationDetails = NotificationDetails(
         android: AndroidNotificationDetails(
           "health_guardian",
-          "pushnotificationappchannel",
+          "reminderchannel",
           importance: Importance.max,
           priority: Priority.high,
         ),
@@ -65,16 +64,14 @@ class Notificationservice {
   }
 
   //* manually show notification
-  static void notificationExpiry(String item) async {
+  static void notificationReminder(String note) async {
     try {
       //* Send notification
-      final randomIndex = Random().nextInt(10);
-
       final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
       const NotificationDetails notificationDetails = NotificationDetails(
         android: AndroidNotificationDetails(
           "health_guardian",
-          "pushnotificationappchannel",
+          "reminderchannel",
           importance: Importance.max,
           priority: Priority.high,
           styleInformation: BigTextStyleInformation(
@@ -90,8 +87,8 @@ class Notificationservice {
 
       await _notificationsPlugin.show(
         id,
-        expiryQuotes[randomIndex],
-        "${item} is about to be expiry",
+        "Reminder to enter your health data",
+        note,
         notificationDetails,
         payload: "",
         //* default payload :- message.data['_id']
