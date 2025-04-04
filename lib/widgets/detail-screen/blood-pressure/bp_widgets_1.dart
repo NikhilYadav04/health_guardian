@@ -31,7 +31,7 @@ AppBar appB_BP(void Function() onTap1, void Function() onTap2) {
   );
 }
 
-Widget bloodPressureDataWidget() {
+Widget bloodPressureDataWidget(EditBloodPressureDataControllers editController) {
   return Container(
     height:28.44*SizeConfig.heightMultiplier,
     width: double.infinity,
@@ -105,27 +105,29 @@ Widget bloodPressureDataWidget() {
                 SizedBox(
                   height: 1.58*SizeConfig.heightMultiplier,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    dataCard("105", "Systolic"),
-                    Container(
-                        height: 9.48*SizeConfig.heightMultiplier,
-                        child: VerticalDivider(
-                          color: Color.fromARGB(255, 223, 214, 214),
-                          width: 2.23*SizeConfig.widthMultiplier,
-                          thickness: 3,
-                        )),
-                    dataCard("73", "Diastolic"),
-                    Container(
-                        height:9.48*SizeConfig.heightMultiplier,
-                        child: VerticalDivider(
-                          color: Color.fromARGB(255, 223, 214, 214),
-                          width: 2.23*SizeConfig.widthMultiplier,
-                          thickness: 3,
-                        )),
-                    dataCard("76", "Pulse"),
-                  ],
+                Obx(
+                  ()=> Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      dataCard(editController.pressureLevelDiastolic.toString(), "Systolic"),
+                      Container(
+                          height: 9.48*SizeConfig.heightMultiplier,
+                          child: VerticalDivider(
+                            color: Color.fromARGB(255, 223, 214, 214),
+                            width: 2.23*SizeConfig.widthMultiplier,
+                            thickness: 3,
+                          )),
+                      dataCard(editController.pressureLevelDiastolic.value.toString(), "Diastolic"),
+                      Container(
+                          height:9.48*SizeConfig.heightMultiplier,
+                          child: VerticalDivider(
+                            color: Color.fromARGB(255, 223, 214, 214),
+                            width: 2.23*SizeConfig.widthMultiplier,
+                            thickness: 3,
+                          )),
+                      dataCard(editController.pulseLevel.toString(), "Pulse"),
+                    ],
+                  ),
                 ),
               ],
             )),
@@ -134,7 +136,7 @@ Widget bloodPressureDataWidget() {
   );
 }
 
-Widget doubleButtonWidgetBP(BloodPressureControllers controller) {
+Widget doubleButtonWidgetBP(BloodPressureControllers controller,EditBloodPressureDataControllers editController) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -152,7 +154,7 @@ Widget doubleButtonWidgetBP(BloodPressureControllers controller) {
       ),
       Obx(
         () => buttonsDetail(
-            "History (260)",
+            "History (${editController.bp_data_list.length})",
             controller.navigatePage,
              controller.pageIndex.value == 1
                 ? Colours.buttonColorRed

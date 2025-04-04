@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:health_guardian/helper/color_Convert.dart';
+import 'package:health_guardian/helper/format_Double.dart';
 import 'package:health_guardian/styling/images.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/report/report_widgets.dart';
 
 class WeightDetailedReport extends StatelessWidget {
-  const WeightDetailedReport({super.key});
+  WeightDetailedReport({super.key, required this.list});
+  final List<dynamic> list;
 
   @override
   Widget build(BuildContext context) {
-    return  SafeArea(
+    return SafeArea(
         child: Scaffold(
       appBar: appBarReportDetail("Weight Report", Images.weightPNG),
       backgroundColor: Color.fromARGB(255, 247, 241, 241),
@@ -19,19 +22,23 @@ class WeightDetailedReport extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                  height: 1.5800*SizeConfig.heightMultiplier,
-                ),
-
+                height: 1.5800 * SizeConfig.heightMultiplier,
+              ),
               ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 6,
-                itemBuilder: (context,index){
-                  return reportDisplayWidget("101","kg","Dec 22, 2024 \n10:54 AM",Colors.green,"Normal");
-                }
-                ),
-
-              SizedBox(height: 3.16012*SizeConfig.heightMultiplier,)
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: list.length,
+                  itemBuilder: (context, index) {
+                    return reportDisplayWidget(
+                        doubleDigit(list[index]["weight_level"]),
+                        "kg",
+                        list[index]["date"],
+                        ColorConvert.colorMap[list[index]["color"]]!,
+                        list[index]["status"]);
+                  }),
+              SizedBox(
+                height: 3.16012 * SizeConfig.heightMultiplier,
+              )
             ],
           ),
         ),

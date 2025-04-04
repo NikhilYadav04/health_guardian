@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_guardian/getX_controllers/detail-screen/blood_pressure_controllers.dart';
+import 'package:health_guardian/getX_controllers/profile/profile_controller.dart';
 import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/auth/login_widgets.dart';
 import 'package:health_guardian/widgets/buttons/detail_buttons.dart';
 import 'package:health_guardian/widgets/detail-screen/blood-sugar/bs_widgets_3.dart';
 
-Widget stateSelectWIdgetPressure(BloodPressureControllers controller) {
+Widget stateSelectWIdgetPressure(BloodPressureControllers controller,ProfileCompletionController profile_controller) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Obx(() => cardBP(controller)),
-      card1("Gender", Icons.male, "Male"),
-      card1("Age", Icons.person, "28"),
+      card1("Gender", Icons.male, profile_controller.Gender.value),
+      card1("Age", Icons.person, profile_controller.Age.value),
     ],
   );
 }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:health_guardian/helper/helper_functions.dart';
 import 'package:health_guardian/styling/toast_message.dart';
 import 'package:logger/logger.dart';
@@ -14,6 +15,8 @@ class ProfileCompletionController extends GetxController {
     final userID = FirebaseAuth.instance.currentUser!.uid;
     Phone.value = await HelperFunctions.getPhoneNumber(userID);
     Name.value = await HelperFunctions.getName(Phone.value);
+    Age.value = await HelperFunctions.getUserAge("${userID}1");
+    Gender.value = await HelperFunctions.getUserGender("${userID}2");
 
     var logger = Logger();
     logger.d(userID);
@@ -32,6 +35,8 @@ class ProfileCompletionController extends GetxController {
 
   RxString Name = "User".obs;
   RxString Phone = "915250XXXX".obs;
+  RxString Age = "20".obs;
+  RxString Gender = "Male".obs;
 
   //* bool
   RxBool heart_disease = false.obs;
@@ -120,7 +125,10 @@ class ProfileCompletionController extends GetxController {
       await HelperFunctions.setName(
           nameController.text.toString(), Phone.value);
       Name.value = await HelperFunctions.getName(Phone.value);
-      final age = selectedDate.value.year - DateTime.now().year;
+      final age = DateTime.now().year - selectedDate.value.year;
+
+      await HelperFunctions.setUserAge(age.toString(), "${userID}1");
+      await HelperFunctions.setUserGender(gender.value.toString(), "${userID}2");
 
       //* add profile details in database
       CollectionReference collectionReference =
@@ -248,6 +256,9 @@ class ProfileCompletionController extends GetxController {
           await collectionReference.where('email', isEqualTo: email).get();
       DocumentReference docs = querySnapshot.docs.first.reference;
       final age = selectedDate.value.year - DateTime.now().year;
+
+      await HelperFunctions.setUserAge(age.toString(), "${userID}1");
+      await HelperFunctions.setUserGender(gender.value.toString(), "${userID}2");
 
       await docs.update({
         "name": nameController.text.toString(),

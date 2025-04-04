@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_guardian/getX_controllers/detail-screen/blood_sugar_controllers.dart';
+import 'package:health_guardian/getX_controllers/profile/profile_controller.dart';
 import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/auth/login_widgets.dart';
@@ -119,13 +120,13 @@ Widget userInputWidget(BloodSugarControllers controller) {
   );
 }
 
-Widget stateSelectWIdget(BloodSugarControllers controller) {
+Widget stateSelectWIdget(BloodSugarControllers controller,ProfileCompletionController profile_controller) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Obx(() => card(controller)),
-      card1("Gender", Icons.male, "Male"),
-      card1("Age", Icons.person, "28"),
+      card1("Gender", Icons.male, profile_controller.Gender.value),
+      card1("Age", Icons.person, profile_controller.Age.value),
     ],
   );
 }

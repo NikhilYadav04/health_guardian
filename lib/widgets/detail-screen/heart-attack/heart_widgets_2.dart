@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:health_guardian/getX_controllers/detail-screen/heart_rate_controllers.dart';
+import 'package:health_guardian/getX_controllers/profile/profile_controller.dart';
 import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/auth/login_widgets.dart';
@@ -10,13 +11,13 @@ import 'package:health_guardian/widgets/buttons/detail_buttons.dart';
 import 'package:health_guardian/widgets/detail-screen/blood-sugar/bs_widgets_3.dart';
 import 'package:health_guardian/widgets/detail-screen/blood-sugar/bs_widgets_4.dart';
 
-Widget heartStateSelectWIdget(HeartRateControllers controller) {
+Widget heartStateSelectWIdget(HeartRateControllers controller,ProfileCompletionController profile_controller) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Obx(() => heartCard(controller)),
-      heartCard1("Gender", Icons.male, "Male"),
-      heartCard1("Age", Icons.person, "28"),
+      heartCard1("Gender", Icons.male, profile_controller.Gender.value),
+      heartCard1("Age", Icons.person, profile_controller.Age.value),
     ],
   );
 }

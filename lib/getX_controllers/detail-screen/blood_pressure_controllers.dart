@@ -8,6 +8,9 @@ import 'package:get/state_manager.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/styling/toast_message.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
+
+var logger = Logger();
 
 bool isBetween(num value, num min, num max) {
   return value >= min && value <= max;
@@ -36,38 +39,38 @@ List<String> getColorStatus(num systolic, num diastolic) {
     color = "Colors.red";
     status = "Hypertensive";
   } else {
-    color = "Colors.grey";
-    status = "Not Specified";
+    color = "Colors.blue";
+    status = "None";
   }
 
   return [color, status];
 }
 
 List<dynamic> getColorPosition(num systolic, num diastolic) {
-  Color color;
+  MaterialColor color;
   double position;
 
   if (systolic < 90 && diastolic < 60) {
     color = Colors.blue;
-    position = 2.23214*SizeConfig.widthMultiplier;
+    position = 2.23214 * SizeConfig.widthMultiplier;
   } else if (isBetween(systolic, 90, 119) && isBetween(diastolic, 60, 79)) {
     color = Colors.green;
-    position = 16.741071*SizeConfig.widthMultiplier;
+    position = 16.741071 * SizeConfig.widthMultiplier;
   } else if (isBetween(systolic, 120, 129) && isBetween(diastolic, 60, 79)) {
     color = Colors.yellow;
-    position = 32.36607*SizeConfig.widthMultiplier;
+    position = 32.36607 * SizeConfig.widthMultiplier;
   } else if (isBetween(systolic, 130, 139) && isBetween(diastolic, 80, 89)) {
     color = Colors.orange;
-    position = 46.875*SizeConfig.widthMultiplier;
+    position = 46.875 * SizeConfig.widthMultiplier;
   } else if (isBetween(systolic, 140, 180) && isBetween(diastolic, 90, 120)) {
-    color = Colors.deepOrange;
-    position = 62.5*SizeConfig.widthMultiplier;
+    color = Colors.orange;
+    position = 62.5 * SizeConfig.widthMultiplier;
   } else if (systolic > 180 && diastolic < 120) {
     color = Colors.red;
-    position = 78.125*SizeConfig.widthMultiplier;
+    position = 78.125 * SizeConfig.widthMultiplier;
   } else {
-    color = Colors.black;
-    position =2.23214*SizeConfig.widthMultiplier;
+    color = Colors.blue;
+    position = 2.23214 * SizeConfig.widthMultiplier;
   }
 
   return [color, position];
@@ -78,6 +81,7 @@ class BloodPressureControllers extends GetxController {
   TextEditingController noteController = TextEditingController();
 
   RxBool isLoadingAdd = false.obs;
+  RxBool isTwoDigit = false.obs;
 
   //* clear the note controller
   void noteClear() {
@@ -123,7 +127,8 @@ class BloodPressureControllers extends GetxController {
 
   void changeLevelSystolic(double value) {
     pressureLevelSystolic.value = value;
-    List<dynamic> list = getColorPosition(pressureLevelSystolic.value, pressureLevelDiastolic.value);
+    List<dynamic> list = getColorPosition(
+        pressureLevelSystolic.value, pressureLevelDiastolic.value);
     arrowColor.value = list[0];
     arrowPosition.value = list[1];
     update();
@@ -133,7 +138,8 @@ class BloodPressureControllers extends GetxController {
 
   void changeLevelDiastolic(double value) {
     pressureLevelDiastolic.value = value;
-    List<dynamic> list = getColorPosition(pressureLevelSystolic.value, pressureLevelDiastolic.value);
+    List<dynamic> list = getColorPosition(
+        pressureLevelSystolic.value, pressureLevelDiastolic.value);
     arrowColor.value = list[0];
     arrowPosition.value = list[1];
     update();
@@ -201,27 +207,30 @@ class BloodPressureControllers extends GetxController {
           FirebaseFirestore.instance.collection("bp_data");
       QuerySnapshot querySnapshot =
           await collectionReference.where("email", isEqualTo: email).get();
-      DocumentSnapshot docs = await querySnapshot.docs.first;
-      if (!docs.exists) {
+
+      if (querySnapshot.docs.isEmpty) {
         await collectionReference.add({
           "email": email,
           "bp_data": [
             {
               "date": "${date.toString()} : ${time.toString()}",
-              "systolic": pressureLevelSystolic,
-              "diastolic": pressureLevelDiastolic,
+              "systolic": pressureLevelSystolic.value,
+              "diastolic": pressureLevelDiastolic.value,
+              "pulse": pulseLevel.value,
               "color": color,
-              "state": State.value,
+              "state": State.value.toString(),
               "status": status,
               "note": noteController.text.toString()
             }
           ]
         });
       } else {
+        DocumentSnapshot docs = await querySnapshot.docs.first;
         final list = {
           "date": "${date.toString()} : ${time.toString()}",
-          "systolic": pressureLevelSystolic,
-          "diastolic": pressureLevelDiastolic,
+          "systolic": pressureLevelSystolic.value,
+          "diastolic": pressureLevelDiastolic.value,
+          "pulse": pulseLevel.value,
           "color": color,
           "state": State.value,
           "status": status,
@@ -235,13 +244,20 @@ class BloodPressureControllers extends GetxController {
 
       isLoadingAdd.value = false;
     } catch (e) {
-      toastErrorSlide(context, "Error adding data");
+      toastErrorSlide(context, "Error adding data : ${e.toString()}");
       isLoadingAdd.value = false;
     }
   }
 }
 
 class EditBloodPressureDataControllers extends GetxController {
+  @override
+  void onInit() {
+    super.onInit();
+    print("Controller Initialized");
+    fetchBPData(); // Call API or perform initialization here
+  }
+
   //* variables and bools
   RxDouble pressureLevelSystolic = 0.0.obs;
   RxDouble pressureLevelDiastolic = 0.0.obs;
@@ -252,6 +268,7 @@ class EditBloodPressureDataControllers extends GetxController {
 
   RxList bp_data_list = [].obs;
   RxList bp_graph_list = [].obs;
+  RxList bp_report_list = [].obs;
 
   //* to make sorted date wise lists of data
   Future<void> formatGraphList() async {
@@ -277,29 +294,57 @@ class EditBloodPressureDataControllers extends GetxController {
     }
   }
 
-  //* fetch bp data from database
-  Future<List<dynamic>> fetchBPData(BuildContext context) async {
+  //*fetch bp data
+  Future<List<dynamic>> fetchBPData() async {
     try {
-      isLoadingFetch.value = true;
-      final email = await FirebaseAuth.instance.currentUser!.email!;
+      final email = FirebaseAuth.instance.currentUser?.email;
+
       CollectionReference collectionReference =
           FirebaseFirestore.instance.collection("bp_data");
+
       QuerySnapshot querySnapshot =
           await collectionReference.where("email", isEqualTo: email).get();
-      DocumentSnapshot docs = querySnapshot.docs.first;
 
-      final List<dynamic> data = docs['bp_data'].toList();
-      bp_data_list = docs['bp_data'].toList();
+      final DocumentSnapshot docs = querySnapshot.docs.first;
+      final List<dynamic> data = List.from(docs['bp_data']);
 
+      bp_data_list.value = data;
       calculateAverage(data);
 
-      isLoadingFetch.value = false;
-
-      return bp_data_list;
-    } on FirebaseException catch (e) {
-      isLoadingFetch.value = false;
-      toastErrorSlide(context, "Error fetching data : ${e.toString()} ");
+      return data;
+    } on FirebaseException {
+      //toastErrorSlide(context, "Error fetching data: ${e.message}");
       return [];
+    }
+  }
+
+  //* fetch bp data stream from database
+  Stream<List<dynamic>> fetchBPDataStream() {
+    try {
+      final email = FirebaseAuth.instance.currentUser?.email;
+
+      CollectionReference collectionReference =
+          FirebaseFirestore.instance.collection("bp_data");
+
+      return collectionReference
+          .where("email", isEqualTo: email)
+          .snapshots()
+          .map((querySnapshot) {
+        if (querySnapshot.docs.isEmpty) {
+          return [];
+        }
+
+        final DocumentSnapshot docs = querySnapshot.docs.first;
+        final List<dynamic> data = List.from(docs['bp_data']);
+
+        bp_data_list.value = data;
+        calculateAverage(data);
+
+        return data;
+      });
+    } on FirebaseException {
+      //toastErrorSlide(context, "Error fetching data: ${e.message}");
+      return Stream.value([]);
     }
   }
 
@@ -312,9 +357,11 @@ class EditBloodPressureDataControllers extends GetxController {
     double totalPulse = data.fold(0, (sum, entry) => sum + entry['pulse']);
 
     final count = data.length;
-    pressureLevelSystolic.value = totalSystolic / count;
-    pressureLevelDiastolic.value = totalDiastolic / count;
-    pulseLevel.value = totalPulse / count;
+    pressureLevelSystolic.value =
+        double.parse((totalSystolic / count).toStringAsFixed(2));
+    pressureLevelDiastolic.value =
+        double.parse((totalDiastolic / count).toStringAsFixed(2));
+    pulseLevel.value = double.parse((totalPulse / count).toStringAsFixed(2));
   }
 
   //* generate report of data
@@ -335,10 +382,10 @@ class EditBloodPressureDataControllers extends GetxController {
 
       //* Grouping data by date
       for (var data in bp_data_list) {
-        String date = data["date"];
-        double systolic = data["systolic"];
-        double diastolic = data["diastolic"];
-        double pulse = data['pulse'];
+        String date = (data["date"] as String).split(":")[0];
+        double systolic = (data["systolic"] as num).toDouble();
+        double diastolic = (data["diastolic"] as num).toDouble();
+        double pulse = (data['pulse'] as num).toDouble();
 
         //* Add systolic values
         if (!systolicData.containsKey(date)) {
@@ -387,6 +434,7 @@ class EditBloodPressureDataControllers extends GetxController {
           "systolic": avgSystolic[key],
           "diastolic": avgDiastolic[key],
           "pulse": avgPulse[key],
+          "date": key,
           "color": colorStatusList[0],
           "status": colorStatusList[1]
         });
@@ -397,9 +445,8 @@ class EditBloodPressureDataControllers extends GetxController {
           FirebaseFirestore.instance.collection("bp_report");
       QuerySnapshot querySnapshot =
           await collectionReference.where('email', isEqualTo: email).get();
-      DocumentSnapshot docs = querySnapshot.docs.first;
 
-      if (!docs.exists) {
+      if (querySnapshot.docs.isEmpty) {
         await collectionReference.add({
           "email": email,
           "bp_report": [
@@ -407,25 +454,26 @@ class EditBloodPressureDataControllers extends GetxController {
           ]
         });
       } else {
+        DocumentSnapshot docs = querySnapshot.docs.first;
         final list = {"submitted_on": date, "bp_report": bp_report};
 
         await docs.reference.update({
           "bp_report": FieldValue.arrayUnion([list])
         });
-
-        //* after report is stored clear the data
-        CollectionReference collectionReference =
-            FirebaseFirestore.instance.collection("bp_data");
-        QuerySnapshot querySnapshot =
-            await collectionReference.where('email', isEqualTo: email).get();
-        DocumentSnapshot docs1 = querySnapshot.docs.first;
-
-        await docs1.reference.update({
-          'bp_data': FieldValue.delete(),
-        });
-
-        toastSuccessSlide(context, "Report Stored Successfully!");
       }
+
+      //* after report is stored clear the data
+      CollectionReference bp_reference =
+          FirebaseFirestore.instance.collection("bp_data");
+      QuerySnapshot bp_snapshot =
+          await bp_reference.where('email', isEqualTo: email).get();
+      DocumentSnapshot docs1 = bp_snapshot.docs.first;
+
+      await docs1.reference.update({
+        'bp_data': FieldValue.delete(),
+      });
+
+      toastSuccessSlide(context, "Report Stored Successfully!");
 
       isLoadingReport.value = false;
     } catch (e) {
@@ -435,20 +483,27 @@ class EditBloodPressureDataControllers extends GetxController {
   }
 
   //* get report data
-  Future<List<dynamic>> getReportData() async {
+  Stream<List<dynamic>> getReportData() {
     try {
       final email = FirebaseAuth.instance.currentUser!.email!;
 
       CollectionReference collectionReference =
           FirebaseFirestore.instance.collection("bp_report");
-      QuerySnapshot querySnapshot =
-          await collectionReference.where('email', isEqualTo: email).get();
-      DocumentSnapshot docs = querySnapshot.docs.first;
 
-      final List<dynamic> list = docs['bp_report'];
-      return list;
+      return collectionReference
+          .where('email', isEqualTo: email)
+          .snapshots()
+          .map((querySnapshot) {
+        if (querySnapshot.docs.isNotEmpty) {
+          DocumentSnapshot docs = querySnapshot.docs.first;
+          bp_report_list.value = docs["bp_report"];
+          return docs['bp_report'] as List<dynamic>;
+        } else {
+          return [];
+        }
+      });
     } catch (e) {
-      return [];
+      return Stream.value([]);
     }
   }
 }

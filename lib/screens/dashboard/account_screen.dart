@@ -7,6 +7,7 @@ import 'package:health_guardian/getX_controllers/profile/profile_controller.dart
 import 'package:health_guardian/screens/accounts/reminder/set_reminder_screen.dart';
 import 'package:health_guardian/styling/images.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
+import 'package:health_guardian/widgets/auth/login_widgts_2.dart';
 import 'package:health_guardian/widgets/dashboard/dashboard_widgets_3.dart';
 
 // ignore: must_be_immutable
@@ -19,12 +20,15 @@ class AccountScreen extends StatelessWidget {
 
   List<void Function()> get functions => [
         () {
-          Get.to(()=>SetReminderScreen(),transition: Transition.rightToLeft);
+          Get.to(() => SetReminderScreen(), transition: Transition.rightToLeft);
         },
         () {},
         () {},
         () {
-          controller.logout();
+          Get.dialog(AlertDialog(
+            backgroundColor: Colors.transparent,
+            content: logoutCard(controller),
+          ));
         }
       ];
 

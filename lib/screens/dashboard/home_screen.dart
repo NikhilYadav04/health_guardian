@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_guardian/getX_controllers/button/button_controllers.dart';
+import 'package:health_guardian/getX_controllers/detail-screen/heart_rate_controllers.dart';
 import 'package:health_guardian/getX_controllers/notification/notification-controllers.dart';
 import 'package:health_guardian/getX_controllers/profile/profile_controller.dart';
 import 'package:health_guardian/screens/detail-screens/blood-pressure/blood_pressure_detail.dart';
@@ -20,7 +21,10 @@ class Home_D_Screen extends StatelessWidget {
   final ButtonControllers controller = Get.put(ButtonControllers());
   final ProfileCompletionController profileCompletionController =
       Get.find<ProfileCompletionController>();
-  final NotificationController notificationController = Get.put(NotificationController());
+  final EditHeartRateDataController editController =
+      Get.put(EditHeartRateDataController());
+  final NotificationController notificationController =
+      Get.put(NotificationController());
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +38,7 @@ class Home_D_Screen extends StatelessWidget {
       //* Disease Cards
       heartMeasureCard(() {
         Get.to(() => OpeningScreenHeart());
-      }),
+      }, editController),
       SizedBox(
         height: 3.16 * SizeConfig.heightMultiplier,
       ),

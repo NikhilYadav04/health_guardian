@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_guardian/getX_controllers/detail-screen/weight_measure_controllers.dart';
+import 'package:health_guardian/getX_controllers/profile/profile_controller.dart';
 import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/buttons/detail_buttons.dart';
@@ -190,12 +191,12 @@ Widget userInputHeightWidget(WeightMeasureControllers controller) {
   );
 }
 
-Widget stateSelectWeightWIdget(WeightMeasureControllers controller) {
+Widget stateSelectWeightWIdget(WeightMeasureControllers controller,ProfileCompletionController profile_controller) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      card1Weight("Gender", Icons.male, "Male"),
-      card1Weight("Age", Icons.person, "28"),
+      card1Weight("Gender", Icons.male, profile_controller.Gender.value),
+      card1Weight("Age", Icons.person, profile_controller.Age.value),
     ],
   );
 }

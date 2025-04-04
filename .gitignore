@@ -23,6 +23,12 @@ android/app/google-services.json
 /server/package.json
 /server/.env
 /server/node_modules
+firebase.json
+analysis_options.yaml
+pubspec.lock
+android
+.metadata
+
 
 
 # The .vscode folder contains launch configuration and tasks you configure in

@@ -47,25 +47,25 @@ List<dynamic> getWeightColorPosition(double weightLevel) {
 
   if (weightLevel < 55) {
     color = Colors.blue;
-    position = 2.23214*SizeConfig.widthMultiplier;
+    position = 2.23214 * SizeConfig.widthMultiplier;
   } else if (isBetween(weightLevel, 55, 70)) {
     color = Colors.green;
-    position = 16.741071*SizeConfig.widthMultiplier;
+    position = 16.741071 * SizeConfig.widthMultiplier;
   } else if (isBetween(weightLevel, 71, 85)) {
     color = Colors.yellow;
-    position = 32.366071*SizeConfig.widthMultiplier;
+    position = 32.366071 * SizeConfig.widthMultiplier;
   } else if (isBetween(weightLevel, 86, 100)) {
     color = Colors.orange;
-    position = 46.875*SizeConfig.widthMultiplier;
+    position = 46.875 * SizeConfig.widthMultiplier;
   } else if (isBetween(weightLevel, 101, 120)) {
     color = Colors.deepOrange;
-    position = 62.05357*SizeConfig.widthMultiplier;
+    position = 62.05357 * SizeConfig.widthMultiplier;
   } else if (weightLevel > 120) {
     color = Colors.red;
-    position = 77.0089*SizeConfig.widthMultiplier;
+    position = 77.0089 * SizeConfig.widthMultiplier;
   } else {
-    color = Colors.black;
-    position =  2.23214*SizeConfig.widthMultiplier;
+    color = Colors.blue;
+    position = 2.23214 * SizeConfig.widthMultiplier;
   }
 
   return [color, position];
@@ -82,6 +82,7 @@ class WeightMeasureControllers extends GetxController {
   }
 
   RxBool isLoadingAdd = false.obs;
+  RxBool isTwoDigit = false.obs;
 
   //* declare index
   RxInt pageIndex = 0.obs;
@@ -149,9 +150,14 @@ class WeightMeasureControllers extends GetxController {
           FirebaseFirestore.instance.collection("weight_data");
       QuerySnapshot querySnapshot =
           await collectionReference.where("email", isEqualTo: email).get();
-      DocumentSnapshot docs = await querySnapshot.docs.first;
 
-      if (!docs.exists) {
+      if (weightValue.value >= 10 && weightValue.value < 100) {
+        weightValue.value =
+            double.parse((weightValue.value).toStringAsFixed(2));
+        isTwoDigit.value = true;
+      }
+
+      if (querySnapshot.docs.isEmpty) {
         await collectionReference.add({
           "email": email,
           "weight_data": [
@@ -160,16 +166,19 @@ class WeightMeasureControllers extends GetxController {
               "weight_level": weightValue.value,
               "color": color,
               "status": status,
+              "isTwoDigit": isTwoDigit.value,
               "note": noteController.text.toString()
             }
           ]
         });
       } else {
+        DocumentSnapshot docs = await querySnapshot.docs.first;
         final list = {
           "date": "${date.toString()} : ${time.toString()}",
           "weight_level": weightValue.value,
           "color": color,
           "status": status,
+          "isTwoDigit": isTwoDigit.value,
           "note": noteController.text.toString()
         };
 
@@ -181,13 +190,19 @@ class WeightMeasureControllers extends GetxController {
 
       isLoadingAdd.value = false;
     } catch (e) {
-      toastErrorSlide(context, "Error adding data");
+      toastErrorSlide(context, "Error adding data : ${e.toString()}");
       isLoadingAdd.value = false;
     }
   }
 }
 
 class EditWeightMeasureDataController extends GetxController {
+  @override
+  void onInit() {
+    super.onInit();
+    fetchWeightData();
+  }
+
   //* variables and bools
   RxDouble AvgWeightLevel = 0.0.obs;
   RxDouble MaxWeightLevel = 0.0.obs;
@@ -195,6 +210,7 @@ class EditWeightMeasureDataController extends GetxController {
 
   RxList weight_data_list = [].obs;
   RxList weight_graph_list = [].obs;
+  RxList weight_report_list = [].obs;
 
   RxBool isLoadingReport = false.obs;
 
@@ -225,8 +241,8 @@ class EditWeightMeasureDataController extends GetxController {
     }
   }
 
-  //* fetch weight data from database
-  Future<List<dynamic>> fetchWeightData(BuildContext context) async {
+  //* fetch weight data
+  Future<List<dynamic>> fetchWeightData() async {
     try {
       final email = FirebaseAuth.instance.currentUser!.email!;
 
@@ -241,18 +257,64 @@ class EditWeightMeasureDataController extends GetxController {
 
       double weight_sum =
           (list.fold(0, (sum, entry) => sum + entry['weight_level']));
-      AvgWeightLevel.value = weight_sum / list.length;
+      AvgWeightLevel.value =
+          double.parse((weight_sum / list.length).toStringAsFixed(2));
 
-      MaxWeightLevel.value = list.reduce((a, b) =>
-          a['weight_level'] > b['weight_level'] ? a : b)['weight_level'];
-      MinWeightLevel.value = list.reduce((a, b) =>
-          a['weight_level'] < b['weight_level'] ? a : b)['weight_level'];
+      MaxWeightLevel.value = double.parse((list.reduce((a, b) =>
+              a['weight_level'] > b['weight_level'] ? a : b)['weight_level'])
+          .toStringAsFixed(2));
+      MinWeightLevel.value = double.parse((list.reduce((a, b) =>
+              a['weight_level'] < b['weight_level'] ? a : b)['weight_level'])
+          .toStringAsFixed(2));
 
       return weight_data_list;
     } catch (e) {
-      toastErrorSlide(context, "Error fetching data");
+      // toastErrorSlide(context, "Error fetching data");
       print(e.toString());
       return [];
+    }
+  }
+
+  //* fetch weight data stream from database
+  Stream<List<dynamic>> fetchWeightDataStream(BuildContext context) {
+    try {
+      final email = FirebaseAuth.instance.currentUser!.email!;
+
+      CollectionReference collectionReference =
+          FirebaseFirestore.instance.collection("weight_data");
+
+      return collectionReference
+          .where('email', isEqualTo: email)
+          .snapshots()
+          .map((querySnapshot) {
+        DocumentSnapshot docs = querySnapshot.docs.first;
+        List<dynamic> list = docs['weight_data'].toList();
+        weight_data_list.value = list;
+
+        if (list.isNotEmpty) {
+          double weight_sum =
+              (list.fold(0, (sum, entry) => sum + entry['weight_level']));
+          AvgWeightLevel.value =
+              double.parse((weight_sum / list.length).toStringAsFixed(2));
+
+          MaxWeightLevel.value = double.parse((list.reduce((a, b) =>
+                  a['weight_level'] > b['weight_level']
+                      ? a
+                      : b)['weight_level'])
+              .toStringAsFixed(2));
+          MinWeightLevel.value = double.parse((list.reduce((a, b) =>
+                  a['weight_level'] < b['weight_level']
+                      ? a
+                      : b)['weight_level'])
+              .toStringAsFixed(2));
+        }
+
+        return list;
+      });
+    } catch (e) {
+      toastErrorSlide(context, "Error fetching data");
+      print(e.toString());
+      return Stream.value([]);
     }
   }
 
@@ -271,8 +333,8 @@ class EditWeightMeasureDataController extends GetxController {
       final date = DateFormat('dd MMM yyyy').format(DateTime.now());
 
       for (var data in weight_data_list) {
-        String date = data["date"];
-        double weightLevel = data["weight_level"];
+        String date = (data["date"] as String).split(":")[0];
+        double weightLevel = (data["weight_level"] as num).toDouble();
 
         //* Add weight values
         if (!weightLevelData.containsKey(date)) {
@@ -294,6 +356,7 @@ class EditWeightMeasureDataController extends GetxController {
         final colorStatusList = getWeightColorStatus(avgWeightLevel[key]!);
         weight_report.add({
           "weight_level": avgWeightLevel[key],
+          "date": key,
           "color": colorStatusList[0],
           "status": colorStatusList[1]
         });
@@ -304,9 +367,8 @@ class EditWeightMeasureDataController extends GetxController {
           FirebaseFirestore.instance.collection("weight_report");
       QuerySnapshot querySnapshot =
           await collectionReference.where('email', isEqualTo: email).get();
-      DocumentSnapshot docs = querySnapshot.docs.first;
 
-      if (!docs.exists) {
+      if (querySnapshot.docs.isEmpty) {
         await collectionReference.add({
           "email": email,
           "weight_report": [
@@ -314,26 +376,27 @@ class EditWeightMeasureDataController extends GetxController {
           ]
         });
       } else {
+        DocumentSnapshot docs = querySnapshot.docs.first;
         final list = {"submitted_on": date, "weight_report": weight_report};
 
         await docs.reference.update({
           "weight_report": FieldValue.arrayUnion([list])
         });
-
-        //* after report is stored clear the data
-        CollectionReference collectionReference =
-            FirebaseFirestore.instance.collection("weight_data");
-        QuerySnapshot querySnapshot =
-            await collectionReference.where('email', isEqualTo: email).get();
-        DocumentSnapshot docs1 = querySnapshot.docs.first;
-        await docs1.reference.update({
-          'weight_data': FieldValue.delete(),
-        });
-
-        toastSuccessSlide(context, "Report Stored Successfully!");
-
-        isLoadingReport.value = false;
       }
+
+      //* after report is stored clear the data
+      CollectionReference weight_reference =
+          FirebaseFirestore.instance.collection("weight_data");
+      QuerySnapshot weight_shot =
+          await weight_reference.where('email', isEqualTo: email).get();
+      DocumentSnapshot docs1 = weight_shot.docs.first;
+      await docs1.reference.update({
+        'weight_data': FieldValue.delete(),
+      });
+
+      toastSuccessSlide(context, "Report Stored Successfully!");
+
+      isLoadingReport.value = false;
     } catch (e) {
       toastErrorSlide(context, "Cannot Store Report : ${e.toString()}");
       isLoadingReport.value = false;
@@ -341,20 +404,27 @@ class EditWeightMeasureDataController extends GetxController {
   }
 
   //* get report of weight data
-  Future<List<dynamic>> getReportData() async {
+  Stream<List<dynamic>> getReportData() {
     try {
       final email = FirebaseAuth.instance.currentUser!.email!;
 
       CollectionReference collectionReference =
           FirebaseFirestore.instance.collection("weight_report");
-      QuerySnapshot querySnapshot =
-          await collectionReference.where('email', isEqualTo: email).get();
-      DocumentSnapshot docs = querySnapshot.docs.first;
 
-      final List<dynamic> list = docs['weight_report'];
-      return list;
+      return collectionReference
+          .where('email', isEqualTo: email)
+          .snapshots()
+          .map((querySnapshot) {
+        if (querySnapshot.docs.isNotEmpty) {
+          DocumentSnapshot docs = querySnapshot.docs.first;
+          weight_report_list.value = docs['weight_report'];
+          return docs['weight_report'] as List<dynamic>;
+        } else {
+          return [];
+        }
+      });
     } catch (e) {
-      return [];
+      return Stream.value([]);
     }
   }
 }

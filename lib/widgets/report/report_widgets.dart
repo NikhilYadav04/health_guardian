@@ -163,7 +163,7 @@ Widget reportDisplayWidget(
 }
 
 Widget reportDisplayWidgetPressure(
-    String value, String unit, String date, Color color, String status) {
+    String systolic,String diastolic,String pulse, String unit, String date, Color color, String status) {
   return Container(
     padding: EdgeInsets.symmetric(
         vertical: 1.58 * SizeConfig.heightMultiplier,

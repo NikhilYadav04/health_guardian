@@ -30,7 +30,7 @@ AppBar appB(void Function() onTap1, void Function() onTap2) {
   );
 }
 
-Widget bloodSugarDataWidget() {
+Widget bloodSugarDataWidget(EditBloodSugarDataControllers editController) {
   return Container(
     height: 28.44*SizeConfig.heightMultiplier,
     width: double.infinity,
@@ -102,27 +102,29 @@ Widget bloodSugarDataWidget() {
                 SizedBox(
                   height: 1.58*SizeConfig.heightMultiplier,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    dataCard("90.6", "Average"),
-                    Container(
-                        height: 9.48*SizeConfig.heightMultiplier,
-                        child: VerticalDivider(
-                          color: Color.fromARGB(255, 223, 214, 214),
-                          width: 2.23*SizeConfig.widthMultiplier,
-                          thickness: 3,
-                        )),
-                    dataCard("132.5", "Maximum"),
-                    Container(
-                        height: 9.48*SizeConfig.heightMultiplier,
-                        child: VerticalDivider(
-                          color: Color.fromARGB(255, 223, 214, 214),
-                          width: 2.23*SizeConfig.widthMultiplier,
-                          thickness: 3,
-                        )),
-                    dataCard("74.9", "Minimum"),
-                  ],
+                Obx(
+                  ()=> Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      dataCard(editController.AvgSugarLevel.toString(), "Average"),
+                      Container(
+                          height: 9.48*SizeConfig.heightMultiplier,
+                          child: VerticalDivider(
+                            color: Color.fromARGB(255, 223, 214, 214),
+                            width: 2.23*SizeConfig.widthMultiplier,
+                            thickness: 3,
+                          )),
+                      dataCard(editController.MaxSugarLevel.toString(), "Maximum"),
+                      Container(
+                          height: 9.48*SizeConfig.heightMultiplier,
+                          child: VerticalDivider(
+                            color: Color.fromARGB(255, 223, 214, 214),
+                            width: 2.23*SizeConfig.widthMultiplier,
+                            thickness: 3,
+                          )),
+                      dataCard(editController.MinSugarLevel.toString(), "Minimum"),
+                    ],
+                  ),
                 ),
               ],
             )),
@@ -158,7 +160,7 @@ Widget dataCard(String value, String title) {
   );
 }
 
-Widget doubleButtonWidget(BloodSugarControllers controller) {
+Widget doubleButtonWidget(BloodSugarControllers controller,num count) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -176,7 +178,7 @@ Widget doubleButtonWidget(BloodSugarControllers controller) {
       ),
       Obx(
         () => buttonsDetail(
-            "History (260)",
+            "History (${count})",
             controller.navigatePage,
              controller.pageIndex.value == 1
                 ? Colours.buttonColorRed

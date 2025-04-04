@@ -10,6 +10,7 @@ import 'package:health_guardian/widgets/detail-screen/blood-pressure/bp_widgets_
 class BloodPressureDetail extends StatelessWidget {
   final BloodPressureControllers controller =
       Get.put(BloodPressureControllers());
+  final EditBloodPressureDataControllers editController = Get.put(EditBloodPressureDataControllers());
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +26,13 @@ class BloodPressureDetail extends StatelessWidget {
           child: Column(
             children: [
               //* widget for showing blood pressure data
-              bloodPressureDataWidget(),
+              bloodPressureDataWidget(editController),
 
               //* for buttons of stats and history
               SizedBox(
                 height: 3.68*SizeConfig.heightMultiplier,
               ),
-              doubleButtonWidgetBP(controller),
+              doubleButtonWidgetBP(controller,editController),
               SizedBox(
                 height: 3.68*SizeConfig.heightMultiplier,
               ),
@@ -44,7 +45,7 @@ class BloodPressureDetail extends StatelessWidget {
                     borderRadius: BorderRadius.circular(1.05*SizeConfig.heightMultiplier),
                   ),
                   height: 54.77*SizeConfig.heightMultiplier,
-                  child: dataWidgetBP(controller, "", "", "")),
+                  child: dataWidgetBP(controller,editController)),
               SizedBox(
                 height: 4.74*SizeConfig.heightMultiplier,
               ),

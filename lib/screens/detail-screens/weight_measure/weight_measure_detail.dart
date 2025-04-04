@@ -10,6 +10,7 @@ import 'package:health_guardian/widgets/detail-screen/weight-measure/wm_widgets_
 class WeightMeasureDetail extends StatelessWidget {
   final WeightMeasureControllers controllers =
       Get.put(WeightMeasureControllers());
+  final EditWeightMeasureDataController editController = Get.put(EditWeightMeasureDataController());
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +26,15 @@ class WeightMeasureDetail extends StatelessWidget {
           child: Column(
             children: [
               //* Widget for showing weight data
-              wightMeasureDataWidget(),
+              wightMeasureDataWidget(editController),
 
               //* for buttons of stats and history
               SizedBox(
                 height: 35,
               ),
-              doubleButtonWMWidget(controllers),
+
+              Obx(()=> doubleButtonWMWidget(controllers,editController.weight_data_list.length)),
+              
               SizedBox(
                 height: 35,
               ),
@@ -50,7 +53,7 @@ class WeightMeasureDetail extends StatelessWidget {
                     // ],
                   ),
                   height: 47.40*SizeConfig.heightMultiplier,
-                  child: dataWidgetWeightMeasure(controllers, "", "", "")),
+                  child: dataWidgetWeightMeasure(controllers, editController)),
               SizedBox(
                 height:3.68*SizeConfig.heightMultiplier,
               ),

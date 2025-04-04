@@ -20,29 +20,59 @@ class AnalyzeScreen extends StatelessWidget {
         T1("Risk Assessment", Images.heartMeasureIcon),
 
         SizedBox(
-          height: 1.58*SizeConfig.heightMultiplier,
+          height: 1.58 * SizeConfig.heightMultiplier,
         ),
-        descTextAnalyze("Analyze your disease risk probability by\nfilling required health parameters and\nreceive your health risk prediction instantly.",2.35 * SizeConfig.heightMultiplier),
+        descTextAnalyze(
+            "Analyze your disease risk probability by\nfilling required health parameters and\nreceive your health risk prediction instantly.",
+            2.35 * SizeConfig.heightMultiplier),
 
         SizedBox(
-          height: 3.68*SizeConfig.heightMultiplier,
+          height: 3.68 * SizeConfig.heightMultiplier,
         ),
 
         //* diseaseCard Widgets
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            analyzeDiseaseCard("Diabetes", Color.fromARGB(255, 245, 208, 204),Colours.buttonColorRed,Images.DiabetesIcon,controllers.bloodSugar,controllers.setPressedBloodSugar,(){Get.to( () => AnalyzeSugarScreen(),transition: Transition.fadeIn);}),
-           
-          analyzeDiseaseCard("Hypertension", Color.fromARGB(255, 164, 238, 183),Colors.green,Images.BloodPressureMeasureIcon2,controllers.hyperTension,controllers.setPressedHyperTension,(){Get.to( () => AnalyzeHypertension(),transition: Transition.fadeIn);}),
+            analyzeDiseaseCard(
+                "Diabetes",
+                Color.fromARGB(255, 245, 208, 204),
+                Colours.buttonColorRed,
+                Images.DiabetesIcon,
+                controllers.bloodSugar,
+                controllers.setPressedBloodSugar, () {
+              Get.to(() => AnalyzeSugarScreen(), transition: Transition.fadeIn);
+            }),
+            analyzeDiseaseCard(
+                "Hypertension",
+                Color.fromARGB(255, 164, 238, 183),
+                Colors.green,
+                Images.BloodPressureMeasureIcon2,
+                controllers.hyperTension,
+                controllers.setPressedHyperTension, () {
+              Get.to(() => AnalyzeHypertension(),
+                  transition: Transition.fadeIn);
+            }),
           ],
         ),
-        SizedBox(height: 1.58*SizeConfig.heightMultiplier,),
+        SizedBox(
+          height: 1.58 * SizeConfig.heightMultiplier,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-        analyzeDiseaseCard("Heart Attack", Color.fromARGB(255, 245, 208, 204),Colours.buttonColorRed,Images.heartMeasureIcon,controllers.heartAttack,controllers.setPressedHeartAttack,(){}),
+            analyzeDiseaseCard(
+                "Heart Attack",
+                Color.fromARGB(255, 245, 208, 204),
+                Colours.buttonColorRed,
+                Images.heartMeasureIcon,
+                controllers.heartAttack,
+                controllers.setPressedHeartAttack,
+                () {}),
           ],
+        ),
+        SizedBox(
+          height: 20,
         ),
       ],
     );

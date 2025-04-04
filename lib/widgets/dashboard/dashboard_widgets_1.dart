@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:health_guardian/getX_controllers/dashboard/dashboard_controllers.dart';
+import 'package:health_guardian/getX_controllers/detail-screen/heart_rate_controllers.dart';
 import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/images.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
@@ -90,7 +92,7 @@ BottomNavigationBar bottomBar(
   );
 }
 
-Widget heartMeasureCard(void Function() onTap) {
+Widget heartMeasureCard(void Function() onTap,EditHeartRateDataController editController) {
   return Container(
     padding:
         EdgeInsets.symmetric(horizontal: 4.46 * SizeConfig.widthMultiplier),
@@ -121,12 +123,14 @@ Widget heartMeasureCard(void Function() onTap) {
                 SizedBox(
                   height: 1.05 * SizeConfig.heightMultiplier,
                 ),
-                Text(
-                  "150 Records",
-                  style: TextStyle(
-                      color: const Color.fromARGB(255, 80, 78, 78),
-                      fontFamily: "Poppins-Bold",
-                      fontSize: 2.5 * SizeConfig.heightMultiplier),
+                Obx(
+                  ()=> Text(
+                    "${editController.heart_data_list.length} Records",
+                    style: TextStyle(
+                        color: const Color.fromARGB(255, 80, 78, 78),
+                        fontFamily: "Poppins-Bold",
+                        fontSize: 2.5 * SizeConfig.heightMultiplier),
+                  ),
                 ),
                 SizedBox(height: 2.63 * SizeConfig.heightMultiplier),
                 buttonsSample(

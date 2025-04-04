@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:health_guardian/getX_controllers/detail-screen/blood_pressure_controllers.dart';
+import 'package:health_guardian/helper/color_Convert.dart';
 import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/buttons/detail_buttons.dart';
@@ -8,7 +11,10 @@ import 'package:health_guardian/widgets/dashboard/dashboard_widgets_2.dart';
 import 'package:health_guardian/widgets/report/report_widgets.dart';
 
 class BloodPressureHistoryScreen extends StatelessWidget {
-  const BloodPressureHistoryScreen({super.key});
+  BloodPressureHistoryScreen({super.key});
+
+  final EditBloodPressureDataControllers editController =
+      Get.find<EditBloodPressureDataControllers>();
 
   @override
   Widget build(BuildContext context) {
@@ -55,129 +61,173 @@ class BloodPressureHistoryScreen extends StatelessWidget {
         ),
       ),
 
-      body: ListView.builder(
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return Container(
-              padding: EdgeInsets.symmetric(
-                  vertical: 1.58 * SizeConfig.heightMultiplier,
-                  horizontal: 2.67 * SizeConfig.widthMultiplier),
-              margin: EdgeInsets.symmetric(
-                  vertical: 1.5 * SizeConfig.heightMultiplier,
-                  horizontal: 2.67 * SizeConfig.widthMultiplier),
-              height: 22 * SizeConfig.heightMultiplier,
-              decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey.shade900,
-                        spreadRadius: 3,
-                        blurRadius: 2)
-                  ],
-                  borderRadius:
-                      BorderRadius.circular(0.8 * SizeConfig.heightMultiplier),
-                  color: Color.fromARGB(255, 237, 228, 228)),
-              child: Column(children: [
-                Flexible(
-                  flex: 3,
-                  child: Text(
-                    "Before Eating",
-                    style: TextStyle(
-                        color: Colors.grey.shade900,
-                        fontFamily: "CoreSansBold",
-                        fontSize: 2.8 * SizeConfig.heightMultiplier),
-                  ),
-                ),
-                SizedBox(height: 1.053*SizeConfig.heightMultiplier,),
-                Flexible(
-                    flex: 5,
-                    child: Row(
-                      children: [
-                        Expanded(flex: 1, child: display("78", "systolic")),
-                        Expanded(flex: 1, child: display("80", "diastolic")),
-                        Expanded(
-                          flex: 1,
-                          child: FittedBox(
-                            child: Column(
+      body: StreamBuilder(
+          stream: editController.fetchBPDataStream(),
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return SpinKitCircle(
+                color: Colours.buttonColorRed,
+                size: 50,
+              );
+            } else if (snapshot.hasError) {
+              return Text("Error");
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Text("No Data");
+            } else {
+              return ListView.builder(
+                  itemCount: editController.bp_data_list.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 1.58 * SizeConfig.heightMultiplier,
+                          horizontal: 2.67 * SizeConfig.widthMultiplier),
+                      margin: EdgeInsets.symmetric(
+                          vertical: 1.5 * SizeConfig.heightMultiplier,
+                          horizontal: 2.67 * SizeConfig.widthMultiplier),
+                      height: 22 * SizeConfig.heightMultiplier,
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey.shade900,
+                                spreadRadius: 3,
+                                blurRadius: 2)
+                          ],
+                          borderRadius: BorderRadius.circular(
+                              0.8 * SizeConfig.heightMultiplier),
+                          color: Color.fromARGB(255, 237, 228, 228)),
+                      child: Column(children: [
+                        Flexible(
+                          flex: 3,
+                          child: Text(
+                            editController.bp_data_list[index]["status"],
+                            style: TextStyle(
+                                color: Colors.grey.shade900,
+                                fontFamily: "CoreSansBold",
+                                fontSize: 2.8 * SizeConfig.heightMultiplier),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 1.053 * SizeConfig.heightMultiplier,
+                        ),
+                        Flexible(
+                            flex: 5,
+                            child: Row(
                               children: [
-                                Text(
-                                  "82",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: "CoreSansBold",
-                                      fontSize:
-                                          3.3 * SizeConfig.heightMultiplier),
+                                Expanded(
+                                    flex: 1,
+                                    child: display(
+                                        editController.bp_data_list[index]
+                                                ["systolic"]
+                                            .toStringAsFixed(2),
+                                        "systolic")),
+                                Expanded(
+                                    flex: 1,
+                                    child: display(
+                                        editController.bp_data_list[index]
+                                                ["diastolic"]
+                                            .toStringAsFixed(2),
+                                        "diastolic")),
+                                Expanded(
+                                  flex: 1,
+                                  child: FittedBox(
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          editController.bp_data_list[index]
+                                                  ["pulse"]
+                                              .toStringAsFixed(2),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: "CoreSansBold",
+                                              fontSize: 3.3 *
+                                                  SizeConfig.heightMultiplier),
+                                        ),
+                                        Text(
+                                          "Pulse",
+                                          style: TextStyle(
+                                              color: const Color.fromARGB(
+                                                  255, 80, 78, 78),
+                                              fontFamily: "CoreSansMed",
+                                              fontSize: 2.1 *
+                                                  SizeConfig.heightMultiplier),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                                Text(
-                                  "pulse",
+                              ],
+                            )),
+                        SizedBox(
+                          height: 1.9 * SizeConfig.heightMultiplier,
+                        ),
+                        Flexible(
+                          flex: 4,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  editController.bp_data_list[index]["date"],
                                   style: TextStyle(
-                                      color:
-                                          const Color.fromARGB(255, 80, 78, 78),
+                                      color: Colors.grey.shade900,
                                       fontFamily: "CoreSansMed",
                                       fontSize:
                                           2.1 * SizeConfig.heightMultiplier),
                                 ),
-                              ],
-                            ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: buttonsDetail1(
+                                    editController.bp_data_list[index]
+                                        ["status"],
+                                    () {},
+                                    ColorConvert.colorMap[editController
+                                        .bp_data_list[index]["color"]]!,
+                                    Colors.white,
+                                    4.74 * SizeConfig.heightMultiplier,
+                                    22.32 * SizeConfig.widthMultiplier,
+                                    0.63 * SizeConfig.heightMultiplier,
+                                    2.00 * SizeConfig.heightMultiplier),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    )),
-                SizedBox(
-                  height: 1.9* SizeConfig.heightMultiplier,
-                ),
-                Flexible(
-                  flex: 4,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Text(
-                          "Dec 22, 2024 : 10:54 AM",
-                          style: TextStyle(
-                              color: Colors.grey.shade900,
-                              fontFamily: "CoreSansMed",
-                              fontSize: 2.1 * SizeConfig.heightMultiplier),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: buttonsDetail1(
-                            "Hyper",
-                            () {},
-                            Colors.red,
-                            Colors.white,
-                            4.74 * SizeConfig.heightMultiplier,
-                            22.32 * SizeConfig.widthMultiplier,
-                            0.63 * SizeConfig.heightMultiplier,
-                            2.00 * SizeConfig.heightMultiplier),
-                      ),
-                    ],
-                  ),
-                ),
-              ]),
-            );
+                      ]),
+                    );
+                  });
+            }
           }),
 
       //*Button For Submitting Report
-      floatingActionButton: SizedBox(
-        height: 70,
-        width: 175,
-        child: InkWell(
-          onTap: () {},
-          borderRadius: BorderRadius.circular(25),
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          child: ReportButton(
-            "Store Report",
-            () {},
-            Colours.buttonColorRed,
-            Colors.white,
-            0,
-            0,
-            25,
-            23,
-          ),
-        ),
+      floatingActionButton: Obx(
+        () => editController.isLoadingReport.value
+            ? FloatingActionButton(
+                onPressed: null,
+                backgroundColor: Colours.buttonColorRed,
+                child: SpinKitCircle(color: Colors.white, size: 24),
+              )
+            : SizedBox(
+                height: 70,
+                width: 175,
+                child: InkWell(
+                  onTap: () {
+                    editController.generateReportBPDate(context);
+                  },
+                  borderRadius: BorderRadius.circular(25),
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  child: ReportButton(
+                    "Store Report",
+                    () {},
+                    Colours.buttonColorRed,
+                    Colors.white,
+                    0,
+                    0,
+                    25,
+                    23,
+                  ),
+                ),
+              ),
       ),
     ));
   }

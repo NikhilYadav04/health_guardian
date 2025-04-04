@@ -26,6 +26,31 @@ class HelperFunctions {
     prefs.setBool(dotenv.get('PROFILE_TOKEN'), true);
   }
 
+  //* to store age of user
+  static Future<void> setUserAge(String age,String key) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(key, age);
+  }
+
+  //* to set gender of user
+  static Future<void> setUserGender(String gender,String key) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(key, gender);
+  }
+
+
+  //* to get age of user
+  static Future<String> getUserAge(String key) async{
+    SharedPreferences prefs =await SharedPreferences.getInstance();
+    return prefs.getString(key) ?? "20";
+  }
+
+  //* to get gender of user
+  static Future<String> getUserGender(String key) async{
+    SharedPreferences prefs =await SharedPreferences.getInstance();
+    return prefs.getString(key) ?? "MF";
+  }
+
   //* get name of user
   static Future<String> getName(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

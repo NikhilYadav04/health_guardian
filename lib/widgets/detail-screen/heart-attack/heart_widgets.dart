@@ -43,7 +43,7 @@ Widget title2Heart() {
   );
 }
 
-Widget measureTextWidget( String title) {
+Widget measureTextWidget(String title) {
   return Text(
     title,
     style: TextStyle(
@@ -142,34 +142,33 @@ Widget heartRateInputWidget(HeartRateControllers controller) {
         //* Heart Rate Value Display
         GestureDetector(
           onTap: () {
-            Get.bottomSheet(
-              Container(
-                height: 26.34 * SizeConfig.heightMultiplier,
-                color: Colors.white,
-                child: CupertinoPicker(
-                  itemExtent: 40,
-                  scrollController: FixedExtentScrollController(
-                    initialItem: (controller.heartBPMRate.value - 40).toInt(),
-                  ),
-                  onSelectedItemChanged: (int index) {
-                    int selectedBPM = 40 + index;
-                    controller.changeLevel(selectedBPM);
-                  },
-                  children: List<Widget>.generate(141, (int index) {
-                    int value = 40 + index;
-                    return Center(
-                      child: Text(
-                        "$value bpm",
-                        style: TextStyle(
-                          fontFamily: "CoreSansBold",
-                          fontSize: 2.73 * SizeConfig.heightMultiplier,
-                        ),
-                      ),
-                    );
-                  }),
+            Get.bottomSheet(Container(
+              height: 26.34 * SizeConfig.heightMultiplier,
+              color: Colors.white,
+              child: CupertinoPicker(
+                itemExtent: 40,
+                scrollController: FixedExtentScrollController(
+                  initialItem:
+                      ((controller.heartBPMRate.value - 40) * 2).toInt(),
                 ),
+                onSelectedItemChanged: (int index) {
+                  double selectedBPM = 40 + (index * 0.5);
+                  controller.changeLevel(selectedBPM);
+                },
+                children: List<Widget>.generate(281, (int index) {
+                  double value = 40 + (index * 0.5);
+                  return Center(
+                    child: Text(
+                      "${value.toStringAsFixed(1)} bpm",
+                      style: TextStyle(
+                        fontFamily: "CoreSansBold",
+                        fontSize: 2.73 * SizeConfig.heightMultiplier,
+                      ),
+                    ),
+                  );
+                }),
               ),
-            );
+            ));
           },
           child: Obx(() => Text(
                 "${controller.heartBPMRate.value} bpm",

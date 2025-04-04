@@ -31,7 +31,7 @@ AppBar appBWm(void Function() onTap1, void Function() onTap2) {
   );
 }
 
-Widget wightMeasureDataWidget(){
+Widget wightMeasureDataWidget(EditWeightMeasureDataController editController){
   return Container(
     height:  28.44*SizeConfig.heightMultiplier,
     width: double.infinity,
@@ -103,27 +103,29 @@ Widget wightMeasureDataWidget(){
                 SizedBox(
                   height: 1.58*SizeConfig.heightMultiplier,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    dataCard("75.4", "Average"),
-                    Container(
-                        height: 9.48*SizeConfig.heightMultiplier,
-                        child: VerticalDivider(
-                          color: Color.fromARGB(255, 223, 214, 214),
-                          width: 2.23*SizeConfig.widthMultiplier,
-                          thickness: 3,
-                        )),
-                    dataCard("83.8", "Maximum"),
-                    Container(
-                        height: 9.48*SizeConfig.heightMultiplier,
-                        child: VerticalDivider(
-                          color: Color.fromARGB(255, 223, 214, 214),
-                          width:2.23*SizeConfig.widthMultiplier,
-                          thickness: 3,
-                        )),
-                    dataCard("70.5", "Minimum"),
-                  ],
+                Obx(
+                  ()=> Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      dataCard(editController.AvgWeightLevel.toString(), "Average"),
+                      Container(
+                          height: 9.48*SizeConfig.heightMultiplier,
+                          child: VerticalDivider(
+                            color: Color.fromARGB(255, 223, 214, 214),
+                            width: 2.23*SizeConfig.widthMultiplier,
+                            thickness: 3,
+                          )),
+                      dataCard(editController.MaxWeightLevel.value.toString(), "Maximum"),
+                      Container(
+                          height: 9.48*SizeConfig.heightMultiplier,
+                          child: VerticalDivider(
+                            color: Color.fromARGB(255, 223, 214, 214),
+                            width:2.23*SizeConfig.widthMultiplier,
+                            thickness: 3,
+                          )),
+                      dataCard(editController.MinWeightLevel.toString(), "Minimum"),
+                    ],
+                  ),
                 ),
               ],
             )),
@@ -132,7 +134,7 @@ Widget wightMeasureDataWidget(){
   );
 }
 
-Widget doubleButtonWMWidget(WeightMeasureControllers controller){
+Widget doubleButtonWMWidget(WeightMeasureControllers controller,num value){
   return  Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -150,7 +152,7 @@ Widget doubleButtonWMWidget(WeightMeasureControllers controller){
       ),
       Obx(
         () => buttonsDetail(
-            "History (260)",
+            "History (${value})",
             controller.navigatePage,
              controller.pageIndex.value == 1
                 ? Colours.buttonColorRed
