@@ -216,6 +216,7 @@ class EditHeartRateDataController extends GetxController {
   RxList heart_data_list = [].obs;
   RxList heart_graph_list = [].obs;
   RxList heart_report_list = [].obs;
+  RxDouble AvgHearTLevel = 0.0.obs;
 
   RxBool isLoadingReport = false.obs;
 
@@ -322,6 +323,11 @@ class EditHeartRateDataController extends GetxController {
         if (querySnapshot.docs.isNotEmpty) {
           DocumentSnapshot docs = querySnapshot.docs.first;
           List<dynamic> list = docs['heart_data'].toList();
+
+          double heart_sum =
+              (list.fold(0, (sum, entry) => sum + entry['heart_level']));
+          AvgHearTLevel.value =
+              double.parse((heart_sum / list.length).toStringAsFixed(2));
           heart_data_list.value = list;
           return list;
         } else {

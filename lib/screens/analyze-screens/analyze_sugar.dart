@@ -13,6 +13,7 @@ import 'package:lottie/lottie.dart';
 
 class AnalyzeSugarScreen extends StatelessWidget {
   final AnalyzeSugarControllers controller = Get.put(AnalyzeSugarControllers());
+ // final EditBloodSugarDataControllers editController = Get.put(EditBloodSugarDataControllers());
 
   Color getBackgroundColor(bool condition) =>
       condition ? Colours.buttonColorRed : Color.fromARGB(255, 246, 240, 241);

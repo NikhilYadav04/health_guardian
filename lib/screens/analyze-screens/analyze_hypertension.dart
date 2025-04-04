@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_guardian/getX_controllers/analyze-screen/hypertension_controllers.dart';
+import 'package:health_guardian/getX_controllers/detail-screen/blood_pressure_controllers.dart';
+import 'package:health_guardian/getX_controllers/detail-screen/heart_rate_controllers.dart';
 import 'package:health_guardian/styling/images.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/analyze-hypertension/widgets_1.dart';
@@ -11,6 +13,8 @@ import 'package:lottie/lottie.dart';
 
 class AnalyzeHypertension extends StatelessWidget {
   final HypertensionControllers controller = Get.put(HypertensionControllers());
+  final EditBloodPressureDataControllers editController = Get.put(EditBloodPressureDataControllers());
+  final EditHeartRateDataController editControllerHeart = Get.put(EditHeartRateDataController());
 
   @override
   Widget build(BuildContext context) {
@@ -96,13 +100,13 @@ class AnalyzeHypertension extends StatelessWidget {
                     AnalyzeCard(
                       "Systolic BP",
                       Icons.bloodtype,
-                      "${controller.pressureLevelSystolic.value.toString()} pa",
+                      "${editController.pressureLevelSystolic.toString()} pa",
                       45.75 * SizeConfig.widthMultiplier,
                     ),
                     AnalyzeCard(
                         "Diastolic BP",
                         Icons.bloodtype,
-                        "${controller.pressureLevelDiastolic.value.toString()} pa",
+                        "${editController.pressureLevelSystolic.toString()} pa",
                         45.75 * SizeConfig.widthMultiplier),
                   ],
                 ),
@@ -120,7 +124,7 @@ class AnalyzeHypertension extends StatelessWidget {
                   Obx(() => AnalyzeCard(
                       "Heart Rate",
                       Icons.monitor_heart_sharp,
-                      "${controller.heartLevel.value} bpm",
+                      "${editControllerHeart.AvgHearTLevel.value} bpm",
                       45.75 * SizeConfig.widthMultiplier)),
                 ],
               ),

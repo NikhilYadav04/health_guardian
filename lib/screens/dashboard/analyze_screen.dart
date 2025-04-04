@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_guardian/getX_controllers/button/button_controllers.dart';
-import 'package:health_guardian/screens/analyze-screens.dart/analyze_hypertension.dart';
-import 'package:health_guardian/screens/analyze-screens.dart/analyze_sugar.dart';
+import 'package:health_guardian/screens/analyze-screens/analyze_hypertension.dart';
+import 'package:health_guardian/screens/analyze-screens/analyze_sugar.dart';
 import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/images.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
