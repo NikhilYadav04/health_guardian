@@ -201,6 +201,7 @@ class EditWeightMeasureDataController extends GetxController {
   void onInit() {
     super.onInit();
     fetchWeightData();
+    formatWeightData();
   }
 
   //* variables and bools
@@ -211,6 +212,7 @@ class EditWeightMeasureDataController extends GetxController {
   RxList weight_data_list = [].obs;
   RxList weight_graph_list = [].obs;
   RxList weight_report_list = [].obs;
+  RxList weight_report_date = [].obs;
 
   RxBool isLoadingReport = false.obs;
 
@@ -234,6 +236,8 @@ class EditWeightMeasureDataController extends GetxController {
             "date": "${sublist.first['date']} - ${sublist.last['date']}",
             "weight_level": sublist.map((e) => e['weight_level']).toList()
           });
+
+          weight_report_date.add("${sublist.first['date']} - ${sublist.last['date']}");
         }
       }
     } catch (e) {

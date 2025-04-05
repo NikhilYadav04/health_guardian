@@ -230,6 +230,7 @@ class EditBloodSugarDataControllers extends GetxController {
     super.onInit();
     print("Controller Initialized!");
     fetchSugarData();
+    formatSugarData();
   }
 
   //* variables and bools
@@ -240,6 +241,7 @@ class EditBloodSugarDataControllers extends GetxController {
   RxList sugar_data_list = [].obs;
   RxList sugar_graph_list = [].obs;
   RxList sugar_report_list = [].obs;
+  RxList sugar_report_date = [].obs;
 
   RxBool isLoadingReport = false.obs;
 
@@ -263,7 +265,10 @@ class EditBloodSugarDataControllers extends GetxController {
             "date": "${sublist.first['date']} - ${sublist.last['date']}",
             "sugar_level": sublist.map((e) => e['sugar_level']).toList()
           });
+
+          sugar_report_date.add("${sublist.first['date']} - ${sublist.last['date']}");
         }
+
       }
     } catch (e) {
       print(e);

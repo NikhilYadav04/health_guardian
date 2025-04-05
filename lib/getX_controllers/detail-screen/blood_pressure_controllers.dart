@@ -91,6 +91,7 @@ class BloodPressureControllers extends GetxController {
   //* declare index
   RxInt pageIndex = 0.obs;
   RxInt pageIndexDate = 0.obs;
+  RxInt dateIndex = 0.obs;
 
   //* color and position for arrow animation
   Rx<Color> arrowColor = Colors.blue.obs;
@@ -101,11 +102,15 @@ class BloodPressureControllers extends GetxController {
     pageIndex.value = 1;
   }
 
-  void navigatePageDate() {
-    pageControllerDate.nextPage(
-        duration: Duration(milliseconds: 500), curve: Curves.linearToEaseOut);
-    if (pageIndexDate.value < 1) {
+  void navigatePageDate(num index) {
+    logger.d(pageIndexDate.value);
+    if (pageIndexDate.value < (index - 1)) {
+      pageControllerDate.nextPage(
+        duration: Duration(milliseconds: 500),
+        curve: Curves.linearToEaseOut,
+      );
       pageIndexDate.value++;
+      dateIndex.value--;
     }
   }
 
@@ -119,6 +124,7 @@ class BloodPressureControllers extends GetxController {
         duration: Duration(milliseconds: 500), curve: Curves.linearToEaseOut);
     if (pageIndexDate.value > 0) {
       pageIndexDate.value--;
+      dateIndex.value--;
     }
   }
 
@@ -252,10 +258,13 @@ class BloodPressureControllers extends GetxController {
 
 class EditBloodPressureDataControllers extends GetxController {
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
+    isLoadingGraph.value = true;
     print("Controller Initialized");
-    fetchBPData(); // Call API or perform initialization here
+    await fetchBPData(); // Call API or perform initialization here
+    await formatGraphList();
+    isLoadingGraph.value = false;
   }
 
   //* variables and bools
@@ -265,10 +274,12 @@ class EditBloodPressureDataControllers extends GetxController {
 
   RxBool isLoadingFetch = false.obs;
   RxBool isLoadingReport = false.obs;
+  RxBool isLoadingGraph = false.obs;
 
   RxList bp_data_list = [].obs;
   RxList bp_graph_list = [].obs;
   RxList bp_report_list = [].obs;
+  RxList bp_report_date = [].obs;
 
   //* to make sorted date wise lists of data
   Future<void> formatGraphList() async {
@@ -286,11 +297,17 @@ class EditBloodPressureDataControllers extends GetxController {
 
       if (sublist.isNotEmpty) {
         bp_graph_list.add({
-          "date": "${sublist.first['date']} - ${sublist.last['date']}",
+          "date":
+              "${sublist.first['date'].toString().split(":")[0]} - ${sublist.last['date'].toString().split(":")[0]}",
           "systolic": sublist.map((e) => e['systolic']).toList(),
           "diastolic": sublist.map((e) => e['diastolic']).toList(),
         });
+
+        bp_report_date.add(
+            "${sublist.first['date'].toString().split(":")[0]} - ${sublist.last['date'].toString().split(":")[0]}");
       }
+
+      Future.delayed(Duration(seconds: 2));
     }
   }
 

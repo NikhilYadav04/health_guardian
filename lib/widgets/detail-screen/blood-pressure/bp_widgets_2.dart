@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:health_guardian/getX_controllers/detail-screen/blood_pressure_controllers.dart';
 import 'package:health_guardian/helper/color_Convert.dart';
@@ -6,6 +7,7 @@ import 'package:health_guardian/screens/detail-screens/blood-pressure/blood_pres
 import 'package:health_guardian/screens/detail-screens/blood-pressure/pressure_graph_report.dart';
 // ignore: unused_import
 import 'package:health_guardian/screens/detail-screens/blood-sugar/sugar_graph_report.dart';
+import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/buttons/detail_buttons.dart';
 
@@ -60,37 +62,57 @@ Widget graphDataBP(BloodPressureControllers controller,
           onPressed: controller.previousPageDate,
           color: Colors.black,
         ),
-        Text("Dec 16 - Dec 22, 2024",
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                fontSize: 2.4 * SizeConfig.heightMultiplier,
-                color: Colors.black,
-                fontFamily: "Poppins-Med",
-                fontWeight: FontWeight.bold)),
+        Obx(
+          () => editController.isLoadingGraph.value
+              ? SpinKitCircle(
+                  color: Colours.buttonColorRed,
+                  size: 40,
+                )
+              : FittedBox(
+                  child: Text(
+                      editController.bp_report_date[controller.dateIndex.value],
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontSize: 2.25 * SizeConfig.heightMultiplier,
+                          color: Colors.black,
+                          fontFamily: "Poppins-Med",
+                          fontWeight: FontWeight.bold)),
+                ),
+        ),
         IconButton(
           icon: Icon(
             Icons.arrow_forward_ios_outlined,
             size: 2.528 * SizeConfig.heightMultiplier,
           ),
-          onPressed: controller.navigatePageDate,
+          onPressed: () =>
+              controller.navigatePageDate(editController.bp_graph_list.length),
           color: Colors.black,
         )
       ],
     ),
     SizedBox(
-      height: 2.633 * SizeConfig.heightMultiplier,
+      height: 3.5 * SizeConfig.heightMultiplier,
     ),
-    Container(
-      color: Colors.white,
-      height: 27.5 * SizeConfig.heightMultiplier,
-      width: 91.517 * SizeConfig.widthMultiplier,
-      child: PageView(
-        controller: controller.pageControllerDate,
-        children: [
-          BarChartExample(),
-          BarChartExample(),
-        ],
-      ),
+    Obx(
+      () => editController.isLoadingGraph.value
+          ? SpinKitCircle(
+              color: Colours.buttonColorRed,
+              size: 40,
+            )
+          : Container(
+              color: Colors.white,
+              height: 28 * SizeConfig.heightMultiplier,
+              width: 91.517 * SizeConfig.widthMultiplier,
+              child: PageView(
+                controller: controller.pageControllerDate,
+                children: List.generate(
+                  editController.bp_graph_list.length,
+                  (index) => BarChartExample(
+                    list: [editController.bp_graph_list[index]],
+                  ), // pass data if needed
+                ),
+              ),
+            ),
     ),
     SizedBox(
       height: 2.106 * SizeConfig.heightMultiplier,
@@ -127,7 +149,7 @@ Widget historyListBP(
             ),
             height: 36.869 * SizeConfig.heightMultiplier,
             child: ListView.builder(
-              shrinkWrap: true,
+                shrinkWrap: true,
                 itemCount: editController.bp_data_list.length > 4
                     ? 4
                     : editController.bp_data_list.length,
