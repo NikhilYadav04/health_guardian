@@ -67,15 +67,20 @@ Widget graphDataWeightMeasure(WeightMeasureControllers controller,
                   color: Colours.buttonColorRed,
                   size: 40,
                 )
-              : FittedBox(
-                child: Text(
-                    editController.weight_report_date[controller.dateIndex.value],
-                    style: TextStyle(
-                        fontSize: 2.25 * SizeConfig.heightMultiplier,
-                        color: Colors.black,
-                        fontFamily: "Poppins-Med",
-                        fontWeight: FontWeight.bold)),
-              ),
+              : editController.weight_graph_list.length == 0
+                  ? Center(
+                      child: Text("NO DATA"),
+                    )
+                  : FittedBox(
+                      child: Text(
+                          editController
+                              .weight_report_date[controller.dateIndex.value],
+                          style: TextStyle(
+                              fontSize: 2.25 * SizeConfig.heightMultiplier,
+                              color: Colors.black,
+                              fontFamily: "Poppins-Med",
+                              fontWeight: FontWeight.bold)),
+                    ),
         ),
         IconButton(
           icon: Icon(
@@ -103,8 +108,10 @@ Widget graphDataWeightMeasure(WeightMeasureControllers controller,
               width: 91.517 * SizeConfig.widthMultiplier,
               child: PageView(
                 controller: controller.pageController,
-                children:  List.generate(editController.weight_graph_list.length, (index){
-                  return CustomBarChart(list: [editController.weight_graph_list[index]]);
+                children: List.generate(editController.weight_graph_list.length,
+                    (index) {
+                  return CustomBarChart(
+                      list: [editController.weight_graph_list[index]]);
                 }),
               ),
             ),

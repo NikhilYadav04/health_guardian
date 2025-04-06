@@ -40,7 +40,7 @@ class ReportScreen extends StatelessWidget {
         SizedBox(height: 35,),
         reportCard(Images.BSugarPNG, "Blood Sugar", Color.fromARGB(255, 245, 208, 204), Colours.buttonColorRed,()=>Get.to(()=>BloodSugarReport())),
         SizedBox(height: 35,),
-        reportCard(Images.weightPNG, "Weight & BMI", Color.fromARGB(255, 223, 237, 131),Color.fromARGB(255, 162, 150, 39),()=>Get.to(()=>WeightReport())),
+        reportCard(Images.weightPNG, "Weight Measure", Color.fromARGB(255, 223, 237, 131),Color.fromARGB(255, 162, 150, 39),()=>Get.to(()=>WeightReport())),
       ],
     );
   }

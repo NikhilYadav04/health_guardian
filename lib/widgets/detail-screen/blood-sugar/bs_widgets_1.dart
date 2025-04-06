@@ -6,6 +6,7 @@ import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/images.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/buttons/detail_buttons.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 AppBar appB(void Function() onTap1, void Function() onTap2) {
   return AppBar(
@@ -31,104 +32,109 @@ AppBar appB(void Function() onTap1, void Function() onTap2) {
 }
 
 Widget bloodSugarDataWidget(EditBloodSugarDataControllers editController) {
-  return Container(
-    height: 28.44*SizeConfig.heightMultiplier,
-    width: double.infinity,
-    decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(0.63*SizeConfig.heightMultiplier),
-        //  boxShadow: [
-        //                 BoxShadow(color: Color.fromARGB(255, 161, 153, 153),spreadRadius: 2.5,blurRadius: 2)
-        //               ],
+  return Obx(
+    ()=> Skeletonizer(
+      enabled: editController.isLoadingGraph.value ,
+      child: Container(
+        height: 28.44*SizeConfig.heightMultiplier,
+        width: double.infinity,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(0.63*SizeConfig.heightMultiplier),
+            //  boxShadow: [
+            //                 BoxShadow(color: Color.fromARGB(255, 161, 153, 153),spreadRadius: 2.5,blurRadius: 2)
+            //               ],
+                ),
+        padding: EdgeInsets.symmetric(horizontal:1*SizeConfig.heightMultiplier, vertical: 0.52*SizeConfig.heightMultiplier),
+        child: Column(
+          children: [
+            //* Upper Card
+            Flexible(
+              flex: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  //* for text
+                  Flexible(
+                      flex: 9,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 1.58*SizeConfig.heightMultiplier,
+                          ),
+                          Text(
+                            "Blood Sugar",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: "CoreSansBold",
+                                fontSize: 4.2 * SizeConfig.heightMultiplier),
+                          ),
+                          SizedBox(
+                            height: 0.52*SizeConfig.heightMultiplier,
+                          ),
+                          Text(
+                            "Lifetime Summary",
+                            style: TextStyle(
+                                color: const Color.fromARGB(255, 80, 78, 78),
+                                fontFamily: "CoreSansBold",
+                                fontSize: 2.4 * SizeConfig.heightMultiplier),
+                          ),
+                        ],
+                      )),
+                  //* for vector image
+                  Flexible(
+                      flex: 3,
+                      child: SvgPicture.asset(Images.BloodSugarMeasureIcon))
+                ],
+              ),
             ),
-    padding: EdgeInsets.symmetric(horizontal:1*SizeConfig.heightMultiplier, vertical: 0.52*SizeConfig.heightMultiplier),
-    child: Column(
-      children: [
-        //* Upper Card
-        Flexible(
-          flex: 1,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              //* for text
-              Flexible(
-                  flex: 9,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 1.58*SizeConfig.heightMultiplier,
+      
+            //* Bottom Data Card
+            Flexible(
+                flex: 1,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 0.737*SizeConfig.heightMultiplier
+                    ),
+                    Divider(
+                      height: .52*SizeConfig.heightMultiplier,
+                      color: const Color.fromARGB(255, 223, 214, 214),
+                      thickness: 3,
+                    ),
+                    SizedBox(
+                      height: 1.58*SizeConfig.heightMultiplier,
+                    ),
+                    Obx(
+                      ()=> Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          dataCard(editController.AvgSugarLevel.toString(), "Average"),
+                          Container(
+                              height: 9.48*SizeConfig.heightMultiplier,
+                              child: VerticalDivider(
+                                color: Color.fromARGB(255, 223, 214, 214),
+                                width: 2.23*SizeConfig.widthMultiplier,
+                                thickness: 3,
+                              )),
+                          dataCard(editController.MaxSugarLevel.toString(), "Maximum"),
+                          Container(
+                              height: 9.48*SizeConfig.heightMultiplier,
+                              child: VerticalDivider(
+                                color: Color.fromARGB(255, 223, 214, 214),
+                                width: 2.23*SizeConfig.widthMultiplier,
+                                thickness: 3,
+                              )),
+                          dataCard(editController.MinSugarLevel.toString(), "Minimum"),
+                        ],
                       ),
-                      Text(
-                        "Blood Sugar",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: "CoreSansBold",
-                            fontSize: 4.2 * SizeConfig.heightMultiplier),
-                      ),
-                      SizedBox(
-                        height: 0.52*SizeConfig.heightMultiplier,
-                      ),
-                      Text(
-                        "Lifetime Summary",
-                        style: TextStyle(
-                            color: const Color.fromARGB(255, 80, 78, 78),
-                            fontFamily: "CoreSansBold",
-                            fontSize: 2.4 * SizeConfig.heightMultiplier),
-                      ),
-                    ],
-                  )),
-              //* for vector image
-              Flexible(
-                  flex: 3,
-                  child: SvgPicture.asset(Images.BloodSugarMeasureIcon))
-            ],
-          ),
+                    ),
+                  ],
+                )),
+          ],
         ),
-
-        //* Bottom Data Card
-        Flexible(
-            flex: 1,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 0.737*SizeConfig.heightMultiplier
-                ),
-                Divider(
-                  height: .52*SizeConfig.heightMultiplier,
-                  color: const Color.fromARGB(255, 223, 214, 214),
-                  thickness: 3,
-                ),
-                SizedBox(
-                  height: 1.58*SizeConfig.heightMultiplier,
-                ),
-                Obx(
-                  ()=> Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      dataCard(editController.AvgSugarLevel.toString(), "Average"),
-                      Container(
-                          height: 9.48*SizeConfig.heightMultiplier,
-                          child: VerticalDivider(
-                            color: Color.fromARGB(255, 223, 214, 214),
-                            width: 2.23*SizeConfig.widthMultiplier,
-                            thickness: 3,
-                          )),
-                      dataCard(editController.MaxSugarLevel.toString(), "Maximum"),
-                      Container(
-                          height: 9.48*SizeConfig.heightMultiplier,
-                          child: VerticalDivider(
-                            color: Color.fromARGB(255, 223, 214, 214),
-                            width: 2.23*SizeConfig.widthMultiplier,
-                            thickness: 3,
-                          )),
-                      dataCard(editController.MinSugarLevel.toString(), "Minimum"),
-                    ],
-                  ),
-                ),
-              ],
-            )),
-      ],
+      ),
     ),
   );
 }

@@ -189,12 +189,14 @@ Widget reportCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      disease,
-                      style: TextStyle(
-                          fontFamily: "Poppins-Bold",
-                          fontSize: 3.6 * SizeConfig.heightMultiplier,
-                          color: Colors.grey.shade900),
+                    FittedBox(
+                      child: Text(
+                        disease,
+                        style: TextStyle(
+                            fontFamily: "Poppins-Bold",
+                            fontSize: 3.6 * SizeConfig.heightMultiplier,
+                            color: Colors.grey.shade900),
+                      ),
                     ),
                     SizedBox(
                       height: 8,

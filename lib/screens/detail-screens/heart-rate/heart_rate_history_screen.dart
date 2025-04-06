@@ -70,9 +70,11 @@ class HeartRateHistoryScreen extends StatelessWidget {
                   size: 50,
                 );
               } else if (snapshot.hasError) {
-                return Text("Error");
+                return Center(
+                  child: noData,
+                );
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Text("No Data");
+                return Center(child: noData);
               } else {
                 return ListView.builder(
                     itemCount: editController.heart_data_list.length,
@@ -223,3 +225,9 @@ class HeartRateHistoryScreen extends StatelessWidget {
     );
   }
 }
+
+final noData = Text(
+  "NO History Found",
+  style:
+      TextStyle(color: Colors.black, fontSize: 24, fontFamily: "Poppins-Bold"),
+);

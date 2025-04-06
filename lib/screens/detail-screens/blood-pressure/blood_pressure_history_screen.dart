@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:health_guardian/getX_controllers/detail-screen/blood_pressure_controllers.dart';
 import 'package:health_guardian/helper/color_Convert.dart';
+import 'package:health_guardian/screens/detail-screens/heart-rate/heart_rate_history_screen.dart';
 import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/buttons/detail_buttons.dart';
@@ -70,9 +71,9 @@ class BloodPressureHistoryScreen extends StatelessWidget {
                 size: 50,
               );
             } else if (snapshot.hasError) {
-              return Text("Error");
+              return Center(child: noData);
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Text("No Data");
+              return Center(child: noData);
             } else {
               return ListView.builder(
                   itemCount: editController.bp_data_list.length,

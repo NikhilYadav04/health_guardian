@@ -57,7 +57,7 @@ class Home_D_Screen extends StatelessWidget {
         height: 1.58 * SizeConfig.heightMultiplier,
       ),
       diseaseCard(
-          "Weight & BMI",
+          "Weight Measure",
           Images.WeightMeasureIcon,
           Color.fromARGB(255, 235, 245, 174),
           Color.fromARGB(255, 226, 207, 41), () {

@@ -59,6 +59,7 @@ dependencies:
   firebase_messaging: ^14.7.19
   flutter_local_notifications: ^18.0.0
   workmanager: ^0.5.2
+  skeletonizer: ^1.4.3
 
 
 dev_dependencies:
@@ -92,6 +93,7 @@ flutter:
     - assets/dashboard/
     - assets/chatbot/
     - assets/analyze/
+    - assets/history/
     - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see

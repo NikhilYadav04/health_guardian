@@ -218,11 +218,11 @@ Widget reportDisplayWidgetPressure(
             Expanded(
               flex: 2,
               child: Text(
-                date,
+                "Date : ${date}",
                 style: TextStyle(
                     color: Colors.grey.shade900,
                     fontFamily: "CoreSansMed",
-                    fontSize: 2 * SizeConfig.heightMultiplier),
+                    fontSize: 2.4* SizeConfig.heightMultiplier),
               ),
             ),
             Expanded(

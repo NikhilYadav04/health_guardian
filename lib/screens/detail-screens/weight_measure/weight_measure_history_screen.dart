@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:health_guardian/getX_controllers/detail-screen/weight_measure_controllers.dart';
 import 'package:health_guardian/helper/color_Convert.dart';
 import 'package:health_guardian/helper/format_Double.dart';
+import 'package:health_guardian/screens/detail-screens/heart-rate/heart_rate_history_screen.dart';
 import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/dashboard/dashboard_widgets_2.dart';
@@ -71,9 +72,9 @@ class WeightMeasureHistoryScreen extends StatelessWidget {
                       size: 50,
                     );
                   } else if (snapshot.hasError) {
-                    return Text("Error");
+                    return Center(child: noData);
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Text("No Data");
+                    return Center(child: noData);
                   } else {
                     return Container(
                       padding: EdgeInsets.symmetric(

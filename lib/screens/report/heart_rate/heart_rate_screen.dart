@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:health_guardian/getX_controllers/detail-screen/heart_rate_controllers.dart';
+import 'package:health_guardian/screens/report/blood_pressure/blood_pressure_report.dart';
 import 'package:health_guardian/screens/report/heart_rate/heart_rate_detailed_report.dart';
 import 'package:health_guardian/styling/images.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/report/report_widgets.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HeartRateScreen extends StatelessWidget {
   HeartRateScreen({super.key});
@@ -34,83 +36,110 @@ class HeartRateScreen extends StatelessWidget {
         child: StreamBuilder(
             stream: editController.getHeartReportData(),
             builder: (context, AsyncSnapshot snapshot) {
-              return Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: 2.6785 * SizeConfig.widthMultiplier),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 1.5800 * SizeConfig.heightMultiplier,
+              //* to keep track of waiting state
+              final isWaiting =
+                  snapshot.connectionState == ConnectionState.waiting;
+
+              //* show skeletonizer when loading
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Skeletonizer(
+                    child: Column(
+                      children: List.generate(10, (index) {
+                        return loaderContainer(
+                            const Color.fromARGB(255, 239, 185, 181),
+                            Colors.red);
+                      }),
                     ),
-                    ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: editController.heart_report_list.length,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
+                    enabled: isWaiting);
+              } else if (snapshot.hasError) {
+                return Skeletonizer(
+                  child: Column(
+                    children: List.generate(10, (index) {
+                      return loaderContainer(
+                          const Color.fromARGB(255, 239, 185, 181), Colors.red);
+                    }),
+                  ),
+                  enabled: isWaiting,
+                );
+              } else {
+                return Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 2.6785 * SizeConfig.widthMultiplier),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 1.5800 * SizeConfig.heightMultiplier,
+                      ),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: editController.heart_report_list.length,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              //* navigate to detail page
+                              onTap: () => Get.to(
+                                  () => HeartRateDetailedReport(
+                                        list: editController
+                                                .heart_report_list[index]
+                                            ["heart_report"],
+                                      ),
+                                  transition: Transition.rightToLeft),
 
-                            //* navigate to detail page
-                            onTap: () => Get.to(
-                              () => HeartRateDetailedReport(
-                                    list:
-                                        editController.heart_report_list[index]["heart_report"],
-                                  ),
-                              transition: Transition.rightToLeft),
-
-                            child: Container(
-                              margin: EdgeInsets.symmetric(
-                                  vertical:
-                                      1.5800 * SizeConfig.heightMultiplier),
-                              decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.red,
-                                        blurRadius: 5,
-                                        spreadRadius: 2)
-                                  ],
-                                  borderRadius: BorderRadius.circular(
-                                      0.8426 * SizeConfig.heightMultiplier),
-                                  color: Color.fromARGB(255, 246, 226, 226)),
-                              height: 9.48037 * SizeConfig.heightMultiplier,
-                              child: Center(
-                                child: ListTile(
-                                  leading: CircleAvatar(
-                                    radius:
-                                        3.16012 * SizeConfig.heightMultiplier,
-                                    backgroundColor:
-                                        Color.fromARGB(255, 239, 185, 181),
-                                    child: Center(
+                              child: Container(
+                                margin: EdgeInsets.symmetric(
+                                    vertical:
+                                        1.5800 * SizeConfig.heightMultiplier),
+                                decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.red,
+                                          blurRadius: 5,
+                                          spreadRadius: 2)
+                                    ],
+                                    borderRadius: BorderRadius.circular(
+                                        0.8426 * SizeConfig.heightMultiplier),
+                                    color: Color.fromARGB(255, 246, 226, 226)),
+                                height: 9.48037 * SizeConfig.heightMultiplier,
+                                child: Center(
+                                  child: ListTile(
+                                    leading: CircleAvatar(
+                                      radius:
+                                          3.16012 * SizeConfig.heightMultiplier,
+                                      backgroundColor:
+                                          Color.fromARGB(255, 239, 185, 181),
+                                      child: Center(
+                                        child: Text(
+                                          "${index + 1}",
+                                          style: TextStyle(
+                                              fontFamily: "CoreSansBold",
+                                              fontSize: 2.8441 *
+                                                  SizeConfig.heightMultiplier,
+                                              color: Colors.black),
+                                        ),
+                                      ),
+                                    ),
+                                    title: FittedBox(
                                       child: Text(
-                                        "${index + 1}",
+                                        "Submitted On : ${editController.heart_report_list[index]["submitted_on"]}",
                                         style: TextStyle(
                                             fontFamily: "CoreSansBold",
-                                            fontSize: 2.8441 *
+                                            fontSize: 1.68539 *
                                                 SizeConfig.heightMultiplier,
                                             color: Colors.black),
                                       ),
                                     ),
                                   ),
-                                  title: FittedBox(
-                                    child: Text(
-                                      "Submitted On : ${editController.heart_report_list[index]["submitted_on"]}",
-                                      style: TextStyle(
-                                          fontFamily: "CoreSansBold",
-                                          fontSize: 1.68539 *
-                                              SizeConfig.heightMultiplier,
-                                          color: Colors.black),
-                                    ),
-                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }),
-                    SizedBox(
-                      height: 2.106748 * SizeConfig.heightMultiplier,
-                    )
-                  ],
-                ),
-              );
+                            );
+                          }),
+                      SizedBox(
+                        height: 2.106748 * SizeConfig.heightMultiplier,
+                      )
+                    ],
+                  ),
+                );
+              }
             }),
       ),
     ));

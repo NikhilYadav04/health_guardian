@@ -164,6 +164,12 @@ class WeightMeasureControllers extends GetxController {
         isTwoDigit.value = true;
       }
 
+      if (weightValue.value == 0.0) {
+        toastErrorSlide(context, "Enter A Valid Level");
+        isLoadingAdd.value =false;
+        return;
+      }
+
       if (querySnapshot.docs.isEmpty) {
         await collectionReference.add({
           "email": email,

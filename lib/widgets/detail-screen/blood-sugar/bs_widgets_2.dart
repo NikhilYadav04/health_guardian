@@ -67,21 +67,28 @@ Widget graphData(BloodSugarControllers controller,
                   color: Colours.buttonColorRed,
                   size: 40,
                 )
-              : FittedBox(
-                child: Text(editController.sugar_report_date[controller.dateIndex.value],
-                    style: TextStyle(
-                        fontSize: 2.25 * SizeConfig.heightMultiplier,
-                        color: Colors.black,
-                        fontFamily: "Poppins-Med",
-                        fontWeight: FontWeight.bold)),
-              ),
+              : editController.sugar_report_list.length == 0
+                  ? Center(
+                      child: Text("NO DATA"),
+                    )
+                  : FittedBox(
+                      child: Text(
+                          editController
+                              .sugar_report_date[controller.dateIndex.value],
+                          style: TextStyle(
+                              fontSize: 2.25 * SizeConfig.heightMultiplier,
+                              color: Colors.black,
+                              fontFamily: "Poppins-Med",
+                              fontWeight: FontWeight.bold)),
+                    ),
         ),
         IconButton(
           icon: Icon(
             Icons.arrow_forward_ios_outlined,
             size: 2.4 * SizeConfig.heightMultiplier,
           ),
-          onPressed: () => controller.navigatePageDate(editController.sugar_graph_list.length),
+          onPressed: () => controller
+              .navigatePageDate(editController.sugar_graph_list.length),
           color: Colors.black,
         )
       ],
@@ -103,7 +110,7 @@ Widget graphData(BloodSugarControllers controller,
                 controller: controller.pageControllerDate,
                 children: List.generate(
                   editController.sugar_graph_list.length,
-                  (index) =>  CustomLineChart(
+                  (index) => CustomLineChart(
                     list: [editController.sugar_graph_list[index]],
                   ), // pass data if needed
                 ),

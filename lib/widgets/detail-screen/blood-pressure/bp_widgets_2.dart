@@ -68,7 +68,7 @@ Widget graphDataBP(BloodPressureControllers controller,
                   color: Colours.buttonColorRed,
                   size: 40,
                 )
-              : FittedBox(
+              : editController.bp_graph_list.length==0 ? Center(child: Text("NO DATA"),) : FittedBox(
                   child: Text(
                       editController.bp_report_date[controller.dateIndex.value],
                       overflow: TextOverflow.ellipsis,
