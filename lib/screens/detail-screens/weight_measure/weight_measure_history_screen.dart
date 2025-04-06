@@ -156,10 +156,18 @@ class WeightMeasureHistoryScreen extends StatelessWidget {
                                           .weight_data_list[index]["color"]]!)),
                               Flexible(
                                   flex: 1,
-                                  child: Icon(
-                                    Icons.delete,
-                                    color: Colors.black,
-                                    size: 2.94 * SizeConfig.heightMultiplier,
+                                  child: GestureDetector(
+                                    onTap: () =>
+                                        editController.deleteHistoryRecord(
+                                            context,
+                                            editController
+                                                    .weight_data_list[index]
+                                                ["date"]),
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Colors.black,
+                                      size: 2.94 * SizeConfig.heightMultiplier,
+                                    ),
                                   )),
                             ],
                           ),

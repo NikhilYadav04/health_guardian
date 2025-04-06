@@ -4,6 +4,9 @@ import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 
 class CustomLineChart extends StatelessWidget {
+  final List<dynamic> list;
+
+  const CustomLineChart({super.key, required this.list});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,8 +20,8 @@ class CustomLineChart extends StatelessWidget {
           child: LineChart(
             LineChartData(
               backgroundColor: Colors.white,
-              minX: 16,
-              maxX: 22,
+              minX: 1,
+              maxX: 6,
               minY: 40,
               maxY: 140,
               titlesData: FlTitlesData(
@@ -66,15 +69,9 @@ class CustomLineChart extends StatelessWidget {
               borderData: FlBorderData(show: false),
               lineBarsData: [
                 LineChartBarData(
-                  spots: [
-                    FlSpot(16, 120),
-                    FlSpot(17, 110),
-                    FlSpot(18, 130),
-                    FlSpot(19, 115),
-                    FlSpot(20, 125),
-                    FlSpot(21, 105),
-                    FlSpot(22, 140),
-                  ],
+                  spots: List.generate(list[0]["sugar_level"].length,(index){
+                    return FlSpot(((index+1).toDouble()),list[0]["sugar_level"][index]);
+                  }),
                   isCurved: false,
                   color: Colours.buttonColorRed,
                   barWidth: 0.78 * SizeConfig.widthMultiplier,

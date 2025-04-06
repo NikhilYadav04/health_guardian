@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:health_guardian/services/workManager.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/styling/toast_message.dart';
 import 'package:intl/intl.dart';
@@ -82,6 +83,7 @@ class BloodSugarControllers extends GetxController {
   //* declare index
   RxInt pageIndex = 0.obs;
   RxInt pageIndexDate = 0.obs;
+  RxInt dateIndex = 0.obs;
 
   //* function to change index
   void changeIndex(index) {
@@ -94,11 +96,14 @@ class BloodSugarControllers extends GetxController {
     pageIndex.value = 1;
   }
 
-  void navigatePageDate() {
-    pageControllerDate.nextPage(
-        duration: Duration(milliseconds: 500), curve: Curves.linearToEaseOut);
-    if (pageIndexDate.value < 1) {
+  void navigatePageDate(num index) {
+    if (pageIndexDate.value < (index - 1)) {
+      pageControllerDate.nextPage(
+        duration: Duration(milliseconds: 500),
+        curve: Curves.linearToEaseOut,
+      );
       pageIndexDate.value++;
+      dateIndex.value++;
     }
   }
 
@@ -112,6 +117,7 @@ class BloodSugarControllers extends GetxController {
         duration: Duration(milliseconds: 500), curve: Curves.linearToEaseOut);
     if (pageIndexDate.value > 0) {
       pageIndexDate.value--;
+      dateIndex.value--;
     }
   }
 
@@ -226,11 +232,14 @@ class BloodSugarControllers extends GetxController {
 
 class EditBloodSugarDataControllers extends GetxController {
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
+    isLoadingGraph.value = true;
     print("Controller Initialized!");
-    fetchSugarData();
-    formatSugarData();
+    await fetchSugarData();
+    await formatSugarData();
+    logger.d(sugar_graph_list);
+    isLoadingGraph.value = false;
   }
 
   //* variables and bools
@@ -244,6 +253,7 @@ class EditBloodSugarDataControllers extends GetxController {
   RxList sugar_report_date = [].obs;
 
   RxBool isLoadingReport = false.obs;
+  RxBool isLoadingGraph = false.obs;
 
   //* format sugar data for graph
   Future<void> formatSugarData() async {
@@ -261,14 +271,20 @@ class EditBloodSugarDataControllers extends GetxController {
         List<dynamic> sublist = sugar_data_list.sublist(startIdx, endIdx);
 
         if (sublist.isNotEmpty) {
+          bool isSame = sublist.first['date'].toString().split(":")[0].trim() ==
+              sublist.last['date'].toString().split(":")[0].trim();
+
           sugar_graph_list.add({
-            "date": "${sublist.first['date']} - ${sublist.last['date']}",
+            "date": isSame
+                ? sublist.first['date'].toString().split(":")[0]
+                : "${sublist.first['date'].toString().split(":")[0]} - ${sublist.last['date'].toString().split(":")[0]}",
             "sugar_level": sublist.map((e) => e['sugar_level']).toList()
           });
 
-          sugar_report_date.add("${sublist.first['date']} - ${sublist.last['date']}");
+          sugar_report_date.add(isSame
+              ? sublist.first['date'].toString().split(":")[0]
+              : "${sublist.first['date'].toString().split(":")[0]} - ${sublist.last['date'].toString().split(":")[0]}");
         }
-
       }
     } catch (e) {
       print(e);
@@ -456,6 +472,26 @@ class EditBloodSugarDataControllers extends GetxController {
       });
     } catch (e) {
       return Stream.value([]);
+    }
+  }
+
+   //* delete a history record
+  Future<void> deleteHistoryRecord(BuildContext context, String date) async {
+    try {
+      final collection = FirebaseFirestore.instance.collection('sugar_data');
+      final email = FirebaseAuth.instance.currentUser!.email!;
+      final querySnapshot =
+          await collection.where('email', isEqualTo: email).get();
+
+      if (querySnapshot.docs.isEmpty) return;
+
+      final doc = querySnapshot.docs.first;
+      final sugarDataList = List<Map<String, dynamic>>.from(doc['sugar_data']);
+      sugarDataList.removeWhere((entry) => entry['date'] == date);
+
+      await collection.doc(doc.id).update({'sugar_data': sugarDataList});
+    } catch (e) {
+      print(e.toString());
     }
   }
 }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:health_guardian/getX_controllers/detail-screen/blood_sugar_controllers.dart';
 import 'package:health_guardian/helper/color_Convert.dart';
 import 'package:health_guardian/helper/format_Double.dart';
 import 'package:health_guardian/screens/detail-screens/blood-sugar/blood_sugar_history_screen.dart';
 import 'package:health_guardian/screens/detail-screens/blood-sugar/sugar_graph_report.dart';
+import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/buttons/detail_buttons.dart';
 
@@ -33,7 +35,7 @@ Widget dataWidget(BloodSugarControllers controller,
 
       //* For displaying graph and history
       Obx(() => controller.pageIndex.value == 0
-          ? graphData(controller)
+          ? graphData(controller, editController)
           : historyList(editController, () {
               Get.to(() => BloodSugarHistoryScreen(),
                   transition: Transition.rightToLeft);
@@ -42,7 +44,8 @@ Widget dataWidget(BloodSugarControllers controller,
   );
 }
 
-Widget graphData(BloodSugarControllers controller) {
+Widget graphData(BloodSugarControllers controller,
+    EditBloodSugarDataControllers editController) {
   return Column(children: [
     SizedBox(
       height: 0,
@@ -58,18 +61,27 @@ Widget graphData(BloodSugarControllers controller) {
           onPressed: controller.previousPageDate,
           color: Colors.black,
         ),
-        Text("Dec 16 - Dec 22, 2024",
-            style: TextStyle(
-                fontSize: 2.4 * SizeConfig.heightMultiplier,
-                color: Colors.black,
-                fontFamily: "Poppins-Med",
-                fontWeight: FontWeight.bold)),
+        Obx(
+          () => editController.isLoadingGraph.value
+              ? SpinKitCircle(
+                  color: Colours.buttonColorRed,
+                  size: 40,
+                )
+              : FittedBox(
+                child: Text(editController.sugar_report_date[controller.dateIndex.value],
+                    style: TextStyle(
+                        fontSize: 2.25 * SizeConfig.heightMultiplier,
+                        color: Colors.black,
+                        fontFamily: "Poppins-Med",
+                        fontWeight: FontWeight.bold)),
+              ),
+        ),
         IconButton(
           icon: Icon(
             Icons.arrow_forward_ios_outlined,
             size: 2.4 * SizeConfig.heightMultiplier,
           ),
-          onPressed: controller.navigatePageDate,
+          onPressed: () => controller.navigatePageDate(editController.sugar_graph_list.length),
           color: Colors.black,
         )
       ],
@@ -77,17 +89,26 @@ Widget graphData(BloodSugarControllers controller) {
     SizedBox(
       height: 2.633 * SizeConfig.heightMultiplier,
     ),
-    Container(
-      color: Colors.white,
-      height: 28.4 * SizeConfig.heightMultiplier,
-      width: 91.517 * SizeConfig.widthMultiplier,
-      child: PageView(
-        controller: controller.pageControllerDate,
-        children: [
-          CustomLineChart(),
-          CustomLineChart(),
-        ],
-      ),
+    Obx(
+      () => editController.isLoadingGraph.value
+          ? SpinKitCircle(
+              color: Colours.buttonColorRed,
+              size: 40,
+            )
+          : Container(
+              color: Colors.white,
+              height: 28.4 * SizeConfig.heightMultiplier,
+              width: 91.517 * SizeConfig.widthMultiplier,
+              child: PageView(
+                controller: controller.pageControllerDate,
+                children: List.generate(
+                  editController.sugar_graph_list.length,
+                  (index) =>  CustomLineChart(
+                    list: [editController.sugar_graph_list[index]],
+                  ), // pass data if needed
+                ),
+              ),
+            ),
     ),
   ]);
 }

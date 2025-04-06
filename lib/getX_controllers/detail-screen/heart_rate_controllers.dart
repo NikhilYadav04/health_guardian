@@ -363,4 +363,24 @@ class EditHeartRateDataController extends GetxController {
       return Stream.value([]);
     }
   }
+
+  //* delete a history record
+  Future<void> deleteHistoryRecord(BuildContext context, String date) async {
+    try {
+      final collection = FirebaseFirestore.instance.collection('heart_data');
+      final email = FirebaseAuth.instance.currentUser!.email!;
+      final querySnapshot =
+          await collection.where('email', isEqualTo: email).get();
+
+      if (querySnapshot.docs.isEmpty) return;
+
+      final doc = querySnapshot.docs.first;
+      final sugarDataList = List<Map<String, dynamic>>.from(doc['heart_data']);
+      sugarDataList.removeWhere((entry) => entry['date'] == date);
+
+      await collection.doc(doc.id).update({'heart_data': sugarDataList});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:health_guardian/services/workManager.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/styling/toast_message.dart';
 import 'package:intl/intl.dart';
@@ -87,6 +88,7 @@ class WeightMeasureControllers extends GetxController {
   //* declare index
   RxInt pageIndex = 0.obs;
   RxInt pageIndexDate = 0.obs;
+  RxInt dateIndex = 0.obs;
 
   //* color and position for arrow animation
   Rx<Color> arrowColor = Colors.blue.obs;
@@ -97,11 +99,15 @@ class WeightMeasureControllers extends GetxController {
     pageIndex.value = 1;
   }
 
-  void navigatePageDate() {
-    pageController.nextPage(
-        duration: Duration(milliseconds: 500), curve: Curves.linearToEaseOut);
-    if (pageIndexDate.value < 1) {
+  void navigatePageDate(num index) {
+    // logger.d(pageIndexDate.value);
+    if (pageIndexDate.value < (index - 1)) {
+      pageController.nextPage(
+        duration: Duration(milliseconds: 500),
+        curve: Curves.linearToEaseOut,
+      );
       pageIndexDate.value++;
+      dateIndex.value++;
     }
   }
 
@@ -115,6 +121,7 @@ class WeightMeasureControllers extends GetxController {
         duration: Duration(milliseconds: 500), curve: Curves.linearToEaseOut);
     if (pageIndexDate.value > 0) {
       pageIndexDate.value--;
+      dateIndex.value--;
     }
   }
 
@@ -198,10 +205,13 @@ class WeightMeasureControllers extends GetxController {
 
 class EditWeightMeasureDataController extends GetxController {
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    fetchWeightData();
-    formatWeightData();
+    isLoadingGraph.value = true;
+    await fetchWeightData();
+    await formatWeightData();
+    logger.d(weight_graph_list);
+    isLoadingGraph.value = false;
   }
 
   //* variables and bools
@@ -215,6 +225,7 @@ class EditWeightMeasureDataController extends GetxController {
   RxList weight_report_date = [].obs;
 
   RxBool isLoadingReport = false.obs;
+  RxBool isLoadingGraph = false.obs;
 
   //* format weight data for graph
   Future<void> formatWeightData() async {
@@ -232,12 +243,18 @@ class EditWeightMeasureDataController extends GetxController {
         List<dynamic> sublist = weight_data_list.sublist(startIdx, endIdx);
 
         if (sublist.isNotEmpty) {
+          bool isSame = sublist.first['date'].toString().split(":")[0].trim() ==
+              sublist.last['date'].toString().split(":")[0].trim();
           weight_graph_list.add({
-            "date": "${sublist.first['date']} - ${sublist.last['date']}",
+            "date": isSame
+                ? sublist.first['date'].toString().split(":")[0]
+                : "${sublist.first['date'].toString().split(":")[0]} - ${sublist.last['date'].toString().split(":")[0]}",
             "weight_level": sublist.map((e) => e['weight_level']).toList()
           });
 
-          weight_report_date.add("${sublist.first['date']} - ${sublist.last['date']}");
+          weight_report_date.add(isSame
+              ? sublist.first['date'].toString().split(":")[0]
+              : "${sublist.first['date'].toString().split(":")[0]} - ${sublist.last['date'].toString().split(":")[0]}");
         }
       }
     } catch (e) {
@@ -429,6 +446,26 @@ class EditWeightMeasureDataController extends GetxController {
       });
     } catch (e) {
       return Stream.value([]);
+    }
+  }
+
+  //* delete a history record
+  Future<void> deleteHistoryRecord(BuildContext context, String date) async {
+    try {
+      final collection = FirebaseFirestore.instance.collection('weight_data');
+      final email = FirebaseAuth.instance.currentUser!.email!;
+      final querySnapshot =
+          await collection.where('email', isEqualTo: email).get();
+
+      if (querySnapshot.docs.isEmpty) return;
+
+      final doc = querySnapshot.docs.first;
+      final sugarDataList = List<Map<String, dynamic>>.from(doc['weight_data']);
+      sugarDataList.removeWhere((entry) => entry['date'] == date);
+
+      await collection.doc(doc.id).update({'weight_data': sugarDataList});
+    } catch (e) {
+      print(e.toString());
     }
   }
 }

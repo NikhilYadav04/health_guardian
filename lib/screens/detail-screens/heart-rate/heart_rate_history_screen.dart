@@ -164,10 +164,19 @@ class HeartRateHistoryScreen extends StatelessWidget {
                                             .toString()]!)),
                                 Flexible(
                                     flex: 1,
-                                    child: Icon(
-                                      Icons.delete,
-                                      color: Colors.black,
-                                      size: 2.94 * SizeConfig.heightMultiplier,
+                                    child: GestureDetector(
+                                      onTap: () =>
+                                          editController.deleteHistoryRecord(
+                                              context,
+                                              editController
+                                                      .heart_data_list[index]
+                                                  ["date"]),
+                                      child: Icon(
+                                        Icons.delete,
+                                        color: Colors.black,
+                                        size:
+                                            2.94 * SizeConfig.heightMultiplier,
+                                      ),
                                     )),
                               ],
                             ),

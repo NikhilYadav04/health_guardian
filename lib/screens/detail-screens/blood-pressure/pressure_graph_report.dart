@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:health_guardian/helper/graph_Formatter.dart';
 import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
-import 'package:pinput/pinput.dart';
 
 class BarChartExample extends StatefulWidget {
   const BarChartExample({super.key, required this.list});
@@ -36,8 +36,8 @@ class _BarChartExampleState extends State<BarChartExample> {
                       widget.list[0]["systolic"].length,
                       (index) => _buildBarGroup(
                           index,
-                          widget.list[0]["systolic"][index],
-                          widget.list[0]["diastolic"][index])),
+                          widget.list[0]["systolic"][index].toDouble(),
+                          widget.list[0]["diastolic"][index].toDouble(),lineChartFormatter[widget.list[0]["systolic"].length]!)),
                   titlesData: FlTitlesData(
                     leftTitles: AxisTitles(
                       sideTitles: SideTitles(
@@ -121,23 +121,26 @@ class _BarChartExampleState extends State<BarChartExample> {
     );
   }
 
-  BarChartGroupData _buildBarGroup(int x, double y1, double y2) {
+  BarChartGroupData _buildBarGroup(int x, double y1, double y2,double width) {
     return BarChartGroupData(
+      barsSpace: 8,
       x: x,
       barRods: [
         BarChartRodData(
           toY: y1,
-          width: 4.46 * SizeConfig.widthMultiplier,
-          borderRadius: BorderRadius.circular(10),
+          width: width* SizeConfig.widthMultiplier,
+          borderRadius: BorderRadius.circular(4),
           color: Colours.buttonColorRed,
         ),
         BarChartRodData(
           toY: y2,
-          width: 4.46 * SizeConfig.widthMultiplier,
-          borderRadius: BorderRadius.circular(10),
+          width: width * SizeConfig.widthMultiplier,
+          borderRadius: BorderRadius.circular(4),
           color: Colors.red.withOpacity(0.2),
         ),
       ],
     );
   }
 }
+
+

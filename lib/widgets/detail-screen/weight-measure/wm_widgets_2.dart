@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:health_guardian/getX_controllers/detail-screen/weight_measure_controllers.dart';
 import 'package:health_guardian/helper/color_Convert.dart';
 import 'package:health_guardian/helper/format_Double.dart';
 import 'package:health_guardian/screens/detail-screens/weight_measure/weight_measure_graph.dart';
 import 'package:health_guardian/screens/detail-screens/weight_measure/weight_measure_history_screen.dart';
+import 'package:health_guardian/styling/colors.dart';
 import 'package:health_guardian/styling/sizeConfig.dart';
 import 'package:health_guardian/widgets/buttons/detail_buttons.dart';
 
@@ -33,7 +35,7 @@ Widget dataWidgetWeightMeasure(WeightMeasureControllers controller,
 
       //* For displaying graph and history
       Obx(() => controller.pageIndex.value == 0
-          ? graphDataWeightMeasure(controller)
+          ? graphDataWeightMeasure(controller, editController)
           : historyListWeightMeasure(editController, () {
               Get.to(() => WeightMeasureHistoryScreen(),
                   transition: Transition.rightToLeft);
@@ -42,7 +44,8 @@ Widget dataWidgetWeightMeasure(WeightMeasureControllers controller,
   );
 }
 
-Widget graphDataWeightMeasure(WeightMeasureControllers controller) {
+Widget graphDataWeightMeasure(WeightMeasureControllers controller,
+    EditWeightMeasureDataController editController) {
   return Column(children: [
     SizedBox(
       height: 0,
@@ -58,18 +61,29 @@ Widget graphDataWeightMeasure(WeightMeasureControllers controller) {
           onPressed: controller.previousPageDate,
           color: Colors.black,
         ),
-        Text("Dec 16 - Dec 22, 2024",
-            style: TextStyle(
-                fontSize: 2.317 * SizeConfig.heightMultiplier,
-                color: Colors.black,
-                fontFamily: "Poppins-Med",
-                fontWeight: FontWeight.bold)),
+        Obx(
+          () => editController.isLoadingGraph.value
+              ? SpinKitCircle(
+                  color: Colours.buttonColorRed,
+                  size: 40,
+                )
+              : FittedBox(
+                child: Text(
+                    editController.weight_report_date[controller.dateIndex.value],
+                    style: TextStyle(
+                        fontSize: 2.25 * SizeConfig.heightMultiplier,
+                        color: Colors.black,
+                        fontFamily: "Poppins-Med",
+                        fontWeight: FontWeight.bold)),
+              ),
+        ),
         IconButton(
           icon: Icon(
             Icons.arrow_forward_ios_outlined,
             size: 2.528 * SizeConfig.heightMultiplier,
           ),
-          onPressed: controller.navigatePageDate,
+          onPressed: () => controller
+              .navigatePageDate(editController.weight_graph_list.length),
           color: Colors.black,
         )
       ],
@@ -77,17 +91,23 @@ Widget graphDataWeightMeasure(WeightMeasureControllers controller) {
     SizedBox(
       height: 0,
     ),
-    Container(
-      color: Colors.white,
-      height: 31 * SizeConfig.heightMultiplier,
-      width: 91.517 * SizeConfig.widthMultiplier,
-      child: PageView(
-        controller: controller.pageController,
-        children: [
-          CustomBarChart(),
-          CustomBarChart(),
-        ],
-      ),
+    Obx(
+      () => editController.isLoadingGraph.value
+          ? SpinKitCircle(
+              color: Colours.buttonColorRed,
+              size: 40,
+            )
+          : Container(
+              color: Colors.white,
+              height: 31 * SizeConfig.heightMultiplier,
+              width: 91.517 * SizeConfig.widthMultiplier,
+              child: PageView(
+                controller: controller.pageController,
+                children:  List.generate(editController.weight_graph_list.length, (index){
+                  return CustomBarChart(list: [editController.weight_graph_list[index]]);
+                }),
+              ),
+            ),
     ),
   ]);
 }
@@ -149,8 +169,8 @@ Widget historyListWeightMeasure(
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontFamily: "CoreSansBold",
-                                          fontSize:
-                                              3.3 * SizeConfig.heightMultiplier),
+                                          fontSize: 3.3 *
+                                              SizeConfig.heightMultiplier),
                                     ),
                                     Text(
                                       "kg",
@@ -158,8 +178,8 @@ Widget historyListWeightMeasure(
                                           color: const Color.fromARGB(
                                               255, 80, 78, 78),
                                           fontFamily: "CoreSansMed",
-                                          fontSize:
-                                              2.1 * SizeConfig.heightMultiplier),
+                                          fontSize: 2.1 *
+                                              SizeConfig.heightMultiplier),
                                     ),
                                   ],
                                 ),

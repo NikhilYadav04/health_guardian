@@ -103,14 +103,14 @@ class BloodPressureControllers extends GetxController {
   }
 
   void navigatePageDate(num index) {
-    logger.d(pageIndexDate.value);
+    // logger.d(pageIndexDate.value);
     if (pageIndexDate.value < (index - 1)) {
       pageControllerDate.nextPage(
         duration: Duration(milliseconds: 500),
         curve: Curves.linearToEaseOut,
       );
       pageIndexDate.value++;
-      dateIndex.value--;
+      dateIndex.value++;
     }
   }
 
@@ -296,15 +296,20 @@ class EditBloodPressureDataControllers extends GetxController {
       List<dynamic> sublist = bp_data_list.sublist(startIdx, endIdx);
 
       if (sublist.isNotEmpty) {
+        bool isSame = sublist.first['date'].toString().split(":")[0].trim() ==
+            sublist.last['date'].toString().split(":")[0].trim();
+
         bp_graph_list.add({
-          "date":
-              "${sublist.first['date'].toString().split(":")[0]} - ${sublist.last['date'].toString().split(":")[0]}",
+          "date": isSame
+              ? sublist.first['date'].toString().split(":")[0]
+              : "${sublist.first['date'].toString().split(":")[0]} - ${sublist.last['date'].toString().split(":")[0]}",
           "systolic": sublist.map((e) => e['systolic']).toList(),
           "diastolic": sublist.map((e) => e['diastolic']).toList(),
         });
 
-        bp_report_date.add(
-            "${sublist.first['date'].toString().split(":")[0]} - ${sublist.last['date'].toString().split(":")[0]}");
+        bp_report_date.add(isSame
+            ? sublist.first['date'].toString().split(":")[0]
+            : "${sublist.first['date'].toString().split(":")[0]} - ${sublist.last['date'].toString().split(":")[0]}");
       }
 
       Future.delayed(Duration(seconds: 2));
@@ -521,6 +526,26 @@ class EditBloodPressureDataControllers extends GetxController {
       });
     } catch (e) {
       return Stream.value([]);
+    }
+  }
+
+  //* delete a history record
+  Future<void> deleteHistoryRecord(BuildContext context, String date) async {
+    try {
+      final collection = FirebaseFirestore.instance.collection('bp_data');
+      final email = FirebaseAuth.instance.currentUser!.email!;
+      final querySnapshot =
+          await collection.where('email', isEqualTo: email).get();
+
+      if (querySnapshot.docs.isEmpty) return;
+
+      final doc = querySnapshot.docs.first;
+      final sugarDataList = List<Map<String, dynamic>>.from(doc['bp_data']);
+      sugarDataList.removeWhere((entry) => entry['date'] == date);
+
+      await collection.doc(doc.id).update({'bp_data': sugarDataList});
+    } catch (e) {
+      print(e.toString());
     }
   }
 }
