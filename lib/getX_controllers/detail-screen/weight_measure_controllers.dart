@@ -253,13 +253,13 @@ class EditWeightMeasureDataController extends GetxController {
               sublist.last['date'].toString().split(":")[0].trim();
           weight_graph_list.add({
             "date": isSame
-                ? sublist.first['date'].toString().split(":")[0]
+                ? "Whole Day - ${sublist.first['date'].toString().split(":")[0]}"
                 : "${sublist.first['date'].toString().split(":")[0]} - ${sublist.last['date'].toString().split(":")[0]}",
             "weight_level": sublist.map((e) => e['weight_level']).toList()
           });
 
           weight_report_date.add(isSame
-              ? sublist.first['date'].toString().split(":")[0]
+              ? "Whole Day - ${sublist.first['date'].toString().split(":")[0]}"
               : "${sublist.first['date'].toString().split(":")[0]} - ${sublist.last['date'].toString().split(":")[0]}");
         }
       }

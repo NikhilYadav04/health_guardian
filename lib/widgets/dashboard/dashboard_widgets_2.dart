@@ -8,7 +8,7 @@ import 'package:health_guardian/widgets/buttons/dashboard_buttons.dart';
 
 Widget aiDoctorWidget() {
   return GestureDetector(
-    onTap: ()=> Get.to(()=>ChatbotScreen()),
+    onTap: () => Get.to(() => ChatbotScreen()),
     child: Container(
       padding:
           EdgeInsets.symmetric(horizontal: 4.46 * SizeConfig.widthMultiplier),
@@ -78,8 +78,7 @@ Widget descTextAnalyze(String title, double fontSize) {
 
 Widget historyText() {
   return Container(
-    padding:
-        EdgeInsets.symmetric(horizontal: 1.2 * SizeConfig.widthMultiplier),
+    padding: EdgeInsets.symmetric(horizontal: 1.2 * SizeConfig.widthMultiplier),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -160,19 +159,21 @@ Widget analyzeDiseaseCard(
   );
 }
 
-Widget reportCard(
-    String image, String disease, Color bgColor, Color buttonColor,void Function() onTap) {
+Widget reportCard(String image, String disease, Color bgColor,
+    Color buttonColor, void Function() onTap) {
   return GestureDetector(
     onTap: onTap,
     child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 2),
+        margin: EdgeInsets.symmetric(
+            horizontal: 0.4464285714285714 * SizeConfig.widthMultiplier),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
+            borderRadius:
+                BorderRadius.circular(0.632 * SizeConfig.heightMultiplier),
             color: bgColor,
             boxShadow: [
               BoxShadow(color: buttonColor, blurRadius: 7, spreadRadius: 3)
             ]),
-        height: 140,
+        height: 14.7472 * SizeConfig.heightMultiplier,
         padding: EdgeInsets.symmetric(
             vertical: 1.5 * SizeConfig.heightMultiplier,
             horizontal: 1.4 * SizeConfig.widthMultiplier),
@@ -198,11 +199,16 @@ Widget reportCard(
                             color: Colors.grey.shade900),
                       ),
                     ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    ReportButton("Check Report", () {}, buttonColor, Colors.white,
-                        50, 180, 18, 20)
+                    SizedBox(height: 0.84269 * SizeConfig.heightMultiplier),
+                    ReportButton(
+                        "Check Report",
+                        () {},
+                        buttonColor,
+                        Colors.white,
+                        5.2668 * SizeConfig.heightMultiplier,
+                        40.178571 * SizeConfig.widthMultiplier,
+                        1.89608 * SizeConfig.heightMultiplier,
+                        2.1067 * SizeConfig.heightMultiplier)
                   ],
                 )),
           ],

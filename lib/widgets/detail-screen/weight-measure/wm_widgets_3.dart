@@ -70,7 +70,7 @@ Widget userInputWeightWidget(WeightMeasureControllers controller) {
               2.31 * SizeConfig.heightMultiplier),
         ),
         SizedBox(
-          height: 20,
+          height: 2.10674*SizeConfig.heightMultiplier,
         ),
         //* value display
         GestureDetector(
@@ -108,7 +108,7 @@ Widget userInputWeightWidget(WeightMeasureControllers controller) {
                 "${controller.weightValue.value} kg",
                 style: TextStyle(
                   fontFamily: "CoreSansBold",
-                  fontSize: 38,
+                  fontSize: 4.002810*SizeConfig.heightMultiplier,
                   color: Colors.black,
                 ),
               )),
@@ -181,7 +181,7 @@ Widget userInputHeightWidget(WeightMeasureControllers controller) {
                 "${controller.heightValue.value.toStringAsFixed(1)} cms",
                 style: TextStyle(
                   fontFamily: "CoreSansBold",
-                  fontSize: 38,
+                  fontSize: 4.0028*SizeConfig.heightMultiplier,
                   color: Colors.black,
                 ),
               )),

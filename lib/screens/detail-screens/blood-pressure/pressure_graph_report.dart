@@ -129,13 +129,13 @@ class _BarChartExampleState extends State<BarChartExample> {
         BarChartRodData(
           toY: y1,
           width: width* SizeConfig.widthMultiplier,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(0.42134*SizeConfig.heightMultiplier),
           color: Colours.buttonColorRed,
         ),
         BarChartRodData(
           toY: y2,
           width: width * SizeConfig.widthMultiplier,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(0.42134*SizeConfig.heightMultiplier),
           color: Colors.red.withOpacity(0.2),
         ),
       ],

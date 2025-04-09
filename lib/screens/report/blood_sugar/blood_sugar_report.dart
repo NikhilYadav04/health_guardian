@@ -75,6 +75,7 @@ class BloodSugarReport extends StatelessWidget {
                         itemCount: editController.sugar_report_list.length,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
+
                           return GestureDetector(
                             //* navigate to detailed screen
                             onTap: () => Get.to(

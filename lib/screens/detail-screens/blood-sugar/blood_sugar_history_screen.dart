@@ -189,13 +189,14 @@ class BloodSugarHistoryScreen extends StatelessWidget {
                 child: SpinKitCircle(color: Colors.white, size: 24),
               )
             : SizedBox(
-                height: 70,
-                width: 175,
+                height: 7.37359 * SizeConfig.heightMultiplier,
+                width: 39.0625 * SizeConfig.widthMultiplier,
                 child: InkWell(
                   onTap: () {
                     editController.generateSugarDataReport(context);
                   },
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(
+                      2.633436 * SizeConfig.heightMultiplier),
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   child: ReportButton(
@@ -205,8 +206,8 @@ class BloodSugarHistoryScreen extends StatelessWidget {
                     Colors.white,
                     0,
                     0,
-                    25,
-                    23,
+                    2.633427 * SizeConfig.heightMultiplier,
+                    2.42276 * SizeConfig.heightMultiplier,
                   ),
                 ),
               ),

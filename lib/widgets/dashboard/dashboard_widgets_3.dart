@@ -22,51 +22,54 @@ List<String> title = [
 Widget profileWidgetAcc(String name,String phone) {
   return Container(
     padding: EdgeInsets.symmetric(
-        horizontal: 3.348 * SizeConfig.widthMultiplier,
+        
         vertical: 0.526 * SizeConfig.heightMultiplier),
     height: 12.4 * SizeConfig.heightMultiplier,
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(0.632 * SizeConfig.heightMultiplier),
     ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Flexible(
-            flex: 1,
-            child: CircleAvatar(
-                radius: 4.213 * SizeConfig.heightMultiplier,
-                backgroundImage: AssetImage(Images.profileIcon))),
-        Flexible(
-            flex: 3,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 1.5 * SizeConfig.heightMultiplier,
-                ),
-                Text(
-                  name,
-                  style: TextStyle(
-                      fontFamily: "Poppins-Med",
-                      fontWeight: FontWeight.bold,
-                      fontSize: 2.738 * SizeConfig.heightMultiplier,
-                      color: Colors.black),
-                ),
-                SizedBox(
-                  height: 1.053 * SizeConfig.heightMultiplier,
-                ),
-                Text(
-                    "Phone Number : ${phone}           ",
+    child: Align(
+      alignment: Alignment.topLeft,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+              flex: 1,
+              child: CircleAvatar(
+                  radius: 4.213 * SizeConfig.heightMultiplier,
+                  backgroundImage: AssetImage(Images.profileIcon))),
+          Expanded(
+              flex: 3,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 1.5 * SizeConfig.heightMultiplier,
+                  ),
+                  Text(
+                    name,
                     style: TextStyle(
                         fontFamily: "Poppins-Med",
                         fontWeight: FontWeight.bold,
-                        fontSize: 2 * SizeConfig.heightMultiplier,
-                        color: Colors.grey.shade700),
+                        fontSize: 2.738 * SizeConfig.heightMultiplier,
+                        color: Colors.black),
                   ),
-              ],
-            )),
-      ],
+                  SizedBox(
+                    height: 1.053 * SizeConfig.heightMultiplier,
+                  ),
+                  Text(
+                      "Phone Number : ${phone}           ",
+                      style: TextStyle(
+                          fontFamily: "Poppins-Med",
+                          fontWeight: FontWeight.bold,
+                          fontSize: 2 * SizeConfig.heightMultiplier,
+                          color: Colors.grey.shade700),
+                    ),
+                ],
+              )),
+        ],
+      ),
     ),
   );
 }
@@ -82,6 +85,7 @@ Widget profileOptions(
     padding:
         EdgeInsets.symmetric(vertical: 1.264 * SizeConfig.heightMultiplier),
     child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GestureDetector(
           onTap: () {

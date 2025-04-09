@@ -15,6 +15,7 @@ Widget dataWidgetBP(BloodPressureControllers controller,
     EditBloodPressureDataControllers editController) {
   return Column(
     children: [
+      SizedBox(height: 1.26404*SizeConfig.heightMultiplier,),
       Center(
         child: Text("Blood Pressure (mmHg)",
             style: TextStyle(
@@ -47,89 +48,123 @@ Widget dataWidgetBP(BloodPressureControllers controller,
 
 Widget graphDataBP(BloodPressureControllers controller,
     EditBloodPressureDataControllers editController) {
-  return Column(children: [
-    SizedBox(
-      height: 0,
-    ),
-    Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            size: 2.528 * SizeConfig.heightMultiplier,
-          ),
-          onPressed: controller.previousPageDate,
-          color: Colors.black,
+  return Container(
+    height: 39.1*SizeConfig.heightMultiplier,
+    child: Column(children: [
+      Expanded(
+        flex: 1,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: EdgeInsets.only(right: 0),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    size: 2.528 * SizeConfig.heightMultiplier,
+                  ),
+                  onPressed: controller.previousPageDate,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 5,
+              child: Obx(
+                () => editController.isLoadingGraph.value
+                    ? SpinKitCircle(
+                        color: Colours.buttonColorRed,
+                        size: 40,
+                      )
+                    : editController.bp_graph_list.length == 0
+                        ? Center(
+                            child: Text("NO DATA"),
+                          )
+                        : FittedBox(
+                            child: Text(
+                                editController
+                                    .bp_report_date[controller.dateIndex.value],
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 2.25 * SizeConfig.heightMultiplier,
+                                    color: Colors.black,
+                                    fontFamily: "Poppins-Med",
+                                    fontWeight: FontWeight.bold)),
+                          ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: EdgeInsets.only(left: 0),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.arrow_forward_ios_outlined,
+                    size: 2.528 * SizeConfig.heightMultiplier,
+                  ),
+                  onPressed: () =>
+                      controller.navigatePageDate(editController.bp_graph_list.length),
+                  color: Colors.black,
+                ),
+              ),
+            )
+          ],
         ),
-        Obx(
+      ),
+      SizedBox(
+        height: 3.5 * SizeConfig.heightMultiplier,
+      ),
+      Expanded(flex: 7,
+        child: Obx(
           () => editController.isLoadingGraph.value
               ? SpinKitCircle(
                   color: Colours.buttonColorRed,
                   size: 40,
                 )
-              : editController.bp_graph_list.length==0 ? Center(child: Text("NO DATA"),) : FittedBox(
-                  child: Text(
-                      editController.bp_report_date[controller.dateIndex.value],
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 2.25 * SizeConfig.heightMultiplier,
-                          color: Colors.black,
-                          fontFamily: "Poppins-Med",
-                          fontWeight: FontWeight.bold)),
+              : Container(
+                  color: Colors.white,
+                  height: 28 * SizeConfig.heightMultiplier,
+                  width: 91.517 * SizeConfig.widthMultiplier,
+                  child: PageView(
+                    controller: controller.pageControllerDate,
+                    children: List.generate(
+                      editController.bp_graph_list.length,
+                      (index) => BarChartExample(
+                        list: [editController.bp_graph_list[index]],
+                      ), // pass data if needed
+                    ),
+                  ),
                 ),
         ),
-        IconButton(
-          icon: Icon(
-            Icons.arrow_forward_ios_outlined,
-            size: 2.528 * SizeConfig.heightMultiplier,
-          ),
-          onPressed: () =>
-              controller.navigatePageDate(editController.bp_graph_list.length),
-          color: Colors.black,
-        )
-      ],
-    ),
-    SizedBox(
-      height: 3.5 * SizeConfig.heightMultiplier,
-    ),
-    Obx(
-      () => editController.isLoadingGraph.value
-          ? SpinKitCircle(
-              color: Colours.buttonColorRed,
-              size: 40,
-            )
-          : Container(
-              color: Colors.white,
-              height: 28 * SizeConfig.heightMultiplier,
-              width: 91.517 * SizeConfig.widthMultiplier,
-              child: PageView(
-                controller: controller.pageControllerDate,
-                children: List.generate(
-                  editController.bp_graph_list.length,
-                  (index) => BarChartExample(
-                    list: [editController.bp_graph_list[index]],
-                  ), // pass data if needed
-                ),
-              ),
-            ),
-    ),
-    SizedBox(
-      height: 2.106 * SizeConfig.heightMultiplier,
-    ),
-    FittedBox(
+      ),
+      SizedBox(
+        height: 2.106 * SizeConfig.heightMultiplier,
+      ),
+    ]),
+  );
+}
+
+Widget pressureText() {
+  return Container(
+    decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius:
+            BorderRadius.circular(1.2640 * SizeConfig.heightMultiplier)),
+    padding:
+        EdgeInsets.symmetric(horizontal: 3.34821 * SizeConfig.widthMultiplier),
+    height: 6.3202 * SizeConfig.heightMultiplier,
+    child: FittedBox(
       child: Text("Systolic Pressure, Diastolic Pressure",
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-              fontSize: 21.5 * SizeConfig.heightMultiplier,
+              fontSize: 20.5 * SizeConfig.heightMultiplier,
               color: Colors.black,
               fontFamily: "Poppins-Med",
               fontWeight: FontWeight.bold)),
     ),
-    SizedBox(
-      height: 2.633 * SizeConfig.heightMultiplier,
-    ),
-  ]);
+  );
 }
 
 Widget historyListBP(
@@ -176,15 +211,17 @@ Widget historyListBP(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    editController.bp_data_list[index]
-                                            ["diastolic"]
-                                        .toString(),
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontFamily: "CoreSansBold",
-                                        fontSize:
-                                            3.3 * SizeConfig.heightMultiplier),
+                                  FittedBox(
+                                    child: Text(
+                                      editController.bp_data_list[index]
+                                              ["diastolic"]
+                                          .toString(),
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: "CoreSansBold",
+                                          fontSize:
+                                              3.3 * SizeConfig.heightMultiplier),
+                                    ),
                                   ),
                                   Text(
                                     "mmHg",

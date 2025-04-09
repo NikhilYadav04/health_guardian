@@ -22,9 +22,13 @@ class AnalyzeScreen extends StatelessWidget {
         SizedBox(
           height: 1.58 * SizeConfig.heightMultiplier,
         ),
-        descTextAnalyze(
-            "Analyze your disease risk probability by\nfilling required health parameters and\nreceive your health risk prediction instantly.",
-            2.35 * SizeConfig.heightMultiplier),
+        
+        Align(
+          alignment: Alignment.topLeft,
+          child: descTextAnalyze(
+              "Analyze your disease risk probability by\nfilling required health parameters and\nreceive your health risk prediction instantly.",
+              2.35 * SizeConfig.heightMultiplier),
+        ),
 
         SizedBox(
           height: 3.68 * SizeConfig.heightMultiplier,
@@ -72,7 +76,7 @@ class AnalyzeScreen extends StatelessWidget {
           ],
         ),
         SizedBox(
-          height: 20,
+          height: 2.1067 * SizeConfig.heightMultiplier,
         ),
       ],
     );

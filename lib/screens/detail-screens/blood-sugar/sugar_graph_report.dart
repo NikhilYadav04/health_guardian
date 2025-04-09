@@ -13,7 +13,7 @@ class CustomLineChart extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.only(
-            top: 5.79 * SizeConfig.heightMultiplier,
+            top: 3.3 * SizeConfig.heightMultiplier,
             right: 4.46 * SizeConfig.widthMultiplier,
             left: 2.23 * SizeConfig.widthMultiplier),
         child: Center(

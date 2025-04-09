@@ -282,13 +282,13 @@ class EditBloodSugarDataControllers extends GetxController {
 
           sugar_graph_list.add({
             "date": isSame
-                ? sublist.first['date'].toString().split(":")[0]
+                ? "Whole Day - ${sublist.first['date'].toString().split(":")[0]}"
                 : "${sublist.first['date'].toString().split(":")[0]} - ${sublist.last['date'].toString().split(":")[0]}",
             "sugar_level": sublist.map((e) => e['sugar_level']).toList()
           });
 
           sugar_report_date.add(isSame
-              ? sublist.first['date'].toString().split(":")[0]
+              ? "Whole Day - ${sublist.first['date'].toString().split(":")[0]}"
               : "${sublist.first['date'].toString().split(":")[0]} - ${sublist.last['date'].toString().split(":")[0]}");
         }
       }
@@ -322,6 +322,7 @@ class EditBloodSugarDataControllers extends GetxController {
       MinSugarLevel.value = double.parse((list.reduce((a, b) =>
               a['sugar_level'] < b['sugar_level'] ? a : b)['sugar_level'])
           .toStringAsFixed(2));
+      
 
       return sugar_data_list;
     } catch (e) {

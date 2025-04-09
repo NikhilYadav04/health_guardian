@@ -301,14 +301,14 @@ class EditBloodPressureDataControllers extends GetxController {
 
         bp_graph_list.add({
           "date": isSame
-              ? sublist.first['date'].toString().split(":")[0]
+              ? "Whole Day - ${sublist.first['date'].toString().split(":")[0]}"
               : "${sublist.first['date'].toString().split(":")[0]} - ${sublist.last['date'].toString().split(":")[0]}",
           "systolic": sublist.map((e) => e['systolic']).toList(),
           "diastolic": sublist.map((e) => e['diastolic']).toList(),
         });
 
         bp_report_date.add(isSame
-            ? sublist.first['date'].toString().split(":")[0]
+            ? "Whole Day - ${sublist.first['date'].toString().split(":")[0]}"
             : "${sublist.first['date'].toString().split(":")[0]} - ${sublist.last['date'].toString().split(":")[0]}");
       }
 
@@ -328,12 +328,16 @@ class EditBloodPressureDataControllers extends GetxController {
           await collectionReference.where("email", isEqualTo: email).get();
 
       final DocumentSnapshot docs = querySnapshot.docs.first;
-      final List<dynamic> data = List.from(docs['bp_data']);
+      final List<dynamic> data = docs['bp_data'].toList();
 
       bp_data_list.value = data;
-      calculateAverage(data);
+      if (bp_data_list.isEmpty) {
+        return bp_data_list;
+      } else {
+        calculateAverage(bp_data_list);
+      }
 
-      return data;
+      return bp_data_list;
     } on FirebaseException {
       //toastErrorSlide(context, "Error fetching data: ${e.message}");
       return [];

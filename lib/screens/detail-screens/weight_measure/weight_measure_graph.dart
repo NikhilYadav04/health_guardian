@@ -14,8 +14,8 @@ class CustomBarChart extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.only(
             top: 3.16 * SizeConfig.heightMultiplier,
-            right: 4.46 * SizeConfig.widthMultiplier,
-            left: 4.46 * SizeConfig.widthMultiplier),
+            right: 2.0 * SizeConfig.widthMultiplier,
+            left: 1.4* SizeConfig.widthMultiplier),
         child: Center(
           child: BarChart(
             BarChartData(

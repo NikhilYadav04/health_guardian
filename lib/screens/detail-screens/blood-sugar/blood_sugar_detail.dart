@@ -48,7 +48,7 @@ class BloodSugarDetail extends StatelessWidget {
                 Container(
                     padding: EdgeInsets.symmetric(
                         horizontal: 2.23 * SizeConfig.widthMultiplier,
-                        vertical: 1.05 * SizeConfig.heightMultiplier),
+                        vertical: 2.4 * SizeConfig.heightMultiplier),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(
@@ -60,7 +60,7 @@ class BloodSugarDetail extends StatelessWidget {
                       //       blurRadius: 2)
                       // ],
                     ),
-                    height: 47.40 * SizeConfig.heightMultiplier,
+                    height:  48.40 * SizeConfig.heightMultiplier,
                     child: dataWidget(controller, editController)),
                 SizedBox(
                   height: 3.68 * SizeConfig.heightMultiplier,

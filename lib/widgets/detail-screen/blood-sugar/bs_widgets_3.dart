@@ -120,7 +120,8 @@ Widget userInputWidget(BloodSugarControllers controller) {
   );
 }
 
-Widget stateSelectWIdget(BloodSugarControllers controller,ProfileCompletionController profile_controller) {
+Widget stateSelectWIdget(BloodSugarControllers controller,
+    ProfileCompletionController profile_controller) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -372,7 +373,10 @@ Widget header(String title, IconData icon) {
         title,
         style: TextStyle(
             fontFamily: "CoreSansMed",
-            fontSize: 2.10 * SizeConfig.heightMultiplier,
+            fontSize: (SizeConfig.widthMultiplier <= 4.0 &&
+                    SizeConfig.heightMultiplier <= 8.2)
+                ? 1.9 * SizeConfig.heightMultiplier
+                : 2.10 * SizeConfig.heightMultiplier,
             color: const Color.fromARGB(255, 94, 92, 92)),
       )
     ],

@@ -30,96 +30,100 @@ class _MeasureScreenHeartState extends State<MeasureScreenHeart> {
         child: Scaffold(
       appBar: appBar(),
       backgroundColor: Color.fromARGB(255, 247, 241, 241),
-      body: Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: 2.2321 * SizeConfig.widthMultiplier),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 1.0533 * SizeConfig.heightMultiplier,
-            ),
-            Center(
-                child: Image.asset(
-              "assets/dashboard/heart_2.png",
-              height: 8.4269 * SizeConfig.heightMultiplier,
-              width: 17.8571 * SizeConfig.widthMultiplier,
-            )),
-            SizedBox(
-              height: 1.0533 * SizeConfig.heightMultiplier,
-            ),
-            check
-                ? TweenAnimationBuilder<int>(
-                    key: ValueKey(check),
-                    tween: IntTween(begin: 0, end: 100),
-                    duration: Duration(seconds: 8),
-                    onEnd: () {
-                      heartRateControllers.onEnd();
-                      if (check) {
-                        setState(() {
-                          check = false;
-                        });
-                      }
-                    },
-                    builder: (context, value, child) {
-                      return measureTextWidget(value == 100
-                          ? "Measured..${value}%"
-                          : "Measuring..${value}%");
-                    },
-                  )
-                : measureTextWidget("Click To Measure"),
-            SizedBox(
-              height: 0.842699 * SizeConfig.heightMultiplier,
-            ),
-            measureTextWidget2(),
-            SizedBox(
-              height: 0,
-            ),
-            SizedBox(
-              height: 35.8147 * SizeConfig.heightMultiplier,
-              child:
-                  LottieBuilder.asset("assets/animations/heart_animation.json"),
-            ),
-            Obx(() => !heartRateControllers.animationBool.value
-                ? heartRate(heartRateControllers.heartRate.value)
-                : SizedBox(
-                    height: 14.7472 * SizeConfig.heightMultiplier,
-                    width: 89.2857 * SizeConfig.widthMultiplier,
-                    child: LottieBuilder.asset(
-                        "assets/animations/heart_rate_animation.json"),
-                  )),
-            Obx(
-              () => !heartRateControllers.animationBool.value
-                  ? SizedBox(
-                      height: 10.007 * SizeConfig.heightMultiplier,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(
+              horizontal: 2.2321 * SizeConfig.widthMultiplier),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 1.0533 * SizeConfig.heightMultiplier,
+              ),
+              Center(
+                  child: Image.asset(
+                "assets/dashboard/heart_2.png",
+                height: 8.4269 * SizeConfig.heightMultiplier,
+                width: 17.8571 * SizeConfig.widthMultiplier,
+              )),
+              SizedBox(
+                height: 1.0533 * SizeConfig.heightMultiplier,
+              ),
+              check
+                  ? TweenAnimationBuilder<int>(
+                      key: ValueKey(check),
+                      tween: IntTween(begin: 0, end: 100),
+                      duration: Duration(seconds: 8),
+                      onEnd: () {
+                        heartRateControllers.onEnd();
+                        if (check) {
+                          setState(() {
+                            check = false;
+                          });
+                        }
+                      },
+                      builder: (context, value, child) {
+                        return measureTextWidget(value == 100
+                            ? "Measured..${value}%"
+                            : "Measuring..${value}%");
+                      },
                     )
+                  : measureTextWidget("Click To Measure"),
+              SizedBox(
+                height: 0.842699 * SizeConfig.heightMultiplier,
+              ),
+              measureTextWidget2(),
+              SizedBox(
+                height: 0,
+              ),
+              SizedBox(
+                height: 35.8147 * SizeConfig.heightMultiplier,
+                child:
+                    LottieBuilder.asset("assets/animations/heart_animation.json"),
+              ),
+              Obx(() => !heartRateControllers.animationBool.value
+                  ? heartRate(heartRateControllers.heartRate.value)
                   : SizedBox(
-                      height: 4.213497 * SizeConfig.heightMultiplier,
-                    ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: authButton("Measure", () {
-                    heartRateControllers.reCheck();
-                    heartRateControllers.getHeartRate();
-                    setState(() {
-                      check = true;
-                    });
-                    var logger = Logger();
-                    logger.d(check);
-                  }),
-                ),
-                SizedBox(width: 2.6785 * SizeConfig.widthMultiplier),
-                Expanded(
-                  flex: 1,
-                  child: authButton("Add Record", () {
-                    Get.to(()=>AddHeartRateScreen(),transition: Transition.upToDown);
-                  }),
-                ),
-              ],
-            )
-          ],
+                      height: 14.7472 * SizeConfig.heightMultiplier,
+                      width: 89.2857 * SizeConfig.widthMultiplier,
+                      child: LottieBuilder.asset(
+                          "assets/animations/heart_rate_animation.json"),
+                    )),
+              Obx(
+                () => !heartRateControllers.animationBool.value
+                    ? SizedBox(
+                        height: 10.007 * SizeConfig.heightMultiplier,
+                      )
+                    : SizedBox(
+                        height: 4.213497 * SizeConfig.heightMultiplier,
+                      ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: authButton("Measure", () {
+                      heartRateControllers.reCheck();
+                      heartRateControllers.getHeartRate();
+                      setState(() {
+                        check = true;
+                      });
+                      var logger = Logger();
+                      logger.d(check);
+                    }),
+                  ),
+                  SizedBox(width: 2.6785 * SizeConfig.widthMultiplier),
+                  Expanded(
+                    flex: 1,
+                    child: authButton("Add Record", () {
+                      Get.to(()=>AddHeartRateScreen(),transition: Transition.upToDown);
+                    }),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 2.3*SizeConfig.heightMultiplier,)
+            ],
+          ),
         ),
       ),
     ));

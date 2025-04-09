@@ -46,6 +46,7 @@ class Notificationservice {
         android: AndroidNotificationDetails(
           "health_guardian",
           "reminderchannel",
+          icon: "ic",
           importance: Importance.max,
           priority: Priority.high,
         ),

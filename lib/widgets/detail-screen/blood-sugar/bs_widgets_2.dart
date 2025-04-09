@@ -46,78 +46,100 @@ Widget dataWidget(BloodSugarControllers controller,
 
 Widget graphData(BloodSugarControllers controller,
     EditBloodSugarDataControllers editController) {
-  return Column(children: [
-    SizedBox(
-      height: 0,
-    ),
-    Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            size: 2.4 * SizeConfig.heightMultiplier,
-          ),
-          onPressed: controller.previousPageDate,
-          color: Colors.black,
+  return Container(
+    height: 34.7613 * SizeConfig.heightMultiplier,
+    child: Column(children: [
+      Expanded(
+        flex: 1,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: EdgeInsets.only(right: 0),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    size: 2.4 * SizeConfig.heightMultiplier,
+                  ),
+                  onPressed: controller.previousPageDate,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 4,
+              child: Obx(
+                () => editController.isLoadingGraph.value
+                    ? SpinKitCircle(
+                        color: Colours.buttonColorRed,
+                        size: 40,
+                      )
+                    : editController.sugar_data_list.length == 0
+                        ? Center(
+                            child: Text("NO DATA"),
+                          )
+                        : FittedBox(
+                            child: Text(
+                                editController.sugar_report_date[
+                                    controller.dateIndex.value],
+                                style: TextStyle(
+                                    fontSize:
+                                        2.25 * SizeConfig.heightMultiplier,
+                                    color: Colors.black,
+                                    fontFamily: "Poppins-Med",
+                                    fontWeight: FontWeight.bold)),
+                          ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: EdgeInsets.only(left: 0),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.arrow_forward_ios_outlined,
+                    size: 2.4 * SizeConfig.heightMultiplier,
+                  ),
+                  onPressed: () => controller
+                      .navigatePageDate(editController.sugar_graph_list.length),
+                  color: Colors.black,
+                ),
+              ),
+            )
+          ],
         ),
-        Obx(
+      ),
+      // SizedBox(
+      //   height: 1 * SizeConfig.heightMultiplier,
+      // ),
+      Expanded(
+        flex: 6,
+        child: Obx(
           () => editController.isLoadingGraph.value
               ? SpinKitCircle(
                   color: Colours.buttonColorRed,
                   size: 40,
                 )
-              : editController.sugar_report_list.length == 0
-                  ? Center(
-                      child: Text("NO DATA"),
-                    )
-                  : FittedBox(
-                      child: Text(
-                          editController
-                              .sugar_report_date[controller.dateIndex.value],
-                          style: TextStyle(
-                              fontSize: 2.25 * SizeConfig.heightMultiplier,
-                              color: Colors.black,
-                              fontFamily: "Poppins-Med",
-                              fontWeight: FontWeight.bold)),
+              : Container(
+                  color: Colors.white,
+                  height: 28.4 * SizeConfig.heightMultiplier,
+                  width: 91.517 * SizeConfig.widthMultiplier,
+                  child: PageView(
+                    controller: controller.pageControllerDate,
+                    children: List.generate(
+                      editController.sugar_graph_list.length,
+                      (index) => CustomLineChart(
+                        list: [editController.sugar_graph_list[index]],
+                      ), // pass data if needed
                     ),
-        ),
-        IconButton(
-          icon: Icon(
-            Icons.arrow_forward_ios_outlined,
-            size: 2.4 * SizeConfig.heightMultiplier,
-          ),
-          onPressed: () => controller
-              .navigatePageDate(editController.sugar_graph_list.length),
-          color: Colors.black,
-        )
-      ],
-    ),
-    SizedBox(
-      height: 2.633 * SizeConfig.heightMultiplier,
-    ),
-    Obx(
-      () => editController.isLoadingGraph.value
-          ? SpinKitCircle(
-              color: Colours.buttonColorRed,
-              size: 40,
-            )
-          : Container(
-              color: Colors.white,
-              height: 28.4 * SizeConfig.heightMultiplier,
-              width: 91.517 * SizeConfig.widthMultiplier,
-              child: PageView(
-                controller: controller.pageControllerDate,
-                children: List.generate(
-                  editController.sugar_graph_list.length,
-                  (index) => CustomLineChart(
-                    list: [editController.sugar_graph_list[index]],
-                  ), // pass data if needed
+                  ),
                 ),
-              ),
-            ),
-    ),
-  ]);
+        ),
+      ),
+    ]),
+  );
 }
 
 Widget historyList(
@@ -128,7 +150,7 @@ Widget historyList(
       padding: EdgeInsets.symmetric(
         horizontal: 1.11 * SizeConfig.widthMultiplier,
       ),
-      height: 36.86 * SizeConfig.heightMultiplier,
+      height: 33.86 * SizeConfig.heightMultiplier,
       child: editController.sugar_data_list.length == 0
           ? Center(
               child: Text(

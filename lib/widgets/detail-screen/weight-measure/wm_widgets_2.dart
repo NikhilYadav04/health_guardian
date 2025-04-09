@@ -14,6 +14,7 @@ Widget dataWidgetWeightMeasure(WeightMeasureControllers controller,
     EditWeightMeasureDataController editController) {
   return Column(
     children: [
+      SizedBox(height: 1.053*SizeConfig.heightMultiplier,),
       Center(
         child: Text("Weight (kg)",
             style: TextStyle(
@@ -46,77 +47,95 @@ Widget dataWidgetWeightMeasure(WeightMeasureControllers controller,
 
 Widget graphDataWeightMeasure(WeightMeasureControllers controller,
     EditWeightMeasureDataController editController) {
-  return Column(children: [
-    SizedBox(
-      height: 0,
-    ),
-    Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            size: 2.528 * SizeConfig.heightMultiplier,
-          ),
-          onPressed: controller.previousPageDate,
-          color: Colors.black,
+  return Container(
+    height: 36.3414*SizeConfig.heightMultiplier,
+    child: Column(children: [
+      Expanded(
+        flex: 1,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: EdgeInsets.only(right: 0),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    size: 2.528 * SizeConfig.heightMultiplier,
+                  ),
+                  onPressed: controller.previousPageDate,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 5,
+              child: Obx(
+                () => editController.isLoadingGraph.value
+                    ? SpinKitCircle(
+                        color: Colours.buttonColorRed,
+                        size: 40,
+                      )
+                    : editController.weight_graph_list.length == 0
+                        ? Center(
+                            child: Text("NO DATA"),
+                          )
+                        : FittedBox(
+                            child: Text(
+                                editController
+                                    .weight_report_date[controller.dateIndex.value],
+                                style: TextStyle(
+                                    fontSize: 2.25 * SizeConfig.heightMultiplier,
+                                    color: Colors.black,
+                                    fontFamily: "Poppins-Med",
+                                    fontWeight: FontWeight.bold)),
+                          ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: EdgeInsets.only(left: 0),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.arrow_forward_ios_outlined,
+                    size: 2.528 * SizeConfig.heightMultiplier,
+                  ),
+                  onPressed: () => controller
+                      .navigatePageDate(editController.weight_graph_list.length),
+                  color: Colors.black,
+                ),
+              ),
+            )
+          ],
         ),
-        Obx(
+      ),
+      Expanded(
+        flex: 7,
+        child: Obx(
           () => editController.isLoadingGraph.value
               ? SpinKitCircle(
                   color: Colours.buttonColorRed,
                   size: 40,
                 )
-              : editController.weight_graph_list.length == 0
-                  ? Center(
-                      child: Text("NO DATA"),
-                    )
-                  : FittedBox(
-                      child: Text(
-                          editController
-                              .weight_report_date[controller.dateIndex.value],
-                          style: TextStyle(
-                              fontSize: 2.25 * SizeConfig.heightMultiplier,
-                              color: Colors.black,
-                              fontFamily: "Poppins-Med",
-                              fontWeight: FontWeight.bold)),
-                    ),
+              : Container(
+                  color: Colors.white,
+                  height: 31 * SizeConfig.heightMultiplier,
+                  width: 91.517 * SizeConfig.widthMultiplier,
+                  child: PageView(
+                    controller: controller.pageController,
+                    children: List.generate(editController.weight_graph_list.length,
+                        (index) {
+                      return CustomBarChart(
+                          list: [editController.weight_graph_list[index]]);
+                    }),
+                  ),
+                ),
         ),
-        IconButton(
-          icon: Icon(
-            Icons.arrow_forward_ios_outlined,
-            size: 2.528 * SizeConfig.heightMultiplier,
-          ),
-          onPressed: () => controller
-              .navigatePageDate(editController.weight_graph_list.length),
-          color: Colors.black,
-        )
-      ],
-    ),
-    SizedBox(
-      height: 0,
-    ),
-    Obx(
-      () => editController.isLoadingGraph.value
-          ? SpinKitCircle(
-              color: Colours.buttonColorRed,
-              size: 40,
-            )
-          : Container(
-              color: Colors.white,
-              height: 31 * SizeConfig.heightMultiplier,
-              width: 91.517 * SizeConfig.widthMultiplier,
-              child: PageView(
-                controller: controller.pageController,
-                children: List.generate(editController.weight_graph_list.length,
-                    (index) {
-                  return CustomBarChart(
-                      list: [editController.weight_graph_list[index]]);
-                }),
-              ),
-            ),
-    ),
-  ]);
+      ),
+    ]),
+  );
 }
 
 Widget historyListWeightMeasure(
@@ -134,7 +153,7 @@ Widget historyListWeightMeasure(
             padding: EdgeInsets.symmetric(
               horizontal: 1.116 * SizeConfig.widthMultiplier,
             ),
-            height: 36.869 * SizeConfig.heightMultiplier,
+            height: 36.3 * SizeConfig.heightMultiplier,
             child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: editController.weight_data_list.length > 4
@@ -246,21 +265,30 @@ Widget statsWidgetWeightMeasure(String status, String date, Color color) {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            buttonsDetail1(
-                status,
-                () {},
-                color,
-                Colors.white,
-                4.740 * SizeConfig.heightMultiplier,
-                22.321 * SizeConfig.widthMultiplier,
-                0.632 * SizeConfig.heightMultiplier,
-                2.001 * SizeConfig.heightMultiplier),
-            Text(
-              "BMI 21.6",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: "CoreSansBold",
-                  fontSize: 2.3 * SizeConfig.heightMultiplier),
+            Expanded(
+              flex: 1,
+              child: buttonsDetail1(
+                  status,
+                  () {},
+                  color,
+                  Colors.white,
+                  4.740 * SizeConfig.heightMultiplier,
+                  22.321 * SizeConfig.widthMultiplier,
+                  0.632 * SizeConfig.heightMultiplier,
+                  2.001 * SizeConfig.heightMultiplier),
+            ),
+            SizedBox(width: 1.5625*SizeConfig.widthMultiplier,),
+            Expanded(
+              flex: 1,
+              child: FittedBox(
+                child: Text(
+                  "BMI 21.6",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: "CoreSansBold",
+                      fontSize: 2.3 * SizeConfig.heightMultiplier),
+                ),
+              ),
             ),
           ],
         ),

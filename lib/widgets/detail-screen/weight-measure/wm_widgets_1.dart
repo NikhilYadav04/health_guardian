@@ -12,7 +12,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 AppBar appBWm(void Function() onTap1, void Function() onTap2) {
   return AppBar(
     backgroundColor: Color.fromARGB(255, 245, 242, 242),
-    toolbarHeight: 90,
+    toolbarHeight: 9.48037*SizeConfig.heightMultiplier,
     leading: IconButton(
         onPressed: onTap1,
         icon: Icon(
@@ -62,7 +62,7 @@ Widget wightMeasureDataWidget(EditWeightMeasureDataController editController){
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            height: 15,
+                            height: 1.5800*SizeConfig.heightMultiplier,
                           ),
                           Text(
                             "Weight Measure",

@@ -30,18 +30,18 @@ class WeightMeasureDetail extends StatelessWidget {
 
               //* for buttons of stats and history
               SizedBox(
-                height: 35,
+                height: 3.6868*SizeConfig.heightMultiplier,
               ),
 
               Obx(()=> doubleButtonWMWidget(controllers,editController.weight_data_list.length)),
               
               SizedBox(
-                height: 35,
+                height: 3.6868*SizeConfig.heightMultiplier,
               ),
 
               //* stats and history display widget
               Container(
-                  padding: EdgeInsets.symmetric(horizontal: 2.23*SizeConfig.widthMultiplier, vertical: 1.05*SizeConfig.heightMultiplier),
+                  padding: EdgeInsets.symmetric(horizontal: 2.23*SizeConfig.widthMultiplier, vertical: 1.2*SizeConfig.heightMultiplier),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(1.05*SizeConfig.heightMultiplier),
@@ -52,7 +52,7 @@ class WeightMeasureDetail extends StatelessWidget {
                     //       blurRadius: 2)
                     // ],
                   ),
-                  height: 47.40*SizeConfig.heightMultiplier,
+                  height: 48.6*SizeConfig.heightMultiplier,
                   child: dataWidgetWeightMeasure(controllers, editController)),
               SizedBox(
                 height:3.68*SizeConfig.heightMultiplier,

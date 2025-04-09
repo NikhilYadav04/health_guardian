@@ -8,21 +8,30 @@ import 'package:health_guardian/widgets/buttons/detail_buttons.dart';
 
 Widget userInputWidgetSystolicPressure(BloodPressureControllers controller) {
   return Container(
-    height:  18.2*SizeConfig.heightMultiplier,
+    height: 18.5 * SizeConfig.heightMultiplier,
     width: double.infinity,
     decoration: BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(0.63*SizeConfig.heightMultiplier),
+      borderRadius: BorderRadius.circular(0.63 * SizeConfig.heightMultiplier),
     ),
-    padding: EdgeInsets.symmetric(horizontal: 3.34*SizeConfig.widthMultiplier, vertical: 2.10*SizeConfig.heightMultiplier),
+    padding: EdgeInsets.symmetric(
+        horizontal: 3.34 * SizeConfig.widthMultiplier,
+        vertical: 2.10 * SizeConfig.heightMultiplier),
     child: Column(
       children: [
         Center(
-          child: buttonsDetail1("Enter your Systolic BP in mmHg", () {},
-              Colours.buttonColorRed, Colors.white, 50, 400, 6, 21),
+          child: buttonsDetail1(
+              "Enter your Systolic BP in mmHg",
+              () {},
+              Colours.buttonColorRed,
+              Colors.white,
+              5.26687 * SizeConfig.heightMultiplier,
+              89.2857 * SizeConfig.widthMultiplier,
+              0.63202 * SizeConfig.heightMultiplier,
+              2.21208 * SizeConfig.heightMultiplier),
         ),
         SizedBox(
-          height:2.10*SizeConfig.heightMultiplier,
+          height: 2.10 * SizeConfig.heightMultiplier,
         ),
         //* value display
         GestureDetector(
@@ -62,7 +71,7 @@ Widget userInputWidgetSystolicPressure(BloodPressureControllers controller) {
                 "${controller.pressureLevelSystolic.value.toStringAsFixed(1)} mmHg",
                 style: TextStyle(
                   fontFamily: "CoreSansBold",
-                  fontSize: 4.00*SizeConfig.heightMultiplier,
+                  fontSize: 4.00 * SizeConfig.heightMultiplier,
                   color: Colors.black,
                 ),
               )),
@@ -74,21 +83,30 @@ Widget userInputWidgetSystolicPressure(BloodPressureControllers controller) {
 
 Widget userInputWidgetDiastolicPressure(BloodPressureControllers controller) {
   return Container(
-    height: 18.2*SizeConfig.heightMultiplier,
+    height: 18.2 * SizeConfig.heightMultiplier,
     width: double.infinity,
     decoration: BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(0.63*SizeConfig.heightMultiplier),
+      borderRadius: BorderRadius.circular(0.63 * SizeConfig.heightMultiplier),
     ),
-    padding: EdgeInsets.symmetric(horizontal: 3.34*SizeConfig.widthMultiplier, vertical: 2.10*SizeConfig.heightMultiplier),
+    padding: EdgeInsets.symmetric(
+        horizontal: 3.34 * SizeConfig.widthMultiplier,
+        vertical: 2.10 * SizeConfig.heightMultiplier),
     child: Column(
       children: [
         Center(
-          child: buttonsDetail1("Enter your Diastolic BP in mmHg", () {},
-              Colours.buttonColorRed, Colors.white, 50, 400, 6, 21),
+          child: buttonsDetail1(
+              "Enter your Diastolic BP in mmHg",
+              () {},
+              Colours.buttonColorRed,
+              Colors.white,
+              5.26687 * SizeConfig.heightMultiplier,
+              89.2857 * SizeConfig.widthMultiplier,
+              0.63202 * SizeConfig.heightMultiplier,
+              2.212086 * SizeConfig.heightMultiplier),
         ),
         SizedBox(
-          height: 20,
+          height: 2.10 * SizeConfig.heightMultiplier,
         ),
         //* value display
         GestureDetector(
@@ -128,7 +146,7 @@ Widget userInputWidgetDiastolicPressure(BloodPressureControllers controller) {
                 "${controller.pressureLevelDiastolic.value.toStringAsFixed(1)} mmHg",
                 style: TextStyle(
                   fontFamily: "CoreSansBold",
-                  fontSize: 4.00*SizeConfig.heightMultiplier,
+                  fontSize: 4.00 * SizeConfig.heightMultiplier,
                   color: Colors.black,
                 ),
               )),
@@ -140,21 +158,30 @@ Widget userInputWidgetDiastolicPressure(BloodPressureControllers controller) {
 
 Widget pulseLevelWidget(BloodPressureControllers controller) {
   return Container(
-    height: 18.2*SizeConfig.heightMultiplier,
+    height: 18.2 * SizeConfig.heightMultiplier,
     width: double.infinity,
     decoration: BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(0.63*SizeConfig.heightMultiplier),
+      borderRadius: BorderRadius.circular(0.63 * SizeConfig.heightMultiplier),
     ),
-    padding: EdgeInsets.symmetric(horizontal: 3.34*SizeConfig.widthMultiplier, vertical: 2.10*SizeConfig.heightMultiplier),
+    padding: EdgeInsets.symmetric(
+        horizontal: 3.34 * SizeConfig.widthMultiplier,
+        vertical: 2.10 * SizeConfig.heightMultiplier),
     child: Column(
       children: [
         Center(
-          child: buttonsDetail1("Enter your Pulse Level in bpm", () {},
-              Colours.buttonColorRed, Colors.white, 50, 400, 6, 21),
+          child: buttonsDetail1(
+              "Enter your Pulse Level in bpm",
+              () {},
+              Colours.buttonColorRed,
+              Colors.white,
+              5.26687 * SizeConfig.heightMultiplier,
+              89.2857 * SizeConfig.widthMultiplier,
+              0.63202 * SizeConfig.heightMultiplier,
+              2.212086 * SizeConfig.heightMultiplier),
         ),
         SizedBox(
-          height: 20,
+          height: 2.10 * SizeConfig.heightMultiplier,
         ),
         //* value display
         GestureDetector(
@@ -195,7 +222,7 @@ Widget pulseLevelWidget(BloodPressureControllers controller) {
                 "${controller.pulseLevel.value} bpm",
                 style: TextStyle(
                   fontFamily: "CoreSansBold",
-                  fontSize:4.00*SizeConfig.heightMultiplier,
+                  fontSize: 4.00 * SizeConfig.heightMultiplier,
                   color: Colors.black,
                 ),
               )),
