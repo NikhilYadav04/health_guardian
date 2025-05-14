@@ -6,7 +6,7 @@
 
 Click below to check the preview of the full UI and features:
 
-🔗 [View the Live Preview](https://drive.google.com/drive/folders/1LHnMQMwISOPkJXVoLJZVpdEhMhiMAcLo)
+🔗 [View the Preview](https://drive.google.com/drive/folders/1LHnMQMwISOPkJXVoLJZVpdEhMhiMAcLo)
 
 ## 🔐 Authentication & Profile Setup
 
