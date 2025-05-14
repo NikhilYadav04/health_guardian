@@ -2,6 +2,12 @@
 
 **Health Guardian** is a personal health tracking app developed using Flutter and Firebase. It helps users monitor their daily vitals like heart rate, blood pressure, blood sugar, and weight while providing smart analytics and AI-powered health insights. The app is suitable for individuals who want to keep track of their health on a daily basis, and receive meaningful reports and predictions regarding hypertension, diabetes, and heart disease risks.
 
+# 🚀 Live App Preview
+
+Click below to check the preview of the full UI and features:
+
+🔗 [View the Live Preview](https://drive.google.com/drive/folders/1LHnMQMwISOPkJXVoLJZVpdEhMhiMAcLo)
+
 ## 🔐 Authentication & Profile Setup
 
 Upon launching the app, users are prompted to log in using **email and password authentication**. After successful login, they are guided through a profile setup process where they enter:
